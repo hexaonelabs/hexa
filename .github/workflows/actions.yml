@@ -46,7 +46,7 @@ jobs:
           git tag -f  ${{ env.version }};
           git push origin  ${{ env.version }} --force
       - name: Valist Deploy
-        uses: valist-io/valist-github-action@latest
+        uses: valist-io/valist-github-action@2.8.2
         with:
           private-key: ${{ secrets.VALIST_SIGNER }}
           account: d-workspace
