@@ -1,0 +1,82 @@
+<ion-content
+  fullscreen="true"
+  class="ion-padding-horizontal"
+  *ngIf="config$ | async as config"
+  class="ion-no-padding"
+>
+  <ion-grid class="header ion-no-padding ion-padding-horizontal">
+    <ion-row class="ion-no-padding ion-align-items-center">
+      <ion-col size="auto">
+        <ion-menu-button></ion-menu-button>
+      </ion-col>
+      <!-- <ion-col size="auto">
+        <ion-button id="add-btn" fill="clear" size="large">
+          <ion-icon size="small" name="add-sharp"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="add-btn" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-no-padding">
+              <ion-list lines="none" class="ion-margin-bottom">
+                <ion-list-header>
+                  <ion-label>Add Widgets</ion-label>
+                </ion-list-header>
+                <ion-item
+                  button
+                  (click)="actions('add-widget', 'current-time')"
+                >
+                  <ion-label>
+                    <h3>Current Time</h3>
+                    <p>
+                      Display specific location time
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col> -->
+      <ion-col class="ion-text-end">
+        <ion-button id="settings-btn" fill="clear" size="large">
+          <ion-icon size="small" name="ellipsis-vertical-sharp"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="settings-btn" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-no-padding">
+              <ion-list lines="none" class="ion-margin-bottom">
+                <ion-list-header>
+                  <ion-label>Widgets Settings</ion-label>
+                </ion-list-header>
+                <ion-item
+                  button
+                  (click)="actions('open-settings-modal', 'background')"
+                >
+                  <ion-label>
+                    <h3>Background</h3>
+                    <p>
+                      Change background image
+                    </p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col>
+      <ion-col size="auto">
+        <div style="width: 82px"></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <d-workspace-background
+    [clientId]="config?.background?.unsplashClientId"
+    [query]="config?.background?.query"
+    [url]="config?.background?.url"
+    [isDevMode]="!isProd"
+  >
+    <div id="flexContainer">
+      <d-workspace-current-time></d-workspace-current-time>
+      <h1>{{ text }}!</h1>
+    </div>
+  </d-workspace-background>
+</ion-content>

@@ -1,0 +1,301 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row
+        *ngIf="account$ | async as account"
+        class="ion-align-items-center ion-padding-start"
+      >
+        <ion-col size="auto">
+          <h1>Wallet</h1>
+        </ion-col>
+        <ion-col class="ion-padding-start">
+          <ion-chip id="accounts-list" color="primary">
+            <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
+            <ion-label>
+              {{ account | sliceAddress }}
+            </ion-label>
+            <ion-icon size="small" name="chevron-down"></ion-icon>
+          </ion-chip>
+          <ion-popover
+            id="wallet-account-popover"
+            trigger="accounts-list"
+            triggerAction="click"
+          >
+            <ng-template>
+              <ion-content class="ion-no-padding">
+                <ion-list lines="none" class="ion-margin-bottom">
+                  <ion-list-header>
+                    <ion-label>My accounts</ion-label>
+                  </ion-list-header>
+                  <ion-item class="ion-margin-top">
+                    <ion-checkbox
+                      mode="md"
+                      slot="start"
+                      checked
+                      (click)="actions('toggle-account', { account, event: $event })"
+                    ></ion-checkbox>
+                    <ion-avatar
+                      class="isConnected"
+                      slot="start"
+                      avatar
+                      [address]="account"
+                    ></ion-avatar>
+                    <ion-label>
+                      <h3>{{ account | sliceAddress }}</h3>
+                      <p></p>
+                    </ion-label>
+                    <ion-buttons
+                      slot="end"
+                      class="ion-no-margin ion-margin-start"
+                    >
+                      <ion-button size="small" fill="clear">
+                        <ion-icon
+                          color="medium"
+                          size="small"
+                          slot="icon-only"
+                          name="copy-outline"
+                        ></ion-icon>
+                      </ion-button>
+                      <ion-button size="small" fill="clear">
+                        <ion-icon
+                          color="medium"
+                          size="small"
+                          slot="icon-only"
+                          name="ellipsis-vertical-sharp"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-item>
+                  <ng-container *ngIf="((wallets$ | async)?.length || 0) > 0">
+                    <ion-item *ngFor="let wallet of wallets$ | async">
+                      <ion-checkbox
+                        mode="md"
+                        slot="start"
+                        [checked]="wallet.isDisabled === true ? false : true"
+                        (click)="actions('toggle-account', { account: wallet.address, event: $event })"
+                      ></ion-checkbox>
+                      <ion-avatar
+                        slot="start"
+                        avatar
+                        [address]="wallet.address"
+                      ></ion-avatar>
+                      <ion-label>
+                        <h3>{{ wallet.address | sliceAddress }}</h3>
+                        <p></p>
+                      </ion-label>
+                      <ion-buttons
+                        slot="end"
+                        class="ion-no-margin ion-margin-start"
+                      >
+                        <ion-button size="small" fill="clear">
+                          <ion-icon
+                            color="medium"
+                            size="small"
+                            slot="icon-only"
+                            name="copy-outline"
+                          ></ion-icon>
+                        </ion-button>
+                        <ion-button size="small" fill="clear">
+                          <ion-icon
+                            color="medium"
+                            size="small"
+                            slot="icon-only"
+                            name="ellipsis-vertical-sharp"
+                          ></ion-icon>
+                        </ion-button>
+                      </ion-buttons>
+                    </ion-item>
+                  </ng-container>
+                  <ion-item
+                    button
+                    class="ion-margin-top"
+                    (click)="actions('add-account')"
+                  >
+                    <ion-icon
+                      size="small"
+                      color="medium"
+                      slot="start"
+                      name="add-outline"
+                    ></ion-icon>
+                    <ion-label>
+                      <h3>Add account</h3>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen id="drive" class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row
+      class="ion-align-items-start"
+      *ngIf="tokensBalances$ | async as tokensBalances; else skeletonHTML"
+    >
+      <ion-col size="12">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-align-items-end">
+            <ion-col class="ion-text-start">
+              <ion-label color="medium"> Net Worth </ion-label>
+              <ion-text>
+                <h1>${{ tokensBalances | netWorth }}</h1>
+              </ion-text>
+            </ion-col>
+            <ion-col size="3" class="ion-text-end">
+              <ion-segment [value]="selectedSegment" mode="ios">
+                <ion-segment-button
+                  value="tokens"
+                  (click)="selectedSegment = 'tokens'"
+                >
+                  <ion-label>Tokens</ion-label>
+                </ion-segment-button>
+                <ion-segment-button
+                  value="nfts"
+                  (click)="selectedSegment = 'nfts'"
+                >
+                  <ion-label>NFTs</ion-label>
+                </ion-segment-button>
+                <!-- <ion-segment-button value="transaction" (click)="selectedSegment = 'transaction'">
+                  <ion-label>Transactions</ion-label>
+                </ion-segment-button> -->
+              </ion-segment>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <!-- Tokens -->
+      <ng-container *ngIf="selectedSegment === 'tokens'">
+        <ion-col size="12" *ngIf="(tokensBalances | assetsType : 'token')?.length||0 > 0; else noItems">
+          <ion-grid class="ion-no-padding ion-padding-bottom">
+            <ion-row class="ion-align-items-start ion-margin-top">
+              <ion-col size="4">
+                <ion-text color="medium"> Token </ion-text>
+              </ion-col>
+              <ion-col class="">
+                <ion-text color="medium"> Price </ion-text>
+              </ion-col>
+              <ion-col
+                class="ion-text-right ion-align-items-center ion-justify-content-end"
+              >
+                <ion-text color="medium"> Balance </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div>
+            <d-workspace-items-container
+              [items]="tokensBalances | assetsType : 'token'"
+              (actionsEvent)="actions($event.type, $event.payload)"
+            ></d-workspace-items-container>
+          </div>
+        </ion-col>
+        <ng-template #noItems>
+          <ion-col size="12">
+            <ion-grid class="ion-no-padding ion-text-center noItems">
+              <ion-row class="item ion-align-items-center ion-padding-center">
+                <ion-col class="ion-text-center ion-margin-vertical">
+                  <ion-label>
+                      There is no token in your wallet
+                  </ion-label>
+                  <ion-text color="medium">
+                    <p>
+                      You can buy token from any exchange and send to your wallet address to see it here.
+                    </p>
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ng-template>
+      </ng-container>
+      <!-- NFTs -->
+      <ng-container *ngIf="selectedSegment === 'nfts'">
+        <ng-container *ngIf="(tokensBalances | assetsType : 'nft')?.length||0 > 0; else noNFTs">
+          <ng-container
+            *ngFor="let nftgroupe of tokensBalances | assetsType : 'nft'">
+            <ion-col
+              size-xs="12"
+              size-sm="6"
+              size-md="4"
+              size-lg="3"
+              *ngFor="let nft of nftgroupe.nft_data; let i = index"
+            >
+              <ion-card mode="ios">
+                <ion-img
+                  *ngIf="
+                    nft?.external_data?.image_512 || nft?.external_data?.image
+                  "
+                  [src]="
+                    nft?.external_data?.image_512 || nft?.external_data?.image
+                  "
+                ></ion-img>
+                <ion-card-content>
+                  <ion-card-title>
+                    {{ nft?.external_data?.name }}
+                  </ion-card-title>
+                  <ion-card-subtitle>
+                    {{ nftgroupe?.name || nftgroupe?.symbol }}
+                  </ion-card-subtitle>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ng-container>
+        <ng-template #noNFTs>
+          <ion-col size="12">
+            <ion-grid class="ion-no-padding ion-text-center noItems">
+              <ion-row class="item ion-align-items-center ion-padding-center">
+                <ion-col class="ion-text-center ion-margin-vertical">
+                  <ion-label>
+                      There is no NFTs in your wallet
+                  </ion-label>
+                  <ion-text color="medium">
+                    <p>
+                      You can buy NFTs from any marketplace and they will appear here.
+                    </p>
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ng-template>
+      </ng-container>
+    </ion-row>
+    <!-- Skeleton loading HTML -->
+    <ng-template #skeletonHTML>
+      <ion-row class="ion-align-items-start">
+        <ion-col size="12">
+          <ion-grid class="ion-no-padding">
+            <ion-row
+              *ngFor="let el of [].constructor(10)"
+              role="article"
+              class="item clickable ion-align-items-center ion-padding-start"
+            >
+              <ion-col size="1" class="ion-padding">
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="9" class="ion-padding-vertical">
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="2" class="ion-padding">
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ng-template>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,218 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-menu-button class="ion-margin-start" slot="start"></ion-menu-button>
+    <ion-grid class="ion-margin-start ion-margin-end ion-margin-top ion-no-padding">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="auto">
+          <ion-text>
+            <h1>{{viewTitle$|async}}</h1>
+          </ion-text>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button (click)="actions('prev')" fill="none">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </ion-button>
+          <ion-button (click)="actions('next')" fill="none">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <!-- <ion-col>
+          <ion-searchbar mode="ios"></ion-searchbar>
+        </ion-col> -->
+        <ion-col size="auto">
+
+          <ion-button (click)="actions('today')" shape="round" fill="none">today</ion-button>
+          <ion-button id="open-view-selector" shape="round" fill="none">
+            <ion-text slot="start">{{currentView|viewName}}</ion-text>
+            <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+            <ion-popover trigger="open-view-selector" show-backdrop="false">
+              <ng-template>
+                <ion-list lines="none">
+                  <ion-radio-group [value]="currentView">
+                    <ion-item (click)="actions('view', {target: {value: 'timeGridDay'}})">
+                      <ion-label>Day</ion-label>
+                      <ion-radio slot="start" value="timeGridDay"></ion-radio>
+                    </ion-item>
+                    <ion-item (click)="actions('view', {target: {value: 'timeGridWeek'}})">
+                      <ion-label>Week</ion-label>
+                      <ion-radio slot="start" value="timeGridWeek"></ion-radio>
+                    </ion-item>
+                    <ion-item (click)="actions('view', {target: {value: 'dayGridMonth'}})">
+                      <ion-label>Month</ion-label>
+                      <ion-radio slot="start" value="dayGridMonth"></ion-radio>
+                    </ion-item>
+                    <ion-item (click)="actions('view', {target: {value: 'agendaThreeDay'}})">
+                      <ion-label>3 days</ion-label>
+                      <ion-radio slot="start" value="agendaThreeDay"></ion-radio>
+                    </ion-item>
+                    <ion-item (click)="actions('view', {target: {value: 'listWeek'}})">
+                      <ion-label>List</ion-label>
+                      <ion-radio slot="start" value="listWeek"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </ng-template>
+            </ion-popover>
+          </ion-button>
+        </ion-col>
+        <ion-col size="3"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content 
+    fullscreen 
+    [attr.scroll-y]="(currentView === 'dayGridMonth' ? true : false)"
+    class="ion-padding">
+  <ion-grid class="ion-margin-top">
+    <ion-row class="ion-align-items-start">
+      <ion-col size="auto" class="ion-hide-md-down">
+        <div>
+          <ion-datetime 
+              presentation="date" 
+              max="3000-12-12"
+              first-day-of-week="1"
+              (ionChange)="actions('select-date', $event)"></ion-datetime>
+          <ion-accordion-group value="calendars">
+            <ion-accordion value="calendars">
+              <ion-item slot="header">
+                <ion-label>
+                  My Calendars
+                </ion-label>
+              </ion-item>
+              <ion-list *ngIf="(calendarsData$|async) as calendarsData" slot="content" lines="none" class="ion-no-padding">
+                <!-- <pre>
+                  {{calendarsData|json}}
+                </pre> -->
+                <ion-item *ngFor="let cal of calendarsData">
+                  <ion-label>{{cal.name}}</ion-label>
+                  <ion-checkbox 
+                      slot="start"
+                      [checked]="cal.isVisible === true"
+                      [attr.style]="'--background: ' + cal.color + ';--background-checked: ' + cal.color + ';--border-color-checked: ' + cal.color + ';' + ';--border-color: ' + cal.color + ';'"
+                      (ionChange)="actions('toggleCalendarVisibility', cal)"></ion-checkbox>
+                  <ion-button 
+                      id="calendar-options-{{cal._id}}"
+                      class="calendar-options"
+                      fill="none"
+                      slot="end">
+                    <ion-icon 
+                        slot="icon-only" 
+                        size="small" 
+                        name="ellipsis-vertical"
+                        color="medium"></ion-icon>
+                  </ion-button>
+                  <ion-popover 
+                      #popOver 
+                      class="popoverColorPicker"
+                      trigger="calendar-options-{{cal._id}}" 
+                      side="start" 
+                      alignment="center" 
+                      reference="event">
+                    <ng-template>
+                      <ion-content>
+                        <ion-list lines="none" class="ion-no-padding ion-margin-bottom">
+                          <ion-list-header>
+                            <ion-label>
+                              Calendar options
+                            </ion-label>
+                          </ion-list-header>
+                          <ion-item class="ion-text-end">
+                            <ion-label slot="start">Name</ion-label>
+                            <ion-input 
+                                #inputName 
+                                type="text" 
+                                [value]="cal.name" 
+                                (ionChange)="updateBtn.disabled === true ? updateBtn.disabled = false : null"></ion-input>
+                          </ion-item>
+                          <ion-item>
+                            <ion-label slot="start">Color</ion-label>
+                            <ion-button 
+                                class="cp-button-open"
+                                slot="end" 
+                                size="small" 
+                                fill="solid"
+                                [style.--border-color]="cal.color" 
+                                [style.--background]="cal.color" 
+                                (click)="actions('openColorPicker', {target: $event.target, colorPicker})">
+                              {{cal.color||'select'}}
+                            </ion-button>
+                          </ion-item>
+                          <div
+                              #colorPicker
+                              cpWidth="250"
+                              cpOutputFormat="hex"
+                              cpDialogDisplay="inline"
+                              cpOKButtonClass="cp-button primary"
+                              cpCancelButtonClass="cp-button danger"
+                              cpCancelButtonText="RESET"
+                              cpPosition="top"
+                              [cpOKButton]="true"
+                              [cpCancelButton]="true"
+                              [cpSaveClickOutside]="false"
+                              [cpDisableInput]="false"
+                              [(colorPicker)]="cal.color"
+                              (colorPickerSelect)="actions('setCalendarColor', {calendar: cal, color: $event});  popOver.dismiss()"></div>
+                        </ion-list>
+                        <ion-button 
+                            fill="outline" 
+                            color="danger"
+                            expand="block"
+                            class="ion-margin"
+                            size="small"
+                            (click)="actions('deleteCalendar', {calendar: cal})">
+                          delete calendar
+                        </ion-button>
+                      </ion-content>
+                      <ion-footer>
+                        <ion-toolbar>
+                          <ion-buttons slot="end">
+                            <ion-button
+                                size="small"
+                                color="danger"
+                                (click)="popOver?.dismiss()">Cancel</ion-button>
+                            <ion-button 
+                                #updateBtn 
+                                size="small"
+                                color="primary"
+                                [disabled]="true" 
+                                (click)="actions('updateCalendarName', {calendar: cal, name: inputName.value});popOver?.dismiss()">
+                              update
+                            </ion-button>
+                          </ion-buttons>
+                        </ion-toolbar>
+                      </ion-footer>
+                    </ng-template>
+                  </ion-popover>
+                </ion-item>
+                <ion-item lines="none" button (click)="actions('newCalendar')">
+                  <ion-label color="medium">Add calendar</ion-label>
+                  <ion-icon slot="start" name="add-outline"></ion-icon>
+                </ion-item>
+              </ion-list>
+            </ion-accordion>
+            <ion-accordion value="calendars">
+              <ion-item slot="header">
+                <ion-label>
+                  Time slots options
+                </ion-label>
+              </ion-item>
+              <ion-list slot="content" lines="none" class="ion-no-padding">
+                <ion-item lines="none" button (click)="actions('newTimeSlot')">
+                  <ion-label color="medium">Add time slot</ion-label>
+                  <ion-icon slot="start" name="add-outline"></ion-icon>
+                </ion-item>
+              </ion-list>
+            </ion-accordion>               
+          </ion-accordion-group>
+        </div>
+      </ion-col>
+      <ion-col>
+        <full-calendar 
+            #calendarCmp 
+            [options]="fullCalendarOptions"
+            [hidden]="(isVisible$|async) !== true"></full-calendar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

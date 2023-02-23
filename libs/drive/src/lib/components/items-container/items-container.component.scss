@@ -1,0 +1,34 @@
+:host {
+
+  ion-row.item {
+    background: var(--background-app);
+    border-bottom: 1px solid var(--ion-border-color); // #e0e0e0;
+
+
+    &:hover {
+      background-color: rgba(var(--ion-color-primary-rgb), 0.10);
+      > ion-col {
+        color: var(--ion-color-primary);
+      }
+    }
+
+    &:last-of-type {
+      margin-bottom: -1px;
+    }
+
+    .pointer {
+      cursor: pointer;
+    }
+
+    ion-fab-button {
+      --background: transparent;
+      --box-shadow: none;
+      --background-hover-opacity: 0.2;
+      --backdrop-filter: none;
+    } 
+
+    ion-chip {
+      transform: scale(0.6);
+    }
+  }
+}

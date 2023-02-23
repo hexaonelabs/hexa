@@ -1,0 +1,68 @@
+<ion-header collapse="fade" mode="ios">
+  <d-workspace-ui-header>
+    <ng-container slot="start">
+      <ion-searchbar
+        enterkeyhint="search"
+        inputmode="search"
+        mode="ios"
+        [debounce]="500"
+        (ionChange)="actions(
+          'search',
+          $event
+        )"></ion-searchbar>
+    </ng-container>
+    <ng-container slot="end">
+      <ion-button (click)="actions('add')">
+        Add Note
+      </ion-button>
+    </ng-container>
+  </d-workspace-ui-header>
+</ion-header>
+<ion-content 
+    fullscreen
+    id="notes" 
+    class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row class="ion-align-items-start">
+      <!-- Wrapper -->
+      <ion-col size="12" *ngIf="items$ | async as items; else skeletonHTML">
+        <ion-grid class="header-grid">
+          <ion-row class="ion-align-items-center ion-padding-bottom">
+            <ion-col size="auto" [ngStyle]="{ display: 'flex' }">
+              <ion-label>
+                <span>My Notes</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <span lines="none" class="ion-float-end item-stats ion-text-end">
+                <ion-label>
+                  <h2>{{ items.length }} Notes</h2>
+                </ion-label>
+              </span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div>
+          <ion-grid class="ion-no-padding">
+            <ion-row 
+                class="item ion-align-items-center ion-padding-horizontal" 
+                *ngFor="let item of items" 
+                (click)="actions('edit', item)">
+              <ion-col 
+                  size="12"         
+                  class="ion-align-items-center ion-text-wrap pointer"
+                  size="auto">
+                <ion-text>
+                  <h2>{{ item.title }}</h2>
+                  <p>{{ item.content||'' }}...</p>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-col>
+      <!-- Skeleton loading HTML -->
+      <ng-template #skeletonHTML></ng-template>
+    </ion-row>
+  </ion-grid>
+</ion-content>

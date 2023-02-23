@@ -1,0 +1,80 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
+import { TokenInterface } from '../../interfaces/token.interface';
+
+const MAX_ITEMS_TO_DISPLAY = 25;
+
+@Component({
+  selector: 'd-workspace-items-container',
+  templateUrl: './items-container.component.html',
+  styleUrls: ['./items-container.component.scss'],
+})
+export class ItemsContainerComponent implements OnChanges {
+  @Input() public items!: TokenInterface[] | null;
+  public readonly maxItemToDisplay$ = new BehaviorSubject(MAX_ITEMS_TO_DISPLAY);
+  @Output() public readonly actionsEvent: EventEmitter<{
+    type: string;
+    payload: any;
+  }> = new EventEmitter();
+
+  constructor(
+    private readonly _popCtrl: PopoverController,
+    private readonly _modalCtrl: ModalController,
+    ) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    // reset max item to display when items change
+    if (
+      changes['items'] &&
+      changes['items'].currentValue &&
+      this.maxItemToDisplay$.value !== MAX_ITEMS_TO_DISPLAY
+    ) {
+      this.maxItemToDisplay$.next(MAX_ITEMS_TO_DISPLAY);
+    }
+  }
+
+  async actions(type: string, payload?: any) {
+    switch (true) {
+      case type === 'preview': {
+        this._preview(payload.item);
+        break;
+      }
+      case type === 'openExternalLink': {
+        const popover = await this._popCtrl.getTop();
+        if (popover) await popover.dismiss();
+        const {item = undefined} = payload;
+        if (!item||!item.address) return;
+        window.open(`https://etherscan.io/token/${item.address}`, '_blank');
+      }
+    }
+    this.actionsEvent.emit({ type, payload });
+  }
+
+  async trackByfn(index: number, item: { _id: string }) {
+    return item._id;
+  }
+
+  private async _preview(item: TokenInterface) {
+    // const ionModal = await this._modalCtrl.create({
+    //   component: ItemPreviewComponent,
+    //   componentProps: {
+    //     item
+    //   },
+    //   cssClass: 'ion-modal-preview-file',
+    // });
+    // await ionModal.present();
+    // const { data, role = 'cancel' } = await ionModal.onDidDismiss();
+    // this.actions(role, { item: data });
+    console.log('preview', item);
+    
+  }
+
+}

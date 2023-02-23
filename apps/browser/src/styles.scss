@@ -1,0 +1,339 @@
+/* You can add global styles to this file, and also import other style files */
+// global
+
+ion-button {
+  --border-radius: 16px;
+}
+ion-header {
+  ion-button {
+    min-height: 56px;
+  }
+}
+
+ion-content {
+  --background: #f5f8ff;
+}
+
+ion-popover::part(content) {
+  border-radius: 24px;
+}
+
+ion-list-header {
+  font-size: 1rem;
+  font-weight: 600;
+}
+ion-avatar.isConnected {
+  background: var(--ion-color-primary);
+  border-color: var(--ion-color-primary)!important;
+  border-width: 2px;
+  border-style: solid;
+}
+
+ion-alert {
+  .alert-wrapper.ion-overlay-wrapper {
+    border-radius: 24px;
+  }
+}
+
+ion-searchbar {
+  padding-bottom: 0!important;
+  --background: rgba(var(--ion-color-primary-rgb), 0.05);
+}
+ion-popover#wallet-account-popover {
+  --width: 300px;
+}
+
+.modalAlert {
+  --width: fit-content;
+  --min-width: 250px;
+  --max-width: 650px;
+  --height: fit-content;
+  --border-radius: 24px;
+  // --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+  padding: 2rem;
+
+  .ion-accordion-toggle-icon {
+    display: none;
+  }
+}
+
+.alert-wrapper {
+  border-radius:  24px!important;
+  border: 1px solid var(--ion-border-color)!important;
+  // background: #fff!important;
+  // box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12)!important;
+}
+
+.modalSelectFolder {
+  --min-width: 280px;
+  --max-width: 350px;
+  --max-height: 320px;
+  --height: fit-content;
+  --border-radius: 24px;
+
+  ion-content {
+    min-height: 200px;
+  }
+}
+
+.ion-modal-preview-file {
+  --width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+}
+
+ion-toast.notification-toast {
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --background: #fff;
+  --max-width: 300px;
+  --start: 1;
+
+  &::part(button) {
+    border-left: 1px solid #d2d2d2;
+    color: #030207;
+    font-size: 15px;
+  }
+}
+img.default {
+  max-width: 420px;
+}
+
+ion-popover  {
+  ion-content {
+    --background: var(--ion-item-background, var(--ion-background-color));
+  }
+}
+
+
+h1 {
+  margin: 0.5rem 0;
+}
+.cp-button {
+  border-radius: 4px;
+  outline: none;
+  line-height: 1;
+  box-shadow:0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  padding: 0.6em;
+  color: var(--ion-color-light)
+}
+.cp-button.primary {
+  background: var(--ion-color-primary);
+}
+.cp-button.danger {
+  background: var(--ion-color-danger);
+}
+
+.color-picker {
+  margin-right: 0;
+  border: none!important;
+  background: var(--backgroud)!important;
+
+  .hex-text, .type-policy {
+    display: none!important;
+  }
+}
+
+// ion-popover.popoverColorPicker {
+//   --offset-y: -150px !important;
+// }
+
+ion-popover.popoverColorPicker::part(content) {
+  top: unset !important;
+  // left: 10px !important;
+  // bottom: 0;
+  // width: 100vw;
+  // border-radius: 0;
+
+  // max-height: 420px;
+  // overflow-y: scroll;
+}
+
+
+// Calendar
+
+table.fc-scrollgrid {
+  border-top: none!important;
+
+  // fix header for grid view
+  > tbody > tr:first-of-type {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+  }
+  th.fc-timegrid-axis {border-right: none;}
+
+  .fc-scrollgrid-section-body {
+    > td {
+      border: none
+    }
+  }
+  .fc-timegrid-divider {
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    padding: 0;
+    height: 0px !important;
+    // background-color: red;
+    border-bottom: 1px solid var(--fc-border-color,#ddd);
+    
+    &.scrolled::after {
+      left: 0;
+      bottom: -5px;
+      background-position: left 0 top -3px;
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==);
+      background-repeat: repeat-x;
+      content: "";
+    
+    }
+  }
+  .fc-timegrid-divider::after {
+
+  }
+}
+
+thead {
+  th.fc-col-header-cell {
+    border: none;
+    border-bottom: 1px solid var(--fc-border-color,#ddd);
+  }
+
+  .fc-scrollgrid-sync-inner {
+    padding: 1rem;
+  }
+} 
+
+td.fc-timegrid-slot.fc-timegrid-slot-label {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+a.fc-col-header-cell-cushion {
+  color: var(--ion-text-color);
+  text-transform: capitalize;
+  
+  span {
+    font-size: 1.8rem;
+    font-weight: 300;
+  }
+}
+.fc .fc-timegrid-slot-minor {
+  border-top-style: dotted;
+  border-color: transparent;
+}
+
+// /* Apply same opacity to all day events */
+.fc-ltr .fc-h-event.fc-not-end, .fc-rtl .fc-h-event.fc-not-start {
+  opacity: .65 !important;
+  margin-left: 12px !important;
+  padding: 5px !important;
+}
+
+// /* Apply same opacity to all day events */
+.fc-day-grid-event.fc-h-event.fc-event.fc-not-start.fc-end {
+  opacity: .65 !important;
+  margin-left: 12px !important;
+  padding: 5px !important;
+}
+
+.fc-v-event, .fc-h-event {
+  // border: none!important;
+  border-top: none!important;
+  border-top-color: transparent!important;
+  border-top-width: 0px!important;
+  border-bottom: none!important;
+  border-bottom-color: transparent!important;
+  border-bottom-width: 0px!important;
+  border-right: none!important;
+  border-right-color: transparent!important;
+  border-right-width: 0px!important;
+  border-left-width: 5px!important;
+  // border-left-color: transparent!important;
+  // border-left: solid 5px var(--ion-color-primary);
+  border-style: solid!important;
+  padding: 5px;
+}
+
+
+.google-event {
+  
+}
+
+
+.fc-view-harness.fc-view-harness-active {
+  background: #fff!important;
+  border-radius: 1.618rem!important;
+  border: .618rem!important;
+}
+
+tr.fc-scrollgrid-section.fc-scrollgrid-section-header {
+  background: #fff!important;    
+}
+
+table.fc-scrollgrid.fc-scrollgrid-liquid, .fc-theme-standard th {
+  border-right: none !important;
+  border-left: none !important;
+}
+
+
+
+
+
+
+body.dark ion-toast.notification-toast {
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --background: var(--ion-item-background);
+  --max-width: 300px;
+  --start: 1;
+
+
+  &::part(button) {
+    border-left: 1px solid var(--ion-border-color);
+    color: var(--ion-text-color);
+    font-size: 15px;
+  }
+
+  &::part(container) {
+    border: 1px solid var(--ion-border-color);
+    border-radius: 0.618rem;
+    overflow: hidden;
+  }
+}
+
+// WEB API Share
+body.dark div#shareAPIPolyfill-container {
+  background: var(--ion-item-background);
+
+  .shareAPIPolyfill-header {
+    background: var(--ion-item-background);
+  }
+  .shareAPIPolyfill-header-title {
+    background: var(--ion-container-background);
+    color: var(--ion-text-color);
+  }
+  .shareAPIPolyfill-body {
+    border-top: solid 1px var(--ion-border-color);
+  }
+  .shareAPIPolyfill-footer {
+    opacity: 1;
+    background: var(--ion-border-color);
+    border-top: solid 1px var(--ion-border-color);
+  }
+
+  .shareAPIPolyfill-icons-container.title .email svg path:nth-child(2),
+  .shareAPIPolyfill-icons-container.title .print svg path:nth-child(1),
+  .shareAPIPolyfill-icons-container.title .copy svg path:nth-child(1),
+  .shareAPIPolyfill-icons-container.title .sms svg path:nth-child(1) {
+    fill: var(--ion-color-primary);
+  }
+
+  .shareAPIPolyfill-header-title .the-icon path,
+  button span.the-icon-title {
+    fill: var(--ion-text-color);
+    color: var(--ion-text-color);
+  }
+}

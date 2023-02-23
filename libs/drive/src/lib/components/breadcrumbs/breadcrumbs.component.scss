@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+
+  ion-label {
+    display: flex;
+    align-items: center !important;
+    span {
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<ion-row
+  dWorkspaceDropable
+  class="droppable-container ion-align-items-center ion-padding"
+  (click)="actions.emit({type: 'addFile'})"
+  (fileDropped)="actions.emit({type: 'onFileChange', payload: $event})"
+>
+  <ion-col>
+    <ion-img src="./assets/drive/images/upload-file.svg"></ion-img>
+    <ion-text color="primary">
+      <span>Click or Drop Files Here to Upload</span>
+    </ion-text>
+  </ion-col>
+</ion-row>

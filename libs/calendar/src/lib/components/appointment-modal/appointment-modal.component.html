@@ -1,0 +1,158 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title *ngIf="editModeEnabled === true">{{!form.get('_id')?.value ? 'Create Event' : 'Update Event' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="editModeEnabled !== true" (click)="editModeEnabled = !editModeEnabled">
+        <ion-icon slot="icon-only" color="light" name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="actions('cancel')">
+        <ion-icon slot="icon-only" color="light" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div *ngIf="editModeEnabled !== true; else editMode" class="ion-padding">
+    <ion-text color="medium">
+      <p class="ion-no-margin ion-no-padding">
+        <small>Database: Ceramic</small>
+      </p>
+    </ion-text>
+    <h2>{{form.get('title')?.value}}</h2>
+    <ng-container *ngIf="(form.get('start')?.value | date: 'EEEE dd MMMM') === (form.get('end')?.value | date: 'EEEE dd MMMM');else multiDays">
+      <p class="ion-no-margin">
+        {{form.get('start')?.value | date: 'EEEE dd MMMM'}}
+        - {{form.get('start')?.value | date: 'HH:mm'}} to {{form.get('end')?.value | date: 'HH:mm'}}
+      </p>
+    </ng-container>
+    <ng-template #multiDays>
+      <p class="ion-no-margin">
+        From {{form.get('start')?.value | date: 'EEEE dd MMMM'}}
+        - {{form.get('start')?.value | date: 'HH:mm'}}
+      </p>
+      <p>
+        To {{form.get('end')?.value | date: 'EEEE dd MMMM'}}
+        - {{form.get('end')?.value | date: 'HH:mm'}}
+      </p>
+    </ng-template>
+    <div *ngIf="form.get('description')?.value as description" class="ion-margin-top">
+      <ion-text color="medium">
+        <p class="ion-no-margin ion-padding-vertical">
+          <small>Description</small>
+        </p>
+      </ion-text>
+      <p class="ion-no-margin ion-no-padding">
+        {{description}}
+      </p>
+    </div>
+  </div>
+
+  <ng-template #editMode>
+    <form [formGroup]="form">
+      <ion-list>
+        <!-- Title -->
+        <ion-item>
+          <ion-label color="primary" position="floating">Title</ion-label>
+          <ion-input type="text" formControlName="title" placeholder="New Event"></ion-input>
+        </ion-item>
+        <!-- Start Datetime in popover with cover element -->
+        <ion-item button="true" id="open-start-input">
+          <ion-label color="primary">Start</ion-label>
+          <ion-text slot="end">{{ form.get('start')?.value|date:'EEEE d MMMM - HH:mm' }}</ion-text>
+          <ion-modal size="cover" trigger="open-start-input" show-backdrop="false">
+            <ng-template>
+              <ion-datetime
+                  #popoverStartDate
+                  size="cover"
+                  first-day-of-week="1"
+                  [presentation]="form.get('allDay')?.value === true ? 'time' : 'date-time'"
+                  hour-cycle="h23" 
+                  value="{{ form.get('start')?.value|date:'YYYY-MM-ddTHH:mm:ss' }}"
+                  (ionChange)="form.get('start')?.patchValue(formatDate(popoverStartDate?.value||''))">
+                <ion-buttons slot="buttons">
+                  <ion-button color="danger" (click)="actions('cancelDateTime', popoverStartDate)">cancel</ion-button>
+                  <ion-button color="primary" (click)="actions('confirmDateTime', popoverStartDate)">ok</ion-button>
+                </ion-buttons>
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+         <!-- Ent Date in popover with cover element -->
+        <ion-item button="true" id="open-end-input">
+          <ion-label color="primary">End</ion-label>
+          <ion-text slot="end">{{ form.get('end')?.value|date:'EEEE d MMMM - HH:mm' }}</ion-text>
+          <ion-modal size="cover" trigger="open-end-input" show-backdrop="false">
+            <ng-template>
+              <ion-datetime
+                  #popoverEndDate
+                  size="cover"
+                  first-day-of-week="1"
+                  value="{{ form.get('end')?.value|date:'YYYY-MM-ddTHH:mm:ss' }}"
+                  [presentation]="form.get('allDay')?.value === true ? 'time' : 'date-time'"
+                  (ionChange)="form.get('end')?.patchValue(formatDate(popoverEndDate?.value||''))">
+                <ion-buttons slot="buttons">
+                  <ion-button color="danger" (click)="actions('cancelDateTime', popoverEndDate)">cancel</ion-button>
+                  <ion-button color="primary" (click)="actions('confirmDateTime', popoverEndDate)">ok</ion-button>
+                </ion-buttons>
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+        <!-- Calendars Id selection -->
+        <ion-item>
+          <ion-label color="primary" position="floating">Calendars</ion-label>
+          <ion-select 
+              formArrayName="calendarIds" 
+              multiple="false" 
+              [value]="form.get('calendarIds')?.value||[]"
+              (ionChange)="actions('changeCalendar', $event)">
+            <ion-select-option 
+                *ngFor="let calendar of userCalendars;let i = index" 
+                [value]="calendar._id">
+              {{calendar.name}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- toggle allDay -->
+        <ion-item>
+          <ion-label color="primary">All Day</ion-label>
+          <ion-toggle 
+              color="medium" 
+              formControlName="allDay"
+              (ionChange)="actions('toggleAllDay', $event)"></ion-toggle>
+        </ion-item>
+        <!-- Description field -->
+        <ion-item>
+          <ion-label color="primary" position="floating">Description</ion-label>
+          <ion-textarea 
+              autoGrow="true"
+              rows="3"
+              formControlName="description"></ion-textarea>
+        </ion-item>
+        <!-- delete btn -->
+        <ion-button 
+            *ngIf="!!form.get('_id')?.value" 
+            fill="outline" 
+            color="danger"
+            expand="block"
+            class="ion-margin"
+            (click)="actions('delete')">delete event</ion-button>
+      </ion-list>
+    </form>
+  </ng-template>
+
+</ion-content>
+<ion-footer *ngIf="editModeEnabled === true">
+  <ion-toolbar>
+    <ion-buttons  slot="end">
+      <ion-button color="danger" (click)="actions('cancel')">cancel</ion-button>
+      <ion-button 
+          color="primary" 
+          [disabled]="!form.valid"
+          (click)="actions(!form.get('_id')?.value ? 'save' : 'update')">
+        {{!form.get('_id')?.value ? 'save' : 'update'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

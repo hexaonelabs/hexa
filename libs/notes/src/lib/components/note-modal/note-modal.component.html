@@ -1,0 +1,68 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-list [formGroup]="form">
+          <ion-item>
+            <ion-label>
+              <p>Title</p>
+              <ion-input type="text" formControlName="title"></ion-input>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding-vertical container">
+            <ion-label class="ion-padding-start" color="medium">
+              <small>Keywords</small>
+            </ion-label>
+            <div class="ion-padding-start">
+              <ion-chip
+                color="primary"
+                *ngFor="
+                  let keyword of form.get('keywords')?.value;
+                  let i = index
+                "
+              >
+                {{ keyword }}
+                <ion-icon
+                  name="close-circle"
+                  (click)="removeKeyword(i)"
+                ></ion-icon>
+              </ion-chip>
+            </div>
+            <ion-item>
+              <ion-input
+                #inputKeyword
+                placeholder="add keyword"
+                type="text"
+              ></ion-input>
+              <ion-button
+                size="small"
+                fill="outline"
+                slot="end"
+                (click)="
+                  addKeyword(inputKeyword.value);
+                  inputKeyword.value = ''
+                "
+                >add</ion-button
+              >
+            </ion-item>
+          </div>
+          <ion-item>
+            <ion-label position="floating">
+              <p>Content</p>
+            </ion-label>
+            <ion-textarea formControlName="content" [autoGrow]="true"></ion-textarea>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="modalCtrl.dismiss(this.form.value, 'save')">
+        save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

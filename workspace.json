@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "auth": "libs/auth",
+    "browser": "apps/browser",
+    "calendar": "libs/calendar",
+    "drive": "libs/drive",
+    "interfaces": "libs/interfaces",
+    "notes": "libs/notes",
+    "ui": "libs/ui",
+    "wallet": "libs/wallet",
+    "welcome": "libs/welcome"
+  }
+}

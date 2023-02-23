@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  opacity: 0;
+
+  .bgContainer {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    // height: 100vh;
+  }
+}

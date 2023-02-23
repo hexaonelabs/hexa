@@ -1,0 +1,7 @@
+<time *ngIf="currentDate;else displayError">
+  {{currentDate.toLocaleTimeString().slice(0, 5).split(':')[0]}}<span>:</span>{{currentDate.toLocaleTimeString().slice(0, 5).split(':')[1]}}
+</time>
+<span *ngIf="cityname">{{cityname}}</span>
+<ng-template #displayError>
+  <p>{{errorMessage}}</p>
+</ng-template>

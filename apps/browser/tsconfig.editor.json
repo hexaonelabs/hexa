@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["**/*.ts", "src/polyfills.js"],
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  }
+}

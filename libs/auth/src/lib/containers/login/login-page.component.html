@@ -1,0 +1,22 @@
+<ion-content class="ion-padding">
+  <div>
+    <h1>Develop and manage your digital datas with blockchain technology</h1>
+    <p>
+      Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) 
+      <a rel="noopener" target="_blank" href="https://ipfs.io">
+        <ion-icon name="open-outline" size="small"></ion-icon>
+      </a>
+    </p>
+    <ion-button
+      size="large"
+      *ngIf="account$ | async; else auth"
+      (click)="disconnect()"
+      >Disconnect</ion-button
+    >
+    <ng-template #auth>
+      <ion-button size="large" [disabled]="(isLoaderVisible$ | async)" (click)="connectWallet()">{{
+        (isLoaderVisible$ | async) === true ? 'Loading...' : 'Connect Wallet'
+      }}</ion-button>
+    </ng-template>
+  </div>
+</ion-content>

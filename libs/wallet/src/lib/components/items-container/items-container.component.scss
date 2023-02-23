@@ -1,0 +1,46 @@
+:host {
+
+  ion-row.item {
+    background: var(--background-app);
+    border-bottom: 1px solid var(--ion-border-color); // #e0e0e0;
+
+
+    &:hover {
+      background-color: rgba(var(--ion-color-primary-rgb), 0.10);
+      > ion-col {
+        color: var(--ion-color-primary);
+      }
+    }
+
+    &:last-of-type {
+      margin-bottom: -1px;
+    }
+
+    ion-fab-button {
+      --background: transparent;
+      --box-shadow: none;
+      --background-hover-opacity: 0.2;
+      --backdrop-filter: none;
+    } 
+
+    ion-avatar {
+      transform: scale(0.5);
+    }
+    ion-avatar.thumbnail.md.hydrated {
+      transform: scale(0.3) translateX(-45px) translateY(-45px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: solid 6px var(--ion-color-light);
+      background: var(--ion-color-light);
+      z-index: 1;
+    }
+
+    ion-label {
+      ion-text {
+        display: block;
+      }
+    }
+
+  }
+}

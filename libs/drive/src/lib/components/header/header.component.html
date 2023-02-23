@@ -1,0 +1,18 @@
+<ion-toolbar>
+  <ion-grid class="ion-no-padding ion-padding-horizontal">
+    <ion-row class="ion-no-padding ion-align-items-center">
+      <ion-col size="auto">
+        <ion-menu-button></ion-menu-button>
+      </ion-col>
+      <ion-col>
+        <ng-content select="[slot=start]"></ng-content>
+      </ion-col>
+      <ion-col class="ion-text-end ion-hide-md-down">
+        <ng-content select="[slot=end]"></ng-content>
+      </ion-col>
+      <ion-col size="auto">
+        <div style="width: 82px;"></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>

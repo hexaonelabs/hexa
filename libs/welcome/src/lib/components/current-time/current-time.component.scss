@@ -1,0 +1,28 @@
+:host {
+  display: block;
+
+  span {
+    display: block;
+    font-size: 0.5em;
+    text-transform: capitalize;
+    margin-top: .5em;
+  }
+
+  time {
+    span {
+      font-size: inherit;
+      display: inline;
+      margin: inherit;
+      animation: toggleSeconds 1s infinite;
+   }
+  }
+
+  @keyframes toggleSeconds {
+    0%, 20% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 0.9;
+    }
+  }
+}

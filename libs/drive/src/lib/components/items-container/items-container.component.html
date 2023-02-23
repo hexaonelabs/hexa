@@ -1,0 +1,79 @@
+<ion-grid class="ion-no-padding">
+  <ion-row 
+      *ngFor="
+        let item of (items||[]) | slice: 0:maxItemToDisplay$.value;
+      "
+      (click)="item.isFolder ? actions('navTo', {item}) : actions('preview', {item})"
+      class="item ion-align-items-center ion-padding-start">
+    <ion-col
+        class="ion-align-items-center pointer"
+        size="auto"
+        [ngStyle]="{ display: 'flex' }">
+      <ion-icon
+        size="large"
+        [name]="item.isFolder !== true ? 'document-outline' : 'folder-outline' "></ion-icon>
+    </ion-col>
+    <ion-col
+        class="ion-align-items-center ion-text-wrap pointer"
+        size="auto"
+        [ngStyle]="{ display: 'flex' }">
+      <ion-text class="ion-padding-start">
+        {{ item.name }}
+      </ion-text>
+    </ion-col>
+    <ion-col size="auto" class="ion-hide-md-down">
+      <ion-chip
+        color="primary"
+        size="small"
+        class="ion-margin-start"
+        *ngIf="
+          item.encryptedSymmetricKey &&
+          item.isFolder !== true &&
+          (item.accessControlConditions | isShared: account)
+        "
+        (click)="$event.stopPropagation(); actions('share', {item})"
+      >
+        <ion-icon size="small" name="share-social-outline"></ion-icon>
+        <ion-label> shared </ion-label>
+      </ion-chip>
+      <ion-chip
+        color="primary"
+        size="small"
+        class="ion-margin-start"
+        *ngIf="(item?.accessControlConditions||[]).length <= 0 && item.isFolder !== true"
+        (click)="$event.stopPropagation(); actions('lockFile', item)"
+      >
+        <ion-icon size="small" name="lock-open-outline"></ion-icon>
+        <ion-label> public </ion-label>
+      </ion-chip>
+    </ion-col>
+    <ion-col
+      class="ion-text-right ion-align-items-center ion-justify-content-end"
+      [ngStyle]="{ display: 'flex' }"
+    >
+      <ion-text
+        *ngIf="item.isFolder !== true"
+        color="medium"
+        class="ion-hide-md-down"
+      >
+        {{ item.size | bytesToSize }}
+      </ion-text>
+      <ion-fab-button
+        size="small"
+        translucent="true"
+        mode="ios"
+        (click)="
+          $event.stopPropagation();
+          actions('openOptions', { event: $event, item })
+        "
+      >
+        <ion-icon
+          color="medium"
+          size="small"
+          color="primary"
+          name="ellipsis-vertical"
+        ></ion-icon>
+      </ion-fab-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

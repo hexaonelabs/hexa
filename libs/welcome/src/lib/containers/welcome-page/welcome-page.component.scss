@@ -1,0 +1,46 @@
+:host {
+
+  #flexContainer, .noAuth{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100vh;
+    padding-top: 3rem;
+  }
+  #flexContainer {
+    background: radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+  }
+
+  d-workspace-current-time {
+    font-size: 14rem;
+    font-weight: 700;
+    font-family: serif;
+    line-height: 1; 
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+
+  d-workspace-hello, h1 {
+    font-size: 4rem;
+    font-family: serif;
+    line-height: normal; 
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 13px 16px;
+    min-height: 90px;
+
+    ion-row {
+      height: 58px;
+    }
+  }
+  
+}

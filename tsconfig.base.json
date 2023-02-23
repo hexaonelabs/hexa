@@ -1,6 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
@@ -14,7 +17,22 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@d-workspace/auth": ["libs/auth/src/index.ts"],
+      "@d-workspace/calendar": ["libs/calendar/src/index.ts"],
+      "@d-workspace/drive": ["libs/drive/src/index.ts"],
+      "@d-workspace/interfaces": ["libs/interfaces/src/index.ts"],
+      "@d-workspace/notes": ["libs/notes/src/index.ts"],
+      "@d-workspace/ui": ["libs/ui/src/index.ts"],
+      "@d-workspace/wallet": ["libs/wallet/src/index.ts"],
+      "@d-workspace/welcome": ["libs/welcome/src/index.ts"],
+      "assert": ["./node_modules/assert"],
+      "crypto": ["./node_modules/crypto-browserify"],
+      "http": ["./node_modules/stream-http"],
+      "https": ["./node_modules/https-browserify"],
+      "stream": ["./node_modules/stream-browserify"],
+      "url": ["./node_modules/url"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

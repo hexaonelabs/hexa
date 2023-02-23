@@ -1,0 +1,142 @@
+<ion-header collapse="fade" mode="ios">
+  <d-workspace-ui-header>
+    <ng-container slot="start">
+      <ion-searchbar
+        enterkeyhint="search"
+        inputmode="search"
+        mode="ios"
+        [debounce]="500"
+        (ionChange)="actions(
+          'searchByName',
+          $event
+        )"></ion-searchbar>
+    </ng-container>
+    <ng-container slot="end">
+      <ion-button color="primary" fill="clear" (click)="actions('reload')">
+        <ion-icon name="sync"></ion-icon>
+      </ion-button>
+      <ion-button color="primary" (click)="addFileElement.click()">
+        Add Files
+      </ion-button>
+      <ion-button color="primary" fill="outline" (click)="actions('newFolder')">
+        New Folder
+      </ion-button>
+    </ng-container>
+  </d-workspace-ui-header>
+</ion-header>
+<ion-menu side="end" menuId="seconde" contentId="drive">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Start Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+      <ion-item>Menu Item</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-content 
+    fullscreen
+    id="drive" 
+    class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row class="ion-align-items-start">
+      <!-- Wrapper -->
+      <ion-col size="12" *ngIf="items$ | async as items; else skeletonHTML">
+        <!-- Media Content -->
+        <ng-container *ngIf="items.length > 0 || (allMedia$ | async)?.length !== 0; else noItems">
+          <ion-grid class="header-grid">
+            <ion-row class="ion-align-items-center ion-padding-bottom">
+              <d-workspace-breadcrumbs 
+                [breadcrumbs]="breadcrumbs$|async"
+                [isSearching]="(searchbarElement?.nativeElement?.value?.length || 0) > 0"
+                (actions)="actions($event.type, $event.payload)"></d-workspace-breadcrumbs>
+              <ion-col class="ion-no-padding">
+                <span lines="none" class="ion-float-end item-stats ion-text-end">
+                  <ion-label color="medium"
+                    >
+                    {{
+                      allMedia$ | async | totalStorage | bytesToSize
+                    }}
+                    Storage</ion-label
+                  >
+                </span>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div>
+            <d-workspace-items-container 
+              [items]="items"
+              [account]="account$.value"
+              (actionsEvent)="actions($event.type, $event.payload)"></d-workspace-items-container>
+            <d-workspace-dropable 
+              *ngIf="items.length <= 0"
+              (actions)="actions($event.type, $event.payload)"></d-workspace-dropable>
+          </div>
+          <ion-infinite-scroll
+              *ngIf="items.length > 0"
+              threshold="100px"
+              (ionInfinite)="actions('displayMoreItem', $event)">
+            <ion-infinite-scroll-content
+              loadingSpinner="bubbles"
+              loadingText="Loading more data..."></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ng-container>
+        <!-- No Media -->
+        <ng-template #noItems>
+          <ion-grid class="ion-no-padding ion-text-center noItems">
+            <ion-row class="item ion-align-items-center ion-padding-center">
+              <ion-col class="ion-text-center ion-margin-vertical">
+                <ion-label>
+                    There is no files stored yet
+                </ion-label>
+                <ion-text color="medium">
+                  <p>
+                    You can upload any files types by clicking on the <code>Add files</code> button or by
+                    dragging and dropping files in the dropable area.
+                  </p>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            <d-workspace-dropable (actions)="actions($event.type, $event.payload)"></d-workspace-dropable>
+          </ion-grid>
+        </ng-template>
+      </ion-col>
+      <!-- Skeleton loading HTML -->
+      <ng-template #skeletonHTML>
+        <ion-col size="12">
+          <ion-grid class="ion-no-padding">
+            <ion-row
+                *ngFor="let el of [].constructor(10)"
+                role="article"
+                class="item clickable ion-align-items-center ion-padding-start">
+                <ion-col size="1" class="ion-padding">
+                  <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-col>
+                <ion-col size="9" class="ion-padding-vertical">
+                  <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-col>
+                <ion-col size="2" class="ion-padding">
+                  <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ng-template>
+    </ion-row>
+  </ion-grid>
+  <!-- Input HTML Element -->
+  <input
+    #addFileElement
+    type="file"
+    id="file-input"
+    multiple="true"
+    hidden
+    (change)="actions('onFileChange', $event)"
+  />
+</ion-content>
