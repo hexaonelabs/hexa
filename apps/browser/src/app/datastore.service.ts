@@ -43,9 +43,10 @@ export class DatastoreService implements IDatastoreService {
    * @returns 
    */
   async getData<T>(family: string, tags: string[], data?: T): Promise<T> {
-    console.log(`[INFO] {DatastoreService} getData() Query:`, family, tags);    
+    const familyTag = this._isProd ? family : `DEV=${family}`;
+    console.log(`[INFO] {DatastoreService} getData() Query:`, familyTag, tags);    
     const doc = await this._getDocument<T>(
-      this._isProd ? '' : `DEV=${family}`, 
+      familyTag, 
       tags, 
       data
     );
@@ -80,6 +81,8 @@ export class DatastoreService implements IDatastoreService {
    * @returns 
    */
   async saveData<T>(data: T, family: string, tags: string[]) {
+    const familyTag = this._isProd ? family : `DEV=${family}`;
+    console.log(`[INFO] {DatastoreService} saveData() Query:`, data, familyTag, tags);
     // Set document controlled by the authenticated DID
     const controller = this._authorizeCeramicWithDID();
     if (!controller) throw new Error('Ceramic instance does not have an authenticated DID');
@@ -90,7 +93,7 @@ export class DatastoreService implements IDatastoreService {
         // A single controller must be provided to reference a deterministic document
         controllers: [controller],
         // A family or tag must be provided in addition to the controller
-        family: this._isProd ? '' : `DEV=${family}`,
+        family: familyTag,
         tags,
       }, 
       {
@@ -123,6 +126,7 @@ export class DatastoreService implements IDatastoreService {
     tags: string[],
     data?: T, 
   ): Promise<TileDocument<T>> {
+    console.log(`[INFO] {DatastoreService} _getDocument() Query:`, family, tags);
     // Load the document controlled by the authenticated DID
     const controller = this._authorizeCeramicWithDID();
     if (!controller) throw new Error('Ceramic instance does not have an authenticated DID');
@@ -130,7 +134,7 @@ export class DatastoreService implements IDatastoreService {
       // A single controller must be provided to reference a deterministic document
       controllers: [controller],
       // A family or tag must be provided in addition to the controller
-      family: this._isProd ? '' : `DEV=${family}`,
+      family,
       tags,
     });
     // The document has no content as it's created based on metadata only...

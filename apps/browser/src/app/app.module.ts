@@ -35,7 +35,7 @@ const LOADERCLIENT = new BehaviorSubject<boolean>(false);
     IonicModule.forRoot({
       mode: 'ios'
     }),
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' , useHash: true }),
   ],
   providers: [
     AppGuard,
