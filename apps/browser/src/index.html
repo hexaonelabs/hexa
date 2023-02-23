@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Browser</title>
+    <title>d-workspace</title>
+    <meta name="description" content="Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)">
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -10,6 +11,56 @@
   <body>
     <d-workspace-root>
       <ion-progress-bar type="indeterminate"></ion-progress-bar>
+
+      <style>
+        html:not(.hydrated) body {
+          display: flex !important;
+        }
+        html,
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          height: 100%;
+          background:  rgb(244,248,248);
+          text-align: center;
+        }
+        body.dark {
+          background: #152122;
+        }
+        h1 {
+          margin: 0;
+          font-weight: 600 !important;
+          font-size: 3rem !important;
+          color: #386fff;
+          padding: 0;
+        }
+        body {
+          max-height: 100%;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          align-content: center;
+        }
+        p {
+          margin: 0.5rem;
+          color: rgb(53, 53, 53);
+        }
+        body.dark p {
+          background: #152122;
+          color: #e9edec;
+        }
+        img {
+          margin: 1rem auto;
+          max-width: 280px;
+        }
+      </style>
+      <img src="./assets/images/logo-colored.svg" alt="d-workspace Logo" />
+      <h1>d-workspace</h1>
+			<p>Decentralized censorship-resistant, tamper-proof and privacy compliant cloud solution</p>
     </d-workspace-root>
+    <noscript>
+      Please enable JavaScript to continue using this application.
+    </noscript>
   </body>
 </html>
