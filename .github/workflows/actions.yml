@@ -52,4 +52,5 @@ jobs:
           account: d-workspace
           project: d-workspace-pwa
           release: ${{ env.version }}
-          path: dist/apps/browser
+          
+          platform-web: dist/apps/browser
