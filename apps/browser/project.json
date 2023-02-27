@@ -18,6 +18,7 @@
         "assets": [
           "apps/browser/src/favicon.ico",
           "apps/browser/src/assets",
+          "apps/browser/src/manifest.webmanifest",
           {
             "glob": "**/*.svg",
             "input": "node_modules/ionicons/dist/ionicons/svg",
@@ -68,6 +69,8 @@
           }
         ],
         "scripts": [],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/browser/ngsw-config.json",
         "allowedCommonJsDependencies": ["fast-deep-equal"]
       },
       "configurations": {
