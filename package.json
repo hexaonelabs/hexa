@@ -1,7 +1,7 @@
 {
   "name": "d-workspace",
   "version": "0.0.5",
-  "description": "Decentralized workspace solution build on top of IPFS",
+  "description": "Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
