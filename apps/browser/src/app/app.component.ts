@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ILoadingService } from '@d-workspace/interfaces';
 import { environment } from '../environments/environment';
+import '@khmyznikov/pwa-install';
 
 @Component({
   selector: 'd-workspace-root',
