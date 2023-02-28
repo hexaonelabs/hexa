@@ -1,6 +1,6 @@
 {
   "name": "d-workspace",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Decentralized workspace solution build on top of IPFS",
   "license": "MIT",
   "scripts": {
