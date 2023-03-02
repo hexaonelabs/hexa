@@ -21,6 +21,7 @@ export interface IAccessControlConditions {
 export class EncryptionService implements IEncryptionService {
 
   async encryptData(lib: DID, data: string, authorizedDID: string[] = []) {
+    console.log(`[INFO] {EncryptionService} `, lib, data, authorizedDID);
     const jwe = await lib.createDagJWE(
       { data }, 
       // liste of authorized DID ID to decrypt
