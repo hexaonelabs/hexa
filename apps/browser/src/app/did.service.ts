@@ -74,7 +74,7 @@ export class DIDService implements IIdentityService {
       threeidConnect: true,
     });
     this._selfId$.next(selfID);
-    this.did$.next(selfID.did);
+    this.did$.next(selfID.did as any);
     await this._saveLatestConnectionDateTime();
   }
 
