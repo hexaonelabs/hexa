@@ -169,29 +169,32 @@ export class MediaFileService {
       ? await this._fileService.add(file)
       : await this._fileService.getDag()
         .then(async(dag) => {
-            console.log('[INFO] accessControlConditions: ', accessControlConditions);            
+            console.log('[INFO] {MediafileService} accessControlConditions: ', accessControlConditions);            
             const addressses = accessControlConditions
               .filter((acc) => acc.returnValueTest?.comparator === '=')
               .map((acc) => acc.returnValueTest.value);
-            console.log('[INFO] addressses: ', addressses);            
+            console.log('[INFO] {MediafileService} addressses: ', addressses);            
             // find DID from address
             const authorizedDID = await Promise.all(
               addressses.map((address) => this._authService.getAccountDID(address))
             );
-            console.log('[INFO] authorizedDID: ', authorizedDID);            
+            console.log('[INFO] {MediafileService} authorizedDID: ', authorizedDID);            
             const fileB64 = await fileToB64(file);
+            console.log('[INFO] {MediafileService} fileB64: ', fileB64);            
             const jwe = await this._encryptionService.encryptData(
               this._authService.did$.value,
               fileB64,
               authorizedDID
             );
+            console.log('[INFO] {MediafileService} jwe: ', jwe);
             const dagCID = await dag.put(jwe, { 
               storeCodec: 'dag-jose', 
               hashAlg: 'sha2-256',
               pin: true,
               preload: true,
               timeout: 10000,
-            });          
+            }); 
+            console.log('[INFO] {MediafileService} dagCID: ', dagCID);                     
             const cid = dagCID?.toString();
             return { cid };
         });
