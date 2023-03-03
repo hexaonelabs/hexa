@@ -1,7 +1,8 @@
-import { DID } from 'dids';
-import { JWE } from 'did-jwt';
-
 export interface IEncryptionService {
-  encryptData(lib: DID, data: string, authorizedDID?: string[]): Promise<JWE>;
-  decryptData(lib: DID, data: JWE): Promise<string>;
+  encryptData(data: string, authorizedDID?: string[]): Promise<{
+    [key: string]: any;
+  }>;
+  decryptData(data: {
+    [key: string]: any;
+  }): Promise<string>;
 }

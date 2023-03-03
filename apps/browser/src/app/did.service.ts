@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { DID } from 'dids';
+// import { DID } from 'dids';
+import type { DID } from '@d-workspace/dids';
 import { ethers } from 'ethers';
 import { BehaviorSubject } from "rxjs";
 import { EthereumAuthProvider as EthSelfIDAuthProvider, SelfID } from '@self.id/web';
@@ -73,8 +74,9 @@ export class DIDService implements IIdentityService {
       ceramic: 'testnet-clay',
       threeidConnect: true,
     });
+    const did = selfID.did;
     this._selfId$.next(selfID);
-    this.did$.next(selfID.did as any);
+    this.did$.next(did);
     await this._saveLatestConnectionDateTime();
   }
 

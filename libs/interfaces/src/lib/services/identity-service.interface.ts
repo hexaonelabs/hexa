@@ -1,4 +1,4 @@
-import { DID } from 'dids';
+import type { DID } from '@d-workspace/dids';
 import { ethers } from 'ethers';
 import { BehaviorSubject } from "rxjs";
 
