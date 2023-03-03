@@ -18,7 +18,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@d-workspace/dids": ["./node_modules/@3id/connect/node_modules/dids"],
+      "@d-workspace/dids": ["./node_modules/dids"],
       "@d-workspace/auth": ["libs/auth/src/index.ts"],
       "@d-workspace/calendar": ["libs/calendar/src/index.ts"],
       "@d-workspace/drive": ["libs/drive/src/index.ts"],
@@ -29,7 +29,7 @@
       "@d-workspace/welcome": ["libs/welcome/src/index.ts"],
       "assert": ["./node_modules/assert"],
       "crypto": ["./node_modules/crypto-browserify"],
-      "dids": ["./node_modules/@3id/connect/node_modules/dids"],
+      "dids": ["./node_modules/dids"],
       "http": ["./node_modules/stream-http"],
       "https": ["./node_modules/https-browserify"],
       "stream": ["./node_modules/stream-browserify"],
