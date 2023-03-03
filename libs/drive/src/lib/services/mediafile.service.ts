@@ -182,7 +182,6 @@ export class MediaFileService {
             const fileB64 = await fileToB64(file);
             console.log('[INFO] {MediafileService} fileB64: ', fileB64);            
             const jwe = await this._encryptionService.encryptData(
-              this._authService.did$.value,
               fileB64,
               authorizedDID
             );
@@ -349,7 +348,6 @@ export class MediaFileService {
       const dag = await this._fileService.getDag();
       const jwe = await dag.get(parsedCID as any);
       const fileB64 = await this._encryptionService.decryptData(
-        this._authService.did$.value,
         jwe.value
       );
       const file = b64ToFile(fileB64, name);

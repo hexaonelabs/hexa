@@ -18,11 +18,12 @@ import { DatastoreService } from './datastore.service';
 import { IPFSService } from './ipfs.service';
 import { PinataService } from './pinata.service';
 import { NotificationService } from './notification.service';
-import { EncryptionService } from './encryption.service';
 import { XMTPService } from './messaging.service';
 import { GlobalErrorHandlerService } from './global-error-handler.service';
 import { environment } from '../environments/environment';
-import { ILoadingService } from '@d-workspace/interfaces';
+import { IEncryptionService, ILoadingService } from '@d-workspace/interfaces';
+import { EncryptionStrategy } from './encryption.strategy';
+import { DIDEncryptionService } from './did-encryption.service';
 
 const CERAMIC_CLIENT = new CeramicClient('https://ceramic-clay.3boxlabs.com');
 const LOADERCLIENT = new BehaviorSubject<boolean>(false);
@@ -104,6 +105,10 @@ const ERROR_PROVIDER =
       useClass: DIDService
     },
     {
+      provide: 'APP_DID_ENCRYPTION_SERVICE',
+      useClass: DIDEncryptionService
+    },
+    {
       provide: 'APP_DATASTORE_SERVICE',
       useClass: DatastoreService
     },
@@ -117,7 +122,12 @@ const ERROR_PROVIDER =
     },
     {
       provide: 'APP_ENCRYPTION_SERVICE',
-      useClass: EncryptionService
+      useFactory: (encryptLib: IEncryptionService): IEncryptionService => {
+        const strategy = new EncryptionStrategy();
+        strategy.setStrategy(encryptLib);
+        return strategy;
+      },
+      deps: ['APP_DID_ENCRYPTION_SERVICE']
     },
     {
       provide: 'APP_NOTIFICATION_SERVICE',
