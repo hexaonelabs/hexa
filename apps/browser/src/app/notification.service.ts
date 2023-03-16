@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { IIdentityService } from '@d-workspace/interfaces';
+import { IAuthService, IIdentityService } from '@d-workspace/interfaces';
 import { debounceTime, map, tap } from 'rxjs';
 import { XMTPService } from './messaging.service';
 
@@ -22,7 +22,7 @@ export class NotificationService {
     // each time a new notification is received from XMTP
     tap((messages) =>
       messages.length > 0
-        ? this._didService
+        ? this._authService
           .updateProfilData({
               latestNotifedISODatetime: new Date().toISOString(),
             })
@@ -53,7 +53,7 @@ export class NotificationService {
 
   constructor(
     private readonly _xmtp: XMTPService,
-    @Inject('APP_DID_SERVICE') private readonly _didService: IIdentityService
+    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService
   ) {}
 
   async connect() {

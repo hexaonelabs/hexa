@@ -9,8 +9,13 @@ import torusModule from '@web3-onboard/torus';
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "rxjs";
 import { NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { IAuthService, IIdentityService } from "@d-workspace/interfaces";
+import { IAuthService, IDatastoreService, IIdentityService } from "@d-workspace/interfaces";
 import { XMTPService } from "./messaging.service";
+import { CeramicClient } from "@ceramicnetwork/http-client";
+import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
+import { getResolver as getKeyResolver } from 'key-did-resolver'
+import { DIDDataStore } from '@glazed/did-datastore';
+import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
 
 const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
 const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
@@ -41,7 +46,9 @@ export class Web3AuthService implements IAuthService {
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _msgService: XMTPService,
-    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService
+    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
+    @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
+    @Inject('APP_DATASTORE_SERVICE') private readonly _datastore: IDatastoreService<DIDDataStore>,
   ) {
     this._init();
   }
@@ -84,8 +91,12 @@ export class Web3AuthService implements IAuthService {
     this._redirectToRoot();
   };
 
-  async getAccountDID(address: string, chainParam?: string | undefined): Promise<string> {
-    return this._did.getAccountDID(address, chainParam);
+  async getAccountDID(address: string, chainParam = 'eip155:1'): Promise<string> {
+    const link = await Caip10Link.fromAccount(this._ceramic, `${address}@${chainParam}`)
+    if (link.did == null) {
+      throw new Error(`No DID found for ${address}`)
+    }
+    return link.did;
   }
   
   private async _init() {
@@ -113,11 +124,25 @@ export class Web3AuthService implements IAuthService {
           'any'
         );
         const accountAddress = update[0].accounts[0].address;
-        // connect DID
+        // connect DID service
         const isDIDConnected = await this._did
           .connectWallet(provider, accountAddress)
           .then(() => true)
           .catch((error) => error as Error);
+        // set resolver
+        console.log('[INFO] Set resolver');
+        const resolvers = {...get3IDResolver(this._ceramic)};
+        this._did.did$.value.setResolver(resolvers as any);
+        console.log('[INFO] Authenticate with DID provider');
+        // Authenticate the DID using the 3ID provider from 3ID Connect, this will trigger the
+        // authentication flow using 3ID Connect and the Ethereum provider
+        const isAuth = await this._did.did$.value.authenticate();
+        this._ceramic.did = this._did.did$.value;
+        console.log('[INFO] DID ', isAuth);
+        // update profile 
+        this.updateProfilData({
+          latestConnectionISODatetime: new Date().toISOString(),
+        });
         // throw error if DID connection failed
         if (!isDIDConnected || isDIDConnected instanceof Error) {
           await this.disconnect();
@@ -219,7 +244,7 @@ export class Web3AuthService implements IAuthService {
   }
 
   private async _connectOthersServices() {
-    const {latestConnectionISODatetime, latestNotifedISODatetime} = await this._did.getProfilData();
+    const {latestConnectionISODatetime, latestNotifedISODatetime} = await this.getProfilData();
     const mostRecentDate = [latestConnectionISODatetime, latestNotifedISODatetime]
           .filter(Boolean)
           .sort(
@@ -242,4 +267,19 @@ export class Web3AuthService implements IAuthService {
       // startTime: new Date('2023-01-01'),
     } as any);
   }
+
+  async getProfilData(): Promise<{ latestConnectionISODatetime: string; latestNotifedISODatetime?: string }> {
+    const db = this._datastore.datastore;
+    const profile = await db.get('basicProfile');
+    return profile||{
+      latestConnectionISODatetime: new Date('2000-01-01').toISOString(),
+    };
+  }
+
+  async updateProfilData(data: { latestConnectionISODatetime: string; }): Promise<{ latestConnectionISODatetime: string; }> {
+    const db = this._datastore.datastore;
+    await db.merge('basicProfile', data);
+    return data;
+  }
+
 }

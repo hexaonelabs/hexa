@@ -1,4 +1,5 @@
-export interface IDatastoreService {
+export interface IDatastoreService<T = any> {
+  readonly datastore: T;
   getData<T>(family: string, tags: string[], data?: T): Promise<T>;
   loadData(streamId: string): Promise<{
     _id: string;

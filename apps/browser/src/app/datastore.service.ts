@@ -6,7 +6,7 @@ import { IDatastoreService, IIdentityService } from "@d-workspace/interfaces";
 import { AlertController, LoadingController, ToastController } from "@ionic/angular";
 
 @Injectable()
-export class DatastoreService implements IDatastoreService {
+export class DatastoreService implements IDatastoreService<DIDDataStore> {
   
   public readonly aliases = {
     schemas: {
@@ -19,20 +19,23 @@ export class DatastoreService implements IDatastoreService {
     },
     tiles: {},
   };
-  public readonly datastore = new DIDDataStore({ 
+  private readonly _datastore = new DIDDataStore({ 
     ceramic: this._ceramic, 
     model: this.aliases
   });
-  
+  get datastore() {
+    return this._datastore;
+  }
+ 
   constructor(
     @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
-    @Inject('APP_DID_SERVICE') private readonly _didService: IIdentityService,
+    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
     @Inject('APP_IS_PROD') private readonly _isProd: boolean,
     
     private readonly _loaderService: LoadingController,
     private readonly _toastService: ToastController,
   ) {}
-
+ 
   /**
    * Wrapper that normalize the object returned by Ceramic database
    * as a simple object with only the content of the document and the id
@@ -64,7 +67,6 @@ export class DatastoreService implements IDatastoreService {
    * @param streamId 
    */
   async loadData(streamId: string) {
-    this._authorizeCeramicWithDID();
     const doc = await TileDocument.load(this._ceramic, streamId);
     return {
       ...doc,
@@ -84,7 +86,7 @@ export class DatastoreService implements IDatastoreService {
     const familyTag = this._isProd ? family : `DEV=${family}`;
     console.log(`[INFO] {DatastoreService} saveData() Query:`, data, familyTag, tags);
     // Set document controlled by the authenticated DID
-    const controller = this._authorizeCeramicWithDID();
+    const controller: string = this._getAuthorizedDidID();
     if (!controller) throw new Error('Ceramic instance does not have an authenticated DID');
     // The following call will fail if the Ceramic instance does not have an authenticated DID
     const doc = await TileDocument.deterministic<T>(
@@ -128,7 +130,7 @@ export class DatastoreService implements IDatastoreService {
   ): Promise<TileDocument<T>> {
     console.log(`[INFO] {DatastoreService} _getDocument() Query:`, family, tags);
     // Load the document controlled by the authenticated DID
-    const controller = this._authorizeCeramicWithDID();
+    const controller: string = this._getAuthorizedDidID();
     if (!controller) throw new Error('Ceramic instance does not have an authenticated DID');
     const doc = await TileDocument.deterministic<T>(this._ceramic, {
       // A single controller must be provided to reference a deterministic document
@@ -163,15 +165,25 @@ export class DatastoreService implements IDatastoreService {
     return doc;
   }
 
-  /**
-   * Private method that authorize Ceramic instance by use the DIDSession DID.
-   * This method is called before each Ceramic call to ensure that 
-   * the DIDSession is initialized and the Ceramic instance is authorized to use it.
-   */
-  private _authorizeCeramicWithDID() {
-    // set ceramic DID to the one from the DIDSession
-    if (!this._didService.did$.value) throw new Error('DIDSession not initialized');
-    this._ceramic.did = this._didService.did$.value;
-    return this._ceramic?.did?.id;
+  private _getAuthorizedDidID() {
+    if (!this._did.did$.value) throw new Error('DIDSession not initialized');
+    // get existing parent DID id or current DID id
+    const id = this._did.did$.value.hasParent
+      ? this._did.did$.value.parent
+      : this._did.did$.value.id;
+    return id;
   }
+
+  // /**
+  //  * Private method that authorize Ceramic instance by use the DIDSession DID.
+  //  * This method is called before each Ceramic call to ensure that 
+  //  * the DIDSession is initialized and the Ceramic instance is authorized to use it.
+  //  */
+  // private _authorizeCeramicWithDID() {
+  //   // set ceramic DID to the one from the DIDSession
+  //   if (!this._didService.did$.value) throw new Error('DIDSession not initialized');
+  //   this._ceramic.did = this._didService.did$.value;
+  //   return this._ceramic?.did?.id;
+  // }
+
 }
