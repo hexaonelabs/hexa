@@ -68,7 +68,6 @@
             "input": "apps/browser/src/theme/variables.scss"
           }
         ],
-        "scripts": [],
         "serviceWorker": true,
         "ngswConfigPath": "apps/browser/ngsw-config.json",
         "allowedCommonJsDependencies": ["fast-deep-equal"]
@@ -79,12 +78,12 @@
             {
               "type": "initial",
               "maximumWarning": "1mb",
-              "maximumError": "6mb"
+              "maximumError": "25mb"
             },
             {
               "type": "anyComponentStyle",
               "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumError": "40kb"
             }
           ],
           "fileReplacements": [
@@ -94,7 +93,10 @@
             }
           ],
           "outputHashing": "all",
-          "sourceMap": true
+          "sourceMap": true,
+          "optimization": false,
+          "vendorChunk": true,
+          "buildOptimizer": true
         },
         "development": {
           "buildOptimizer": false,

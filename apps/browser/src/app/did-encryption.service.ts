@@ -12,23 +12,43 @@ export class DIDEncryptionService implements IEncryptionService {
   ){}
 
   async encryptData(data: string, authorizedDID: string[] = []) {
+    const unit8Data = new TextEncoder().encode(data);
     const did = this._identityService.did$.value;
-    console.log(`[INFO] {DIDEncryptionService} `, did, data, authorizedDID);
-    const jwe = await did.createDagJWE(
-      { data }, 
-      // liste of authorized DID ID to decrypt
-      [
-        did.id,
-        ...authorizedDID
-      ]
-    ); 
-    return jwe;
+    const didID = this._getAuthorizedDidID();
+    console.log(`[INFO] {DIDEncryptionService} did: `, did);
+    console.log(`[INFO] {DIDEncryptionService} didID: `, didID);
+    console.log(`[INFO] {DIDEncryptionService} authorizedDID: `, authorizedDID);
+    if (!did) throw new Error('{DIDEncryptionService}: DIDSession not initialized');
+    if (!did.createJWE) throw new Error('{DIDEncryptionService}: createJWE not implemented');
+    try {      
+      const jwe = await did.createJWE(
+        unit8Data, 
+        // liste of authorized DID ID to decrypt
+        [
+          didID,
+          ...authorizedDID
+        ]
+      ); 
+      return jwe;
+    } catch (error: any) {
+      throw new Error(`[ERROR] {DIDEncryptionService}: ${error?.message}`);
+    }
   }
 
   async decryptData(jwe: JWE) {
     const did = this._identityService.did$.value;
     console.log(`[INFO] {DIDEncryptionService} `, did, jwe);
-    const decryptedJWE = await did.decryptDagJWE(jwe);
-    return decryptedJWE['data'] as string;
+    const decryptedJWEunit8Data = await did.decryptJWE(jwe);
+    const decryptedJWE = new TextDecoder().decode(decryptedJWEunit8Data);
+    return decryptedJWE;
+  }
+
+  private _getAuthorizedDidID() {
+    if (!this._identityService.did$.value) throw new Error('DIDSession not initialized');
+    // get existing parent DID id or current DID id
+    const id = this._identityService.did$.value.hasParent
+      ? this._identityService.did$.value.parent
+      : this._identityService.did$.value.id;
+    return id;
   }
 }

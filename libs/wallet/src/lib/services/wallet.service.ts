@@ -63,7 +63,7 @@ export class WalletService {
 
   constructor(
     @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService,
+    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService<any>,
     @Inject('APP_WALLET_SERVICE_APIKEY') private readonly _apiKey: string,
     @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService
   ) {}

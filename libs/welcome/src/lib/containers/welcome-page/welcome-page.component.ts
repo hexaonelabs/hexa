@@ -57,7 +57,7 @@ export class WelcomePageComponent  implements OnInit {
     private readonly _alertCtrl: AlertController,
     private readonly _popoverCtrl: PopoverController,
     @Inject('APP_IS_PROD') public readonly isProd: boolean,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService,
+    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService<any>,
     @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
   ) {}
 
