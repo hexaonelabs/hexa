@@ -1,6 +1,8 @@
-import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, map, switchMap } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { ethers } from 'ethers';
 import { DID } from '@d-workspace/dids';
+import { ConnectOptions } from '@web3-onboard/core';
+import { ConnectOptionsString, WalletState } from '@web3-onboard/core/dist/types';
 
 export interface IAuthUser {
   latestConnectionISODatetime?: string; 
@@ -8,6 +10,12 @@ export interface IAuthUser {
   creationISODatetime?: string;
 }
 
+export interface IAuthGuardService {
+  onboard: {
+    connectWallet: (options?: ConnectOptions | ConnectOptionsString | undefined) => Promise<WalletState[]>;
+  },
+  isWaiting$: BehaviorSubject<boolean>
+}
 export interface IAuthService {
   ethereumProvider$: BehaviorSubject<ethers.providers.Web3Provider>;
   signer$: BehaviorSubject<ethers.providers.JsonRpcSigner>;

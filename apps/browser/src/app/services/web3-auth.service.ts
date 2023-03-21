@@ -9,7 +9,7 @@ import torusModule from '@web3-onboard/torus';
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "rxjs";
 import { NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { IAuthService, IDatastoreService, IIdentityService, IAuthUser } from "@d-workspace/interfaces";
+import { IAuthService, IDatastoreService, IIdentityService, IAuthUser, IAuthGuardService } from "@d-workspace/interfaces";
 import { XMTPService } from "./messaging.service";
 import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
@@ -30,7 +30,7 @@ const torus = torusModule();
 // const walletConnect = walletConnectModule();
 
 @Injectable()
-export class Web3AuthService implements IAuthService {
+export class Web3AuthService implements IAuthService, IAuthGuardService {
 
   public readonly ethereumProvider$: BehaviorSubject<ethers.providers.Web3Provider> = new BehaviorSubject(null as any);
   public readonly signer$: BehaviorSubject<ethers.providers.JsonRpcSigner> = new BehaviorSubject(null as any);

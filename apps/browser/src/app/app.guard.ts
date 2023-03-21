@@ -1,15 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { filter, firstValueFrom } from 'rxjs';
-import { IIdentityService } from '@d-workspace/interfaces';
-import { Web3AuthService } from './web3-auth.service';
+import { IIdentityService, IAuthGuardService } from '@d-workspace/interfaces';
 
 @Injectable()
 export class AppGuard implements CanActivate {
   constructor(
     private _router: Router,
     @Inject('APP_WEB3AUTH_SERVICE')
-    private readonly _authService: Web3AuthService,
+    private readonly _authService: IAuthGuardService,
     @Inject('APP_DID_SERVICE')
     private _didService: IIdentityService
   ) {}
