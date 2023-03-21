@@ -60,14 +60,17 @@ export class DrivePageComponent {
         break;
       case type === 'onFileChange': {
         this.searchbarElement.nativeElement.value = '';
-        const files = [...payload.target.files];
+        const target = payload.target as HTMLInputElement;
+        const files = [...Array.from(target.files||[])];
         if (!files[0]) {
+          target.value = '';
           return;
         }
         // ask for encryption
         const {data: conditions, role } = await this._askFoEncryption();
         // check if user canceled operation
         if (!conditions || role === 'cancel') {
+          target.value = '';
           return;
         }
         this._loaderService.setStatus(true);
@@ -97,6 +100,7 @@ export class DrivePageComponent {
           keyboardClose: true,
         };
         await this._displayMessage(this._toastCtrl, opts);
+        target.value = '';
         break;
       }
       case type === 'searchByName': {
