@@ -8,9 +8,8 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { CeramicClient } from '@ceramicnetwork/http-client';
 
-import { AppComponent } from './app.component';
+import { COMPONENTS, MAIN_COMPONENT } from './components';
 import { appRoutes } from './app.routes';
-import { DashboardComponent } from './dashboard.component';
 import { AppGuard } from './app.guard';
 import { Web3AuthService } from './web3-auth.service';
 import { DIDService } from './did.service';
@@ -37,8 +36,7 @@ const ERROR_PROVIDER =
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    DashboardComponent,
+    ...COMPONENTS,
   ],
   imports: [
     BrowserModule,
@@ -134,6 +132,6 @@ const ERROR_PROVIDER =
       useClass: NotificationService
     }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [MAIN_COMPONENT],
 })
 export class AppModule {}
