@@ -371,14 +371,17 @@ export class DrivePageComponent {
         },
       });
       await ionModal.present();
-      const { data, role } = await ionModal.onDidDismiss();
-      if (role !== 'ok' || !data) {
+      const { data: accessControlConditions, role } = await ionModal.onDidDismiss();
+      if (role !== 'ok' || !accessControlConditions) {
         return;
       }
       // send new condition to shared method from media file service
       this._loaderService.setStatus(true);
       await this._mediaFileService.shareWithEncryption(
-        item,
+        {
+          ...item,
+          accessControlConditions,
+        },
         this._authService.account$.value
       );
       this._loaderService.setStatus(false);
