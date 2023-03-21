@@ -9,8 +9,7 @@ import torusModule from '@web3-onboard/torus';
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "rxjs";
 import { NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { IAuthService, IDatastoreService, IIdentityService, IAuthUser, IAuthGuardService } from "@d-workspace/interfaces";
-import { XMTPService } from "./xmtp.service";
+import { IAuthService, IDatastoreService, IIdentityService, IAuthUser, IAuthGuardService, IMessagingService } from "@d-workspace/interfaces";
 import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
 import { DIDDataStore } from '@glazed/did-datastore';
@@ -45,7 +44,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     private readonly _ngZone: NgZone,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
-    private readonly _msgService: XMTPService,
+    @Inject('APP_MESSAGING_SERVICE') private readonly _msgService: IMessagingService,
     @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
     @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
     @Inject('APP_DATASTORE_SERVICE') private readonly _datastore: IDatastoreService<DIDDataStore>,
@@ -265,10 +264,13 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         }
       : undefined;
     const provider = this.ethereumProvider$.value;
-    await this._msgService.init(provider, {
-      ...opts,
-      // startTime: new Date('2023-01-01'),
-    } as any);
+    // this will only init the service and not connect the wallet
+    if (this._msgService.init) {
+      await this._msgService.init(provider, {
+        ...opts,
+        // startTime: new Date('2023-01-01'),
+      });
+    }
   }
 
   async getProfilData(): Promise<IAuthUser> {

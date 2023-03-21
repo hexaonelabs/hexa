@@ -9,7 +9,7 @@ export const ENCRYPTION_PROVIDER = [
   },
   {
     provide: 'APP_ENCRYPTION_SERVICE',
-    useFactory: (encryptLib: IEncryptionService): IEncryptionService => {
+    useFactory: (encryptLib: IEncryptionService): EncryptionStrategy => {
       // setup default encryption strategy with DID Encryption Service.
       // You can change this to use a different encryption service 
       // by calling setStrategy() on the EncryptionStrategy instance.

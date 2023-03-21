@@ -7,6 +7,7 @@ export interface IBaseMessage<C,M> {
 
 export interface IBaseMessagingService {
   isConnected$: Observable<boolean>;
+  init?(...args: any[]): Promise<void>;
   connect(): Promise<void>;
   disconnect(): Promise<void>;
 }
