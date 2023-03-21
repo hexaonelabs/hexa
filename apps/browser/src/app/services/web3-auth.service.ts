@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { ethers } from 'ethers';
-import Onboard, {ConnectOptions} from "@web3-onboard/core";
+import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
 import ledgerModule from '@web3-onboard/ledger';
 import coinbaseModule from '@web3-onboard/coinbase';
@@ -9,14 +9,13 @@ import torusModule from '@web3-onboard/torus';
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "rxjs";
 import { NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { IAuthService, IDatastoreService, IIdentityService } from "@d-workspace/interfaces";
-import { XMTPService } from "./messaging.service";
+import { IAuthService, IDatastoreService, IIdentityService, IAuthUser, IAuthGuardService, IMessagingService } from "@d-workspace/interfaces";
 import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
-import { getResolver as getKeyResolver } from 'key-did-resolver'
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
 
+const DB_NAME = 'd-workspace';
 const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
 const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
 const injected = injectedModule();
@@ -30,12 +29,12 @@ const torus = torusModule();
 // const walletConnect = walletConnectModule();
 
 @Injectable()
-export class Web3AuthService implements IAuthService {
+export class Web3AuthService implements IAuthService, IAuthGuardService {
 
   public readonly ethereumProvider$: BehaviorSubject<ethers.providers.Web3Provider> = new BehaviorSubject(null as any);
   public readonly signer$: BehaviorSubject<ethers.providers.JsonRpcSigner> = new BehaviorSubject(null as any);
   public readonly account$: BehaviorSubject<string> = new BehaviorSubject(null as any);
-  public readonly profile$: BehaviorSubject<string> = new BehaviorSubject(null as any);
+  public readonly profile$: BehaviorSubject<IAuthUser> = new BehaviorSubject(null as any);
   public readonly onboard = this._onboard();
   public readonly did$ = this._did.did$;
   public isWaiting$ = new BehaviorSubject(false); // used by app guard to prevent navigation while waiting for wallet connection
@@ -45,7 +44,7 @@ export class Web3AuthService implements IAuthService {
     private readonly _ngZone: NgZone,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
-    private readonly _msgService: XMTPService,
+    @Inject('APP_MESSAGING_SERVICE') private readonly _msgService: IMessagingService,
     @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
     @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
     @Inject('APP_DATASTORE_SERVICE') private readonly _datastore: IDatastoreService<DIDDataStore>,
@@ -85,6 +84,7 @@ export class Web3AuthService implements IAuthService {
     window.localStorage.removeItem('connectedWallets');
     this.signer$.next(null as any);
     this.account$.next(null as any);
+    this.profile$.next(null as any);
     this._did.did$.next(null as any);
     this.isWaiting$.next(false);
     this.unsubscribe();
@@ -132,17 +132,19 @@ export class Web3AuthService implements IAuthService {
         // set resolver
         console.log('[INFO] Set resolver');
         const resolvers = {...get3IDResolver(this._ceramic)};
-        this._did.did$.value.setResolver(resolvers as any);
+        const did = this._did.did$.value;
+        did.setResolver(resolvers as any);
         console.log('[INFO] Authenticate with DID provider');
         // Authenticate the DID using the 3ID provider from 3ID Connect, this will trigger the
         // authentication flow using 3ID Connect and the Ethereum provider
-        const isAuth = await this._did.did$.value.authenticate();
-        this._ceramic.did = this._did.did$.value;
+        const isAuth = await did.authenticate();
+        this._ceramic.did = did;
         console.log('[INFO] DID ', isAuth);
-        // update profile 
-        this.updateProfilData({
+        // update profile or set default profile if not exist
+        const profil = await this.updateProfilData({
           latestConnectionISODatetime: new Date().toISOString(),
         });
+        this.profile$.next(profil);
         // throw error if DID connection failed
         if (!isDIDConnected || isDIDConnected instanceof Error) {
           await this.disconnect();
@@ -262,24 +264,40 @@ export class Web3AuthService implements IAuthService {
         }
       : undefined;
     const provider = this.ethereumProvider$.value;
-    await this._msgService.init(provider, {
-      ...opts,
-      // startTime: new Date('2023-01-01'),
-    } as any);
+    // this will only init the service and not connect the wallet
+    if (this._msgService.init) {
+      await this._msgService.init(provider, {
+        ...opts,
+        // startTime: new Date('2023-01-01'),
+      });
+    }
   }
 
-  async getProfilData(): Promise<{ latestConnectionISODatetime: string; latestNotifedISODatetime?: string }> {
-    const db = this._datastore.datastore;
-    const profile = await db.get('basicProfile');
-    return profile||{
-      latestConnectionISODatetime: new Date('2000-01-01').toISOString(),
-    };
+  async getProfilData(): Promise<IAuthUser> {
+    return this._datastore.getData(
+      DB_NAME, // database name
+      ['basicProfile'], // datbase collections
+      // default values if database is empty
+      {
+        latestConnectionISODatetime: new Date('2000-01-01').toISOString(),
+        latestNotifedISODatetime: new Date('2000-01-01').toISOString(),
+        creationISODatetime: new Date().toISOString(),
+      }
+    );
   }
 
-  async updateProfilData(data: { latestConnectionISODatetime: string; }): Promise<{ latestConnectionISODatetime: string; }> {
-    const db = this._datastore.datastore;
-    await db.merge('basicProfile', data);
-    return data;
+  async updateProfilData(data: Partial<IAuthUser>): Promise<IAuthUser> {
+    const profil = await this.getProfilData();
+    const result = await this._datastore.saveData(
+      {
+        ...profil,
+        ...data
+      },
+      DB_NAME, // database name
+      ['basicProfile'], // datbase collections,
+    );
+    return result;
   }
+
 
 }

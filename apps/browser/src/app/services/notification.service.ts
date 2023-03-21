@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { IAuthService, IIdentityService } from '@d-workspace/interfaces';
+import { IAuthService, IMessagingService, INotificationService } from '@d-workspace/interfaces';
 import { debounceTime, map, tap } from 'rxjs';
-import { XMTPService } from './messaging.service';
 
 @Injectable()
-export class NotificationService {
-  public readonly notifications$ = this._xmtp.messages$.pipe(
+export class NotificationService implements INotificationService {
+  public readonly notifications$ = this._messagingService.messages$.pipe(
     // formating messages to be displayed
     map((messages) =>
       messages
@@ -43,26 +42,26 @@ export class NotificationService {
       if (messages.length > 0) {
         // clear messages
         const t = setTimeout(() => {
-          this._xmtp.messages$.next([]);
+          this._messagingService.messages$.next([]);
           clearTimeout(t);
         }, 2500);
       }
     })
   );
-  public readonly isConnected$ = this._xmtp.isConnected$;
+  public readonly isConnected$ = this._messagingService.isConnected$;
 
   constructor(
-    private readonly _xmtp: XMTPService,
+    @Inject('APP_MESSAGING_SERVICE') private readonly _messagingService: IMessagingService,
     @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService
   ) {}
 
   async connect() {
-    await this._xmtp.connect();
-        await this._xmtp.loadDatas();
+    await this._messagingService.connect();
+    await this._messagingService.loadDatas();
   }
 
   async disconnect() {
-    await this._xmtp.disconnect();
+    await this._messagingService.disconnect();
   }
 
   async sendNotification(
@@ -82,7 +81,7 @@ export class NotificationService {
       JSON.stringify(messageData)
     )}`;
     // send message
-    await this._xmtp.sendMessage({
+    await this._messagingService.sendMessage({
       destinationAddress,
       message: base64Data,
     });

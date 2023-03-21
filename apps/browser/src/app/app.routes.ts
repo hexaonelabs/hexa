@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { AppGuard } from './app.guard';
-import { DashboardComponent } from './dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const appRoutes: Route[] = [
   {

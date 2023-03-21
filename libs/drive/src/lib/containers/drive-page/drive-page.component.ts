@@ -60,14 +60,17 @@ export class DrivePageComponent {
         break;
       case type === 'onFileChange': {
         this.searchbarElement.nativeElement.value = '';
-        const files = [...payload.target.files];
+        const target = payload.target as HTMLInputElement;
+        const files = [...Array.from(target.files||[])];
         if (!files[0]) {
+          target.value = '';
           return;
         }
         // ask for encryption
         const {data: conditions, role } = await this._askFoEncryption();
         // check if user canceled operation
         if (!conditions || role === 'cancel') {
+          target.value = '';
           return;
         }
         this._loaderService.setStatus(true);
@@ -97,6 +100,7 @@ export class DrivePageComponent {
           keyboardClose: true,
         };
         await this._displayMessage(this._toastCtrl, opts);
+        target.value = '';
         break;
       }
       case type === 'searchByName': {
@@ -367,14 +371,17 @@ export class DrivePageComponent {
         },
       });
       await ionModal.present();
-      const { data, role } = await ionModal.onDidDismiss();
-      if (role !== 'ok' || !data) {
+      const { data: accessControlConditions, role } = await ionModal.onDidDismiss();
+      if (role !== 'ok' || !accessControlConditions) {
         return;
       }
       // send new condition to shared method from media file service
       this._loaderService.setStatus(true);
       await this._mediaFileService.shareWithEncryption(
-        item,
+        {
+          ...item,
+          accessControlConditions,
+        },
         this._authService.account$.value
       );
       this._loaderService.setStatus(false);
