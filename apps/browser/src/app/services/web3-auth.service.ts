@@ -10,7 +10,7 @@ import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "r
 import { NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { IAuthService, IDatastoreService, IIdentityService, IAuthUser, IAuthGuardService } from "@d-workspace/interfaces";
-import { XMTPService } from "./messaging.service";
+import { XMTPService } from "./xmtp.service";
 import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
 import { DIDDataStore } from '@glazed/did-datastore';

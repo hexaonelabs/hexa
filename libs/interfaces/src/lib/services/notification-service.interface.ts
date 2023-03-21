@@ -1,10 +1,8 @@
 import { Observable } from "rxjs";
+import { IBaseMessagingService } from "./messaging-service.interface";
 
-export interface INotificationService {
-  isConnected$: Observable<boolean>;
+export interface INotificationService extends IBaseMessagingService {
   notifications$: Observable<string[]>;
-  connect(): Promise<void>;
-  disconnect(): Promise<void>;
   sendNotification(
     metaData: any,
     senderAddress: string,

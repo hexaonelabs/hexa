@@ -3,7 +3,7 @@ export * from './did.service';
 export * from './did-encryption.service';
 export * from './global-error-handler.service';
 export * from './ipfs.service';
-export * from './messaging.service';
+export * from './xmtp.service';
 export * from './notification.service';
 export * from './pinata.service';
 // export * from './nacl.service';

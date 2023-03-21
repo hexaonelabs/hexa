@@ -7,17 +7,15 @@ import {
 } from '@xmtp/xmtp-js';
 import { BehaviorSubject, map } from 'rxjs';
 import { ethers } from 'ethers';
+import { IBaseMessage, IMessagingService } from '@d-workspace/interfaces';
 
 export type XMTPConversation = Conversation;
 export type XMTPConversationMessage = DecodedMessage;
 
-export interface IXMTPMessage {
-  conversation?: XMTPConversation;
-  messagesInConversation: XMTPConversationMessage[];
-}
+export type IXMTPMessage = IBaseMessage<XMTPConversation, XMTPConversationMessage>;
 
 @Injectable()
-export class XMTPService {
+export class XMTPService implements IMessagingService {
   public readonly messages$: BehaviorSubject<IXMTPMessage[]> =
     new BehaviorSubject<IXMTPMessage[]>([]);
   private _web3Provider!: ethers.providers.Web3Provider;
@@ -53,11 +51,10 @@ export class XMTPService {
     });
     console.log('[INFO] {XMTPService} XMTP client created successfully');
     this._xmtp.next(xmtp);
-    return xmtp;
   }
 
-  async loadDatas(opts: ListMessagesOptions & {conversationId?: string;} | undefined = this._ops) {
-    const {conversationId = undefined, ...options} = opts || {};
+  async loadDatas<T>(opts = <T>this._ops) {
+    const {conversationId = undefined, ...options} = opts || {} as any;
     const {conversations = []} = await this._getConversations(conversationId);
     this._conversations.next(conversations);
     const messages = await this._getPreviousMessagesFromExistingConverstion(options);
@@ -101,7 +98,8 @@ export class XMTPService {
     }
     let xmtp = this._xmtp.getValue();
     if (!xmtp) {
-      xmtp = await this.connect();
+      await this.connect();
+      xmtp = this._xmtp.getValue();
     }
     const conversation = await xmtp.conversations
       .newConversation(address, { conversationId, metadata: {} })
@@ -119,7 +117,8 @@ export class XMTPService {
     }
     let xmtp = this._xmtp.getValue();
     if (!xmtp) {
-      xmtp = await this.connect();
+      await this.connect();
+      xmtp = this._xmtp.getValue();
     }
     const allConversations = await xmtp.conversations.list();
     const conversations = allConversations.filter(
