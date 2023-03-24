@@ -35,11 +35,16 @@ export class UpdateComponent {
   }
 
   private async _displayNotif() {
+    const duration = 1000 * 30; // 30 seconds 
     const data = <ToastOptions>{
-      message: 'New Update available!',
+      message: 'New version available!',
       position: 'bottom',
       showCloseButton: true,
       closeButtonText: `Update`,
+      buttons: [
+        { text: 'Update',role: 'ok' },
+      ],
+      duration // force toasts to close to trigger the update
     };
     const toast = await this._toast.create(data);
     await toast.present();
