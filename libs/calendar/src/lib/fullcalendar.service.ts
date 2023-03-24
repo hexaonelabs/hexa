@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { IDatastoreService, ILoadingService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { DateSpanApi, EventClickArg, EventDropArg, EventInput, EventMountArg, EventSourceInput } from '@fullcalendar/core';
 import { EventImpl } from "@fullcalendar/core/internal";
@@ -53,8 +54,8 @@ export class FullCalendarService {
   constructor(
     private readonly _modalCtrl: ModalController,
     private readonly _confirmCtrl: AlertController,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService
   ) {}
 
   /**

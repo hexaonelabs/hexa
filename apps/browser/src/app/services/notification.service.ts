@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { IAuthService, IMessagingService, INotificationService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { debounceTime, map, tap } from 'rxjs';
 
 @Injectable()
@@ -51,8 +52,8 @@ export class NotificationService implements INotificationService {
   public readonly isConnected$ = this._messagingService.isConnected$;
 
   constructor(
-    @Inject('APP_MESSAGING_SERVICE') private readonly _messagingService: IMessagingService,
-    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_MESSAGING_SERVICE)) private readonly _messagingService: IMessagingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {}
 
   async connect() {

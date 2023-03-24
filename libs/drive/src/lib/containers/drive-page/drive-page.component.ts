@@ -1,10 +1,9 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { IAuthService, ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { AlertController, AlertOptions, IonSearchbar, ModalController, ToastController, ToastOptions } from '@ionic/angular';
 import { OverlayBaseController } from '@ionic/angular/util/overlay';
-import { ethers } from 'ethers';
-import { BehaviorSubject, firstValueFrom, map } from 'rxjs';
-import { HeaderComponent } from '../../components/header/header.component';
+import { firstValueFrom, map } from 'rxjs';
 import { SelectFolderComponent } from '../../components/select-folder/select-folder.component';
 import { SetupEncryptionComponent } from '../../components/setup-encryption/setup-encryption.component';
 import { MediafileInterface } from '../../interfaces/mediafile.interface';
@@ -41,8 +40,8 @@ export class DrivePageComponent {
     private readonly _toastCtrl: ToastController,
     private readonly _alertCtrl: AlertController,
     private _modalCtrl: ModalController,
-    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) {}
 
   async ionViewDidEnter() {

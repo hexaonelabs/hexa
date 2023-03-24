@@ -1,14 +1,15 @@
 import { IEncryptionService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 import { DIDEncryptionService } from "../services";
 import { EncryptionStrategy } from "../strategies";
 
 export const ENCRYPTION_PROVIDER = [
   {
-    provide: 'APP_DID_ENCRYPTION_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_DID_ENCRYPTION_SERVICE),
     useClass: DIDEncryptionService,
   },
   {
-    provide: 'APP_ENCRYPTION_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_ENCRYPTION_SERVICE),
     useFactory: (encryptLib: IEncryptionService): EncryptionStrategy => {
       // setup default encryption strategy with DID Encryption Service.
       // You can change this to use a different encryption service 
@@ -17,6 +18,6 @@ export const ENCRYPTION_PROVIDER = [
       strategy.setStrategy(encryptLib);
       return strategy;
     },
-    deps: ['APP_DID_ENCRYPTION_SERVICE'],
+    deps: [getInjectionToken(TOKENS_NAME.APP_DID_ENCRYPTION_SERVICE)],
   },
 ];

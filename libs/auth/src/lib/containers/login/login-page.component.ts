@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthService, ILoadingService } from '@d-workspace/interfaces';
+import {IAuthService, ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Component({
   selector: 'd-workspace-login-page',
@@ -13,8 +14,8 @@ export class LoginPageComponent {
   public readonly isLoaderVisible$ = this.loaderService.isVisible$;
 
   constructor(
-    @Inject('APP_LOADER_SERVICE') private readonly loaderService: ILoadingService,
-    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
     private readonly _router: Router
   ) {}
 

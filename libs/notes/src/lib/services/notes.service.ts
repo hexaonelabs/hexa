@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
-import { IDatastoreService } from "@d-workspace/interfaces";
+import { IDatastoreService, IEncryptionService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 
@@ -35,23 +36,8 @@ export class NotesService {
   public readonly allMedia$ = this._items$.asObservable();
 
   constructor(
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService,
-    @Inject('APP_ENCRYPTION_SERVICE') private readonly _encryptionService: {
-      encryptFile: (
-        file: File | Blob,
-        accessControlConditions: any[],
-        chain?: string
-      ) => Promise<{
-        encryptedFile: Blob;
-        encryptedSymmetricKey: string;
-      }>;
-      decryptFile: (
-        encryptedFile: Blob,
-        encryptedSymmetricKey: string,
-        accessControlConditions: any[],
-        chain?: string
-      ) => Promise<{ decryptedFile: File | Blob }>;
-    },
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_ENCRYPTION_SERVICE)) private readonly _encryptionService: IEncryptionService,
   ) {}
 
   async getNotes() {

@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { IDatastoreService, ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { AlertController, AlertInput, ModalController, PopoverController } from '@ionic/angular';
 import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
- 
+import { DIDDataStore } from '@glazed/did-datastore';
+
 const ROOT_DB_COLLECTION = 'd-welcome';
 const DEFAULT_WIDGETS_CONFIG = {
   background: {
@@ -56,9 +58,9 @@ export class WelcomePageComponent  implements OnInit {
     private readonly _modal: ModalController,
     private readonly _alertCtrl: AlertController,
     private readonly _popoverCtrl: PopoverController,
-    @Inject('APP_IS_PROD') public readonly isProd: boolean,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService<any>,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IS_PROD)) public readonly isProd: boolean,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) {}
 
   async ngOnInit() {

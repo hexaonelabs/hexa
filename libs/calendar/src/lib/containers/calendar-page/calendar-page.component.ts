@@ -8,6 +8,7 @@ import { AlertController, ModalController, PopoverController } from '@ionic/angu
 import { isAfter, isBefore, addWeeks, subWeeks } from 'date-fns';
 import { AppointmentModalComponent } from '../../components/appointment-modal/appointment-modal.component';
 import { ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Component({
   selector: 'd-workspace-calendar-page',
@@ -85,7 +86,7 @@ export class CalendarPageComponent implements AfterViewInit {
 
   constructor(
 
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
     private readonly _fullCalendarService: FullCalendarService,
     private readonly _modalCtrl: ModalController,
     private readonly _alertService: AlertController,

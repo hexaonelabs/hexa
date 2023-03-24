@@ -3,11 +3,13 @@ import { ethers } from 'ethers';
 import { DID } from '@d-workspace/dids';
 import { ConnectOptions } from '@web3-onboard/core';
 import { ConnectOptionsString, WalletState } from '@web3-onboard/core/dist/types';
+import { IPiningServiceConfig } from "./pining-service.interface";
 
 export interface IAuthUser {
   latestConnectionISODatetime?: string; 
   latestNotifedISODatetime?: string;
   creationISODatetime?: string;
+  ipfsConfig?: IPiningServiceConfig;
 }
 
 export interface IAuthGuardService {

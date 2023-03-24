@@ -14,6 +14,7 @@ import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 
 const DB_NAME = 'd-workspace';
 const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
@@ -44,10 +45,10 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     private readonly _ngZone: NgZone,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
-    @Inject('APP_MESSAGING_SERVICE') private readonly _msgService: IMessagingService,
-    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
-    @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastore: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_MESSAGING_SERVICE)) private readonly _msgService: IMessagingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DID_SERVICE)) private readonly _did: IIdentityService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_CERAMIC_SERVICE)) private readonly _ceramic: CeramicClient,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastore: IDatastoreService<DIDDataStore>,
   ) {
     this._init();
   }
@@ -141,10 +142,9 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         this._ceramic.did = did;
         console.log('[INFO] DID ', isAuth);
         // update profile or set default profile if not exist
-        const profil = await this.updateProfilData({
+        await this.updateProfilData({
           latestConnectionISODatetime: new Date().toISOString(),
         });
-        this.profile$.next(profil);
         // throw error if DID connection failed
         if (!isDIDConnected || isDIDConnected instanceof Error) {
           await this.disconnect();
@@ -274,7 +274,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   async getProfilData(): Promise<IAuthUser> {
-    return this._datastore.getData(
+    const profil =  await this._datastore.getData(
       DB_NAME, // database name
       ['basicProfile'], // datbase collections
       // default values if database is empty
@@ -284,10 +284,12 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         creationISODatetime: new Date().toISOString(),
       }
     );
+    this.profile$.next(profil);
+    return profil;
   }
 
   async updateProfilData(data: Partial<IAuthUser>): Promise<IAuthUser> {
-    const profil = await this.getProfilData();
+    const profil = this.profile$.value || await this.getProfilData();
     const result = await this._datastore.saveData(
       {
         ...profil,
@@ -296,6 +298,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
       DB_NAME, // database name
       ['basicProfile'], // datbase collections,
     );
+    this.profile$.next(result);
     return result;
   }
 

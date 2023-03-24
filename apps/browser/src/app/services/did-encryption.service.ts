@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { IEncryptionService, IIdentityService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 import { JWE } from 'did-jwt';
 
 // Doc: https://blog.ceramic.network/how-to-store-signed-and-encrypted-data-on-ipfs/   
@@ -8,16 +9,13 @@ import { JWE } from 'did-jwt';
 export class DIDEncryptionService implements IEncryptionService {
 
   constructor(
-    @Inject('APP_DID_SERVICE') private readonly _identityService: IIdentityService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DID_SERVICE)) private readonly _identityService: IIdentityService
   ){}
 
   async encryptData(data: string, authorizedDID: string[] = []) {
     const unit8Data = new TextEncoder().encode(data);
     const did = this._identityService.did$.value;
     const didID = this._getAuthorizedDidID();
-    console.log(`[INFO] {DIDEncryptionService} did: `, did);
-    console.log(`[INFO] {DIDEncryptionService} didID: `, didID);
-    console.log(`[INFO] {DIDEncryptionService} authorizedDID: `, authorizedDID);
     if (!did) throw new Error('{DIDEncryptionService}: DIDSession not initialized');
     if (!did.createJWE) throw new Error('{DIDEncryptionService}: createJWE not implemented');
     try {      

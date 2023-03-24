@@ -1,5 +1,6 @@
 import { ErrorHandler, Inject, Injectable, NgZone } from '@angular/core';
 import { ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { AlertController, LoadingController } from '@ionic/angular';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     private readonly _alertService: AlertController,
     private _zone: NgZone,
     private readonly _loadingCtrl: LoadingController,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) { }
 
   async handleError(error: any) {
