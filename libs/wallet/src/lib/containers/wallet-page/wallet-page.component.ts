@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { ILoadingService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 import { AlertController, ModalController, PopoverController, ToastController } from "@ionic/angular";
 import { ethers } from "ethers";
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, map, tap } from "rxjs";
@@ -23,7 +24,7 @@ export class WalletPageComponent  {
     private readonly _popoverCtrl: PopoverController,
     private readonly _modalCtrl: ModalController,
     private readonly _walletService: WalletService,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) {}
 
   async actions(type: string, payload?: any) {

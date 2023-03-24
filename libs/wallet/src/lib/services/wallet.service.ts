@@ -1,7 +1,8 @@
 import { Inject, Injectable } from "@angular/core";
-import { getInjectionToken, IAuthService, IDatastoreService, ILoadingService, TOKENS_NAME } from "@d-workspace/interfaces";
-import { ethers } from "ethers";
-import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, tap } from "rxjs";
+import { DIDDataStore } from '@glazed/did-datastore';
+import { IAuthService, IDatastoreService, ILoadingService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { BehaviorSubject, distinctUntilChanged, filter, tap } from "rxjs";
 import { TokenInterface } from "../interfaces/token.interface";
 
 const CHAIN_IDS = [
@@ -62,9 +63,9 @@ export class WalletService {
   public readonly tokensBalances$ = this._tokensBalances$.asObservable()
 
   constructor(
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService<any>,
-    @Inject('APP_WALLET_SERVICE_APIKEY') private readonly _apiKey: string,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WALLET_SERVICE_APIKEY)) private readonly _apiKey: string,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {}
 

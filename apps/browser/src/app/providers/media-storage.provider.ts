@@ -1,24 +1,25 @@
 import { EnvironmentProviders, Provider } from "@angular/core";
-import { getInjectionToken, IAuthService, IPiningService, TOKENS_NAME } from "@d-workspace/interfaces";
+import { IAuthService, IPiningService } from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { IPFSService, PinataService } from "../services";
 import { Web3storageService } from "../services/web3storage.service";
 import { IPFSPinningStrategy } from "../strategies";
 
 export const MEDIA_STORAGE_PROVIDER: (Provider | EnvironmentProviders)[]= [
   {
-    provide: 'APP_PINATA_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_PINATA_SERVICE),
     useClass: PinataService,
   },
   {
-    provide: 'APP_WEB3STORAGE_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_WEB3STORAGE_SERVICE),
     useClass: Web3storageService,
   },
   {
-    provide: 'APP_IPFS_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_IPFS_SERVICE),
     useClass: IPFSService,
   },
   {
-    provide: 'APP_IPFS_PINNING_SERVICE',
+    provide: getInjectionToken(TOKENS_NAME.APP_IPFS_PINNING_SERVICE),
     useFactory: (authService: IAuthService, pinata: IPiningService, web3: IPiningService) => {
       // use default service
       const profil = authService.profile$.value;
@@ -36,8 +37,8 @@ export const MEDIA_STORAGE_PROVIDER: (Provider | EnvironmentProviders)[]= [
     },
     deps: [
       getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE), 
-      'APP_PINATA_SERVICE',
-      'APP_WEB3STORAGE_SERVICE',
+      getInjectionToken(TOKENS_NAME.APP_PINATA_SERVICE),
+      getInjectionToken(TOKENS_NAME.APP_WEB3STORAGE_SERVICE)
     ],
   },
 ];

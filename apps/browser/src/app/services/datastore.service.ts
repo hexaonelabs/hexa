@@ -4,6 +4,7 @@ import { DIDDataStore } from '@glazed/did-datastore';
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { IDatastoreService, IIdentityService } from "@d-workspace/interfaces";
 import { AlertController, LoadingController, ToastController } from "@ionic/angular";
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 
 @Injectable()
 export class DatastoreService implements IDatastoreService<DIDDataStore> {
@@ -28,9 +29,9 @@ export class DatastoreService implements IDatastoreService<DIDDataStore> {
   }
  
   constructor(
-    @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
-    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
-    @Inject('APP_IS_PROD') private readonly _isProd: boolean,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_CERAMIC_SERVICE)) private readonly _ceramic: CeramicClient,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DID_SERVICE)) private readonly _did: IIdentityService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IS_PROD)) private readonly _isProd: boolean,
     
     private readonly _loaderService: LoadingController,
     private readonly _toastService: ToastController,

@@ -1,16 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import {
-  getInjectionToken,
   IAuthService,
   IPiningService,
   IPiningServiceConfig,
-  TOKENS_NAME,
 } from '@d-workspace/interfaces';
 import { firstValueFrom } from 'rxjs';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Injectable()
 export class PinataService implements IPiningService {
-  private readonly defaultConfig: IPiningServiceConfig = inject(
+  private readonly defaultConfig = inject<IPiningServiceConfig>(
     getInjectionToken(TOKENS_NAME.APP_PINNING_SERVICE_DEFAULT_CONFIG)
   );
   private readonly authService = inject<IAuthService>(

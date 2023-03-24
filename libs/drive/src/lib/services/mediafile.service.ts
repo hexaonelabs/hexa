@@ -1,9 +1,10 @@
-import { Inject, Injectable, Injector } from "@angular/core";
-import { BehaviorSubject, combineLatest, filter, firstValueFrom, map } from "rxjs";
-import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
+import { Inject, Injectable } from "@angular/core";
+import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 import { CID } from 'multiformats/cid';
-import { getInjectionToken, IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPiningService, IPinningServiceStrategy, Strategy, TOKENS_NAME } from "@d-workspace/interfaces";
+import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy} from "@d-workspace/interfaces";
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
 import { PromptStrategyService } from "./prompt-strategy.service";
 
 
@@ -109,11 +110,11 @@ export class MediaFileService {
 
   constructor(
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
-    @Inject('APP_IPFS_SERVICE') private readonly _fileService: IIPFSService,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService,
-    @Inject('APP_ENCRYPTION_SERVICE') private readonly _encryptionService: IEncryptionService,
-    @Inject('APP_NOTIFICATION_SERVICE') private readonly _notificationSerivce: INotificationService,
-    @Inject('APP_IPFS_PINNING_SERVICE') private readonly _ipfsPinningService: IPinningServiceStrategy,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IPFS_SERVICE)) private readonly _fileService: IIPFSService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_ENCRYPTION_SERVICE)) private readonly _encryptionService: IEncryptionService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationSerivce: INotificationService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IPFS_PINNING_SERVICE)) private readonly _ipfsPinningService: IPinningServiceStrategy,
     private readonly _promptStrategy: PromptStrategyService
   ) {}
 

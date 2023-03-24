@@ -1,5 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { getInjectionToken, IAuthService, ILoadingService, TOKENS_NAME } from '@d-workspace/interfaces';
+import { IAuthService, ILoadingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { AlertController, AlertOptions, IonSearchbar, ModalController, ToastController, ToastOptions } from '@ionic/angular';
 import { OverlayBaseController } from '@ionic/angular/util/overlay';
 import { firstValueFrom, map } from 'rxjs';
@@ -40,7 +41,7 @@ export class DrivePageComponent {
     private readonly _alertCtrl: AlertController,
     private _modalCtrl: ModalController,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
-    @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) {}
 
   async ionViewDidEnter() {

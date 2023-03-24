@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { INotificationService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { firstValueFrom, Subscription } from 'rxjs';
 
@@ -141,7 +142,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private readonly _route: ActivatedRoute,
     private readonly _toastService: ToastController,
     private readonly _loaderService: LoadingController,
-    @Inject('APP_NOTIFICATION_SERVICE') private readonly _notificationService: INotificationService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationService: INotificationService,
   ) {}
 
   ngOnInit() {

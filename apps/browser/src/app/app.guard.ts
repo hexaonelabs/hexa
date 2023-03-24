@@ -1,12 +1,11 @@
-import { inject, Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { filter, firstValueFrom } from 'rxjs';
 import {
   IIdentityService,
-  IAuthGuardService,
-  getInjectionToken,
-  TOKENS_NAME,
+  IAuthGuardService
 } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Injectable()
 export class AppGuard implements CanActivate {
@@ -14,11 +13,9 @@ export class AppGuard implements CanActivate {
   private readonly _authService = inject<IAuthGuardService>(
     getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)
   );
-
-  constructor(
-    @Inject('APP_DID_SERVICE')
-    private _didService: IIdentityService
-  ) {}
+  private readonly _didService = inject<IIdentityService>(
+    getInjectionToken(TOKENS_NAME.APP_DID_SERVICE)
+  );
 
   async canActivate(): Promise<boolean> {
     let canActivateThisRoute = false;

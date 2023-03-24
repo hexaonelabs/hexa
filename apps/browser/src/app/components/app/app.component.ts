@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ILoadingService } from '@d-workspace/interfaces';
 import { environment } from '../../../environments/environment';
 import '@khmyznikov/pwa-install';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Component({
   selector: 'd-workspace-root',
@@ -10,7 +11,7 @@ import '@khmyznikov/pwa-install';
 })
 export class AppComponent implements OnInit {
   constructor(
-    @Inject('APP_LOADER_SERVICE') public readonly loaderService: ILoadingService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) public readonly loaderService: ILoadingService
   ) {}
 
   ngOnInit(): void {

@@ -14,6 +14,7 @@ import { CeramicClient } from "@ceramicnetwork/http-client";
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
+import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
 
 const DB_NAME = 'd-workspace';
 const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
@@ -44,10 +45,10 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     private readonly _ngZone: NgZone,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
-    @Inject('APP_MESSAGING_SERVICE') private readonly _msgService: IMessagingService,
-    @Inject('APP_DID_SERVICE') private readonly _did: IIdentityService,
-    @Inject('APP_CERAMIC_SERVICE') private readonly _ceramic: CeramicClient,
-    @Inject('APP_DATASTORE_SERVICE') private readonly _datastore: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_MESSAGING_SERVICE)) private readonly _msgService: IMessagingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DID_SERVICE)) private readonly _did: IIdentityService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_CERAMIC_SERVICE)) private readonly _ceramic: CeramicClient,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastore: IDatastoreService<DIDDataStore>,
   ) {
     this._init();
   }

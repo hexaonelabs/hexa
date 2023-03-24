@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IPiningService, Strategy, TOKENS_NAME } from "@d-workspace/interfaces";
+import { IPiningService, Strategy } from "@d-workspace/interfaces";
 
 
 /**
