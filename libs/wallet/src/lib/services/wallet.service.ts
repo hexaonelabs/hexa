@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { IAuthService, IDatastoreService, ILoadingService } from "@d-workspace/interfaces";
+import { getInjectionToken, IAuthService, IDatastoreService, ILoadingService, TOKENS_NAME } from "@d-workspace/interfaces";
 import { ethers } from "ethers";
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, tap } from "rxjs";
 import { TokenInterface } from "../interfaces/token.interface";
@@ -65,7 +65,7 @@ export class WalletService {
     @Inject('APP_LOADER_SERVICE') private readonly _loaderService: ILoadingService,
     @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService<any>,
     @Inject('APP_WALLET_SERVICE_APIKEY') private readonly _apiKey: string,
-    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {}
 
   async addWallet(address: string) {

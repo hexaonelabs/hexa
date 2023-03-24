@@ -1,53 +1,62 @@
-import { Inject, Injectable } from "@angular/core";
-import { IPiningService, IPiningServiceConfig } from "@d-workspace/interfaces";
+import { inject, Injectable } from '@angular/core';
+import {
+  getInjectionToken,
+  IAuthService,
+  IPiningService,
+  IPiningServiceConfig,
+  TOKENS_NAME,
+} from '@d-workspace/interfaces';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class PinataService implements IPiningService {
-
-  constructor(
-    @Inject('APP_PINNING_SERVICE_CONFIG') private _pinningServiceConfig: IPiningServiceConfig
-  ) {
-  }
+  private readonly defaultConfig: IPiningServiceConfig = inject(
+    getInjectionToken(TOKENS_NAME.APP_PINNING_SERVICE_DEFAULT_CONFIG)
+  );
+  private readonly authService = inject<IAuthService>(
+    getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)
+  );
 
   async pin(cid: string) {
-    const url = this._pinningServiceConfig.pinning_endpoint;
-    const token = this._pinningServiceConfig.token;
+    const profile = await firstValueFrom(this.authService.profile$);
+    const url = 'https://api.pinata.cloud/pinning/pinByHash';
+    const token = profile?.ipfsConfig?.token || this.defaultConfig.token;
     if (!url || !token) {
-      throw new Error('IPFS pinning service is not configured');
+      throw new Error('Pinata IPFS pinning service is not configured');
     }
     const body = JSON.stringify({
-      "hashToPin": cid
+      hashToPin: cid,
     });
     const config: RequestInit = {
       method: 'POST',
       body,
-      headers: new Headers({ 
-        'Authorization': `Bearer ${token}`, 
-        'Content-Type': 'application/json'
-      })
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }),
     };
     await fetch(url, config)
-      .then(res => res.json())
-      .catch(err => {
+      .then((res) => res.json())
+      .catch((err) => {
         throw err;
-      });   
+      });
   }
 
   async unpin(cid: string) {
-    const url = `${this._pinningServiceConfig.unpinning_endpoint}/${cid}`;
-    const token = this._pinningServiceConfig.token;
+    const profile = await firstValueFrom(this.authService.profile$);
+    const url = `https://api.pinata.cloud/pinning/unpin/${cid}`;
+    const token = profile?.ipfsConfig?.token || this.defaultConfig.token;
     if (!url || !token) {
-      throw new Error('IPFS pinning service is not configured');
+      throw new Error('Pinata IPFS pinning service is not configured');
     }
     const config: RequestInit = {
       method: 'DELETE',
-      headers: new Headers({ 
-        'Authorization': `Bearer ${token}`, 
-      })
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+      }),
     };
-    await fetch(url, config)
-      .catch(err => {
-        throw err;
-      });
+    await fetch(url, config).catch((err) => {
+      throw err;
+    });
   }
 }

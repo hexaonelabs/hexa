@@ -1,13 +1,15 @@
+import { IPiningServiceConfig } from "@d-workspace/interfaces";
 import { environment } from "../../environments/environment";
+
+const defaultValue: IPiningServiceConfig = {
+  token: environment.ipfs.pinning_service_token||'',
+  serviceName: 'default-pinata',
+}
 
 export const API_CONFIG_PROVIDER = [
   {
-    provide: 'APP_PINNING_SERVICE_CONFIG',
-    useValue: {
-      pinning_endpoint: environment.ipfs.pinning_service_endpoint,
-      unpinning_endpoint: environment.ipfs.unpinning_service_endpoint,
-      token: environment.ipfs.pinning_service_token,
-    },
+    provide: 'APP_PINNING_SERVICE_DEFAULT_CONFIG',
+    useValue: defaultValue,
   },
   {
     provide: 'APP_WALLET_SERVICE_APIKEY',

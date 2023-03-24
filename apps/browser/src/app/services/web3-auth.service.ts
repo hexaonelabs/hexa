@@ -141,10 +141,9 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         this._ceramic.did = did;
         console.log('[INFO] DID ', isAuth);
         // update profile or set default profile if not exist
-        const profil = await this.updateProfilData({
+        await this.updateProfilData({
           latestConnectionISODatetime: new Date().toISOString(),
         });
-        this.profile$.next(profil);
         // throw error if DID connection failed
         if (!isDIDConnected || isDIDConnected instanceof Error) {
           await this.disconnect();
@@ -274,7 +273,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   async getProfilData(): Promise<IAuthUser> {
-    return this._datastore.getData(
+    const profil =  await this._datastore.getData(
       DB_NAME, // database name
       ['basicProfile'], // datbase collections
       // default values if database is empty
@@ -284,10 +283,12 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         creationISODatetime: new Date().toISOString(),
       }
     );
+    this.profile$.next(profil);
+    return profil;
   }
 
   async updateProfilData(data: Partial<IAuthUser>): Promise<IAuthUser> {
-    const profil = await this.getProfilData();
+    const profil = this.profile$.value || await this.getProfilData();
     const result = await this._datastore.saveData(
       {
         ...profil,
@@ -296,6 +297,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
       DB_NAME, // database name
       ['basicProfile'], // datbase collections,
     );
+    this.profile$.next(result);
     return result;
   }
 

@@ -1,9 +1,10 @@
-import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
+import { Inject, Injectable, Injector } from "@angular/core";
+import { BehaviorSubject, combineLatest, filter, firstValueFrom, map } from "rxjs";
 import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
 import { v4 as uuidV4 } from 'uuid';
 import { CID } from 'multiformats/cid';
-import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPiningService } from "@d-workspace/interfaces";
+import { getInjectionToken, IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPiningService, IPinningServiceStrategy, Strategy, TOKENS_NAME } from "@d-workspace/interfaces";
+import { PromptStrategyService } from "./prompt-strategy.service";
 
 
 // function that convert file to base64 string
@@ -107,12 +108,13 @@ export class MediaFileService {
   public readonly allMedia$ = this._items$.asObservable();
 
   constructor(
-    @Inject('APP_WEB3AUTH_SERVICE') private readonly _authService: IAuthService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
     @Inject('APP_IPFS_SERVICE') private readonly _fileService: IIPFSService,
     @Inject('APP_DATASTORE_SERVICE') private readonly _datastoreService: IDatastoreService,
     @Inject('APP_ENCRYPTION_SERVICE') private readonly _encryptionService: IEncryptionService,
     @Inject('APP_NOTIFICATION_SERVICE') private readonly _notificationSerivce: INotificationService,
-    @Inject('APP_IPFS_PINNING_SERVICE') private readonly _ipfsPinningService: IPiningService
+    @Inject('APP_IPFS_PINNING_SERVICE') private readonly _ipfsPinningService: IPinningServiceStrategy,
+    private readonly _promptStrategy: PromptStrategyService
   ) {}
 
   async getFiles() {
@@ -141,6 +143,8 @@ export class MediaFileService {
     metaDataValue?: MediafileInterface|undefined, 
     fromAccount?: string,
   }) {
+    // check if pinning service is ready and setup
+    await this._setupPinningStrategy()
     // build file metadata object
     const _id = uuidV4();
     const isoDateTime = new Date().toISOString();
@@ -258,6 +262,8 @@ export class MediaFileService {
   }
 
   async delete(id: string) {
+    // check if pinning service is ready and setup
+    await this._setupPinningStrategy()
     const files = [...this._items$.value];
     const index = files.findIndex((item) => item._id === id);
     if (index === -1) {
@@ -440,7 +446,7 @@ export class MediaFileService {
     return destinationAddress;
   }
 
-  private _buildAbsolutPath(file: MediafileInterface): string{
+  private _buildAbsolutPath(file: MediafileInterface): string {
     const path = [file.name];
     let parent = this._items$.value.find((item) => item._id === file.parent);
     while (parent !== undefined) {
@@ -450,4 +456,23 @@ export class MediaFileService {
     return path.join('/');
   }
 
+  private async _setupPinningStrategy() {
+    const userData = this._authService.profile$.value;
+    console.log('[INFO] Setup pinning strategy...', userData);
+    
+    // check existing config for pining servcie
+    const config = await this._promptStrategy.askSetupService(userData?.ipfsConfig?.serviceName);
+    if (!config) {
+      return;
+    }
+    // save user config to user base
+    await this._authService.updateProfilData({
+      ...userData,
+      ipfsConfig: {
+        ...config
+      }
+    });
+    // define pinning service using user cnfig
+    this._ipfsPinningService.setStrategy(config.serviceName);
+  }
 }
