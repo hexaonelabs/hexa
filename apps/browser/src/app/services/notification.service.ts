@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { IAuthService, IMessagingService, INotificationService } from '@d-workspace/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { LoadingController } from '@ionic/angular';
 import { debounceTime, map, tap } from 'rxjs';
 
 @Injectable()
@@ -52,12 +53,21 @@ export class NotificationService implements INotificationService {
   public readonly isConnected$ = this._messagingService.isConnected$;
 
   constructor(
+    private readonly _loaderCtrl: LoadingController,
     @Inject(getInjectionToken(TOKENS_NAME.APP_MESSAGING_SERVICE)) private readonly _messagingService: IMessagingService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {}
 
   async connect() {
-    await this._messagingService.connect();
+    const ionLoading = await this._loaderCtrl.create({
+      message: `Waiting signature from your wallet to enable notifications...`,
+    });
+    await ionLoading.present();
+    await this._messagingService.connect().catch((error) => {
+      ionLoading.dismiss();
+      throw error;
+    });
+    await ionLoading.dismiss();
     await this._messagingService.loadDatas();
   }
 
