@@ -2,46 +2,10 @@ import { Inject, Injectable } from "@angular/core";
 import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 import { CID } from 'multiformats/cid';
-import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy} from "@d-workspace/interfaces";
+import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy, IPromptStrategyService} from "@d-workspace/interfaces";
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
-import { PromptStrategyService } from "./prompt-strategy.service";
-
-
-// function that convert file to base64 string
-const fileToB64 = (file: File | Blob) => {
-  return new Promise((resolve: (a: string) => void, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        if (!reader.result) {
-          reject();
-        }
-        // check if is buffer or string and return as base64
-        const result = typeof reader.result === 'string' 
-          ? reader.result 
-          : reader?.result?.toString();
-        if (!result) {
-          reject();
-        }
-        resolve(result as string);
-      }
-      reader.onerror = (error) => reject(error);
-    }
-  );
-}
-// function that conver base64 to file
-const b64ToFile = (b64: string, fileName: string = 'file') => {
-  const arr = b64.split(',');
-  const mime = arr[0].match(/:(.*?);/)?.[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], fileName, { type: mime });
-}
+import { b64ToFile, fileToB64 } from "../drive.utils";
 
 const ROOT_DB_COLLECTION = 'd-drive';
 
@@ -115,7 +79,7 @@ export class MediaFileService {
     @Inject(getInjectionToken(TOKENS_NAME.APP_ENCRYPTION_SERVICE)) private readonly _encryptionService: IEncryptionService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationSerivce: INotificationService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_IPFS_PINNING_SERVICE)) private readonly _ipfsPinningService: IPinningServiceStrategy,
-    private readonly _promptStrategy: PromptStrategyService
+    @Inject(getInjectionToken(TOKENS_NAME.APP_PROMPT_STRATEGY_SERVICE)) private readonly _promptStrategy: IPromptStrategyService,
   ) {}
 
   async getFiles() {
@@ -465,6 +429,9 @@ export class MediaFileService {
     const config = await this._promptStrategy.askSetupService(userData?.ipfsConfig?.serviceName);
     if (!config) {
       return;
+    }
+    if (config?.token === '' ) {
+      config.serviceName = '';
     }
     // save user config to user base
     await this._authService.updateProfilData({

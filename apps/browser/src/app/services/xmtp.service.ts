@@ -29,7 +29,7 @@ export class XMTPService implements IMessagingService {
     null as any
   );
   public readonly isConnected$ = this._xmtp.asObservable().pipe(
-    map((xmtp) => xmtp !== null)
+    map((xmtp) => Boolean(xmtp))
   );
 
   async init(web3Provider: ethers.providers.Web3Provider, ops: {
