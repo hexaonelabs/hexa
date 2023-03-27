@@ -46,7 +46,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
         .logo {
           margin: 10px auto 20px;
           padding: 0 10pxpx;
-          max-width: 48px;
+          max-width: 42px;
         }
 
       }
