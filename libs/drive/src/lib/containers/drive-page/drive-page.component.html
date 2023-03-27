@@ -130,6 +130,20 @@
       </ng-template>
     </ion-row>
   </ion-grid>
+  <!-- mobile controls -->
+  <ion-fab slot="fixed" horizontal="end" vertical="bottom" class="ion-hide-md-up">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button (click)="addFileElement.click()">
+        <ion-icon name="document-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="actions('newFolder')">
+        <ion-icon name="folder-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
   <!-- Input HTML Element -->
   <input
     #addFileElement

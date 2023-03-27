@@ -1,47 +1,13 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { INotificationService } from '@d-workspace/interfaces';
+import { IAuthService, INotificationService, IPromptStrategyService } from '@d-workspace/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, IonPopover, IonToggle, LoadingController, ToastController } from '@ionic/angular';
 import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
   selector: 'd-workspace-dashboard',
-  template: `
-    <ion-split-pane contentId="main" when="sm" >
-    <ion-menu contentId="main" #menuElement>
-      <ion-header class="ion-no-border">
-        <ion-toolbar>
-          <ion-img class="logo" src="./assets/images/logo.svg"></ion-img>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content [fullscreen]="true" color="primary">
-        <div class="centervert">
-          <ion-button 
-              fill="clear"
-              expand="block"
-              size="large"
-              class="link"
-              *ngFor="let feature of features; let i = index"
-              [disabled]="!feature.isEnabled"
-              (click)="togglePage(feature.url);menuElement.close()"
-              [ngClass]="{'active-link': i === 0}"
-              routerLinkActive="active-link">
-            <ion-icon slot="icon-only" color="light" [name]="feature.name"></ion-icon>
-          </ion-button>
-        </div>
-      </ion-content>
-      <ion-footer class="ion-no-border">
-        <ion-toolbar>
-          <ion-button fill="clear" (click)="toogleNotification()">
-            <ion-icon slot="icon-only" color="light" size="small" [name]="(isNotifEnabled$|async) ? 'notifications-outline' :  'notifications-off-outline'"></ion-icon>
-          </ion-button>
-        </ion-toolbar>
-      </ion-footer>
-    </ion-menu>
-    <ion-router-outlet id="main" mode="md"></ion-router-outlet>
-  </ion-split-pane>
-  `,
+  templateUrl: `./dashboard.component.html`,
   styles: [`
     :host {
       ion-split-pane {
@@ -80,7 +46,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
         .logo {
           margin: 10px auto 20px;
           padding: 0 10pxpx;
-          max-width: 48px;
+          max-width: 42px;
         }
 
       }
@@ -141,9 +107,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _toastService: ToastController,
-    private readonly _loaderService: LoadingController,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationService: INotificationService,
-  ) {}
+    @Inject(getInjectionToken(TOKENS_NAME.APP_PROMPT_STRATEGY_SERVICE)) private readonly _promptStrategy: IPromptStrategyService,
+    ) {}
 
   ngOnInit() {
     const sub = this._notificationService.notifications$.subscribe(
@@ -180,24 +147,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this._router.navigate([`/d/${path}`])
   }
 
-  async toogleNotification() {
+  async toogleNotification(popoverElement: IonPopover, toggleElement: IonToggle) {
+    // disable element to prevent multiple click
+    toggleElement.disabled = true;
     let message = '';
     const isConnected = await firstValueFrom(this._notificationService.isConnected$);
     if (isConnected) {
       await this._notificationService.disconnect();
       message = `Notifications are disabled`; 
     } else {
-      const ionLoading = await this._loaderService.create({
-        message: `Waiting signature from your wallet to enable notifications...`,
-      });
-      await ionLoading.present();
       message = await this._notificationService
       .connect()
       .then(() => `Notifications are  enabled`)
       .catch(() =>  'Failed to enable notifications');
-      await ionLoading.dismiss();
     }
+    // do not miss to enable element back
+    await popoverElement.dismiss();
     await this.displayNotification(message);
+    toggleElement.disabled = false;
   }
 
   async displayNotification(message: string) {
@@ -215,6 +182,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ],
     });
     await ionToast.present();
+  }
+
+  async setupIPFSPinService(popoverElement: IonPopover) {
+    // close popover
+    popoverElement.dismiss();
+    // extract user data
+    const userData = this._authService.profile$.value;
+    // check existing config for pining servcie and reset value if needed
+    const config = await this._promptStrategy.askSetupService();
+    if (config?.token === '' ) {
+      config.serviceName = '';
+    }
+    if (!config) {
+      return;
+    }
+    // save user config to user base
+    await this._authService.updateProfilData({
+      ...userData,
+      ipfsConfig: {
+        ...config
+      }
+    });
   }
 
 }

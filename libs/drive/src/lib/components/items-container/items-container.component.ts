@@ -76,8 +76,8 @@ export class ItemsContainerComponent implements OnChanges {
     this.actionsEvent.emit({ type, payload });
   }
 
-  async trackByfn(index: number, item: { _id: string }) {
-    return item._id;
+  trackByFn(index: number) {
+    return index;
   }
 
   private async _preview(item: MediafileInterface) {

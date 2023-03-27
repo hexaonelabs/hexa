@@ -22,7 +22,6 @@ import { SliceAddressPipe } from './pipes/slice-address.pipe';
 import { TotalStoragePipe } from './pipes/total-storage.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from '@d-workspace/ui';
-import { PromptStrategyService } from './services/prompt-strategy.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +51,6 @@ import { PromptStrategyService } from './services/prompt-strategy.service';
   ],
   providers: [
     MediaFileService,
-    PromptStrategyService
-  ]
+  ],
 })
 export class DriveModule {}

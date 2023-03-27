@@ -1,7 +1,7 @@
 <ion-grid class="ion-no-padding">
   <ion-row 
       *ngFor="
-        let item of (items||[]) | slice: 0:maxItemToDisplay$.value;
+        let item of (items||[]) | slice: 0:maxItemToDisplay$.value;trackBy: trackByFn
       "
       (click)="item.isFolder ? actions('navTo', {item}) : actions('preview', {item})"
       class="item ion-align-items-center ion-padding-start">

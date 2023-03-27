@@ -1,11 +1,15 @@
 import { Injectable } from "@angular/core";
+import { IPromptStrategyService } from "@d-workspace/interfaces";
 import { AlertController } from "@ionic/angular";
 
 @Injectable()
-export class PromptStrategyService  {
+export class PromptStrategyService implements IPromptStrategyService  {
   
-  async askSetupService(serviceName?: string): Promise<{token: string, serviceName: string}|undefined> { 
-    const isNotDefaultService = serviceName && !serviceName.includes('default');
+  async askSetupService(serviceName?: string): Promise<{token: string, serviceName: string}|undefined> {
+    const valueExist =  Boolean(serviceName);
+    console.log('valueExist', valueExist, serviceName);
+    
+    const isNotDefaultService =  valueExist && serviceName && !serviceName.includes('default');
     if (isNotDefaultService) {
       return;
     }

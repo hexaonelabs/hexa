@@ -1,6 +1,6 @@
 {
   "name": "d-workspace",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)",
   "license": "MIT",
   "scripts": {

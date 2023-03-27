@@ -8,12 +8,14 @@ import { ENCRYPTION_PROVIDER } from "./encryption.provider";
 import { DATABASE_PROVIDER } from "./database.provider";
 import { COMMUNICATION_PROVIDER } from "./communication.provider";
 import { MEDIA_STORAGE_PROVIDER } from "./media-storage.provider";
+import { PROMPT_STRATEGY_PROVIDER } from "./strategy.provider";
 
 export const PROVIDERS: (Provider | EnvironmentProviders)[]  = [
+  ...PROMPT_STRATEGY_PROVIDER, // zero dependency first
   ...API_CONFIG_PROVIDER,
   ...AUTHENTICATION_PROVIDER,
-  ...COMMUNICATION_PROVIDER,
   ...DATABASE_PROVIDER,
+  ...COMMUNICATION_PROVIDER,
   ...ENCRYPTION_PROVIDER,
   ...ERROR_PROVIDER,
   ...IS_PROD_PROVIDER,
