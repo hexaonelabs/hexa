@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Client,
   Conversation,
@@ -8,6 +8,7 @@ import {
 import { BehaviorSubject, map } from 'rxjs';
 import { ethers } from 'ethers';
 import { IBaseMessage, IMessagingService } from '@d-workspace/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 export type XMTPConversation = Conversation;
 export type XMTPConversationMessage = DecodedMessage;
@@ -31,6 +32,7 @@ export class XMTPService implements IMessagingService {
   public readonly isConnected$ = this._xmtp.asObservable().pipe(
     map((xmtp) => Boolean(xmtp))
   );
+  private readonly _isProduction = inject<boolean>(getInjectionToken(TOKENS_NAME.APP_IS_PROD));
 
   async init(web3Provider: ethers.providers.Web3Provider, ops: {
     startTime: Date;
@@ -47,7 +49,7 @@ export class XMTPService implements IMessagingService {
     // Create the client with your wallet.
     // This will connect to the XMTP development network by default
     const xmtp = await Client.create(this._web3Provider.getSigner(), {
-      env: 'dev',
+      env: this._isProduction ? 'production' : 'dev',
     });
     console.log('[INFO] {XMTPService} XMTP client created successfully');
     this._xmtp.next(xmtp);
