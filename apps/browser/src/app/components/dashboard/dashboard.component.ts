@@ -107,7 +107,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _toastService: ToastController,
-    private readonly _loaderService: LoadingController,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationService: INotificationService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_PROMPT_STRATEGY_SERVICE)) private readonly _promptStrategy: IPromptStrategyService,
@@ -157,15 +156,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       await this._notificationService.disconnect();
       message = `Notifications are disabled`; 
     } else {
-      const ionLoading = await this._loaderService.create({
-        message: `Waiting signature from your wallet to enable notifications...`,
-      });
-      await ionLoading.present();
       message = await this._notificationService
       .connect()
       .then(() => `Notifications are  enabled`)
       .catch(() =>  'Failed to enable notifications');
-      await ionLoading.dismiss();
     }
     // do not miss to enable element back
     await popoverElement.dismiss();
