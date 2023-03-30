@@ -45,7 +45,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
       ion-header {
         .logo {
           margin: 10px auto 20px;
-          padding: 0 10pxpx;
+          padding: 0px;
           max-width: 42px;
         }
 
