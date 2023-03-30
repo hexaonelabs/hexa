@@ -4,7 +4,7 @@ import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
 import ledgerModule from '@web3-onboard/ledger';
 import coinbaseModule from '@web3-onboard/coinbase';
-// import web3authModule from '@web3-onboard/web3auth'
+// import web3authModule from '@web3-onboard/web3auth';
 import torusModule from '@web3-onboard/torus';
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom } from "rxjs";
 import { NgZone } from '@angular/core';
@@ -180,7 +180,8 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         ledger,
         coinbase,
         // enkrypt,
-        torus
+        // torus,
+        // web3Auth,
       ],
       chains: [
         {
