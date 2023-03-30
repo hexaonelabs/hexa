@@ -66,3 +66,7 @@ global.process = {
   version: "",
   nextTick: require("next-tick"),
 };
+
+
+// polyfill for Share API
+import 'share-api-polyfill';
