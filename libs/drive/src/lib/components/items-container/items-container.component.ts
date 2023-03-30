@@ -29,8 +29,8 @@ export class ItemsContainerComponent implements OnChanges {
 
   constructor(
     private readonly _popCtrl: PopoverController,
-    private readonly _modalCtrl: ModalController,
-    ) {}
+    private readonly _modalCtrl: ModalController
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // reset max item to display when items change
@@ -54,7 +54,7 @@ export class ItemsContainerComponent implements OnChanges {
         break;
       }
       case type === 'displayMoreItem': {
-        const totalItem = this.items?.length||0;
+        const totalItem = this.items?.length || 0;
         const max = this.maxItemToDisplay$.value;
         const t = setTimeout(async () => {
           payload.target.complete();
@@ -81,10 +81,12 @@ export class ItemsContainerComponent implements OnChanges {
   }
 
   private async _preview(item: MediafileInterface) {
+    const account = this.account;
     const ionModal = await this._modalCtrl.create({
       component: ItemPreviewComponent,
       componentProps: {
-        item
+        item,
+        account,
       },
       cssClass: 'ion-modal-preview-file',
     });
