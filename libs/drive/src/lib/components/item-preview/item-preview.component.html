@@ -51,11 +51,20 @@
             <img class="default" alt="default preview" src="./assets/drive/images/my-doc.svg" />
           </div>
         </ng-container>
-        <ion-button
-          class="download-btn"
-          (click)="modalCtrl.dismiss(item, 'download')"
-          >Download</ion-button
-        >
+        <ion-buttons class="options-btn">
+          <ion-button
+            fill="solid"
+            expand="block"
+            (click)="modalCtrl.dismiss(item, 'download')"
+            >Download</ion-button
+          >
+          <ion-button
+            fill="solid"
+            expand="block"
+            (click)="modalCtrl.dismiss(item, 'share')"
+            >Share</ion-button
+          >
+        </ion-buttons>
       </ion-col>
       <ion-col size="12" size-md="5">
         <ion-list lines="none" class="ion-padding">
@@ -125,7 +134,6 @@
               <ion-chip
                 color="primary"
                 *ngIf="
-                  item.encryptedSymmetricKey &&
                   item.isFolder !== true &&
                   (item.accessControlConditions | isShared: account)
                 "
