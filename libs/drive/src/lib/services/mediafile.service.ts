@@ -372,15 +372,15 @@ export class MediaFileService {
       if (canShare) {
         await Share.share({
           title: 'd-workspace share a file',
-          text: `You received a file from dDrive. You can click here to download from IPFS Network: ${url}`,
+          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
           url,
           // sfiles: [file]
         });
       } else {
         // use browser polyfill
         await navigator.share({
-          title: 'dDrive Share file',
-          text: `You received a file from dDrive. You can click here to download from IPFS Network: ${url}`,
+          title: 'd-workspace Share file',
+          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
           url,
           files: [file]
         });
