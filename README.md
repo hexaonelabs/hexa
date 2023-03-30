@@ -39,7 +39,9 @@ d-workspace integrat IPFS Core powered by Filecoin to enable users to store, man
   - [x] Rename file
   - [x] Move file
   - [x] Share copy file with public url link
+  - [x] Download page for public IPFS hosted file
   - [x] Share copy file with custom access controls
+  - [x] Notify user from shared encrypted file
   - [x] Preview file in app
 
 </details>
@@ -72,6 +74,7 @@ d-workspace integrat IPFS Core powered by Filecoin to enable users to store, man
   - [x] Data encryption 
   - [x] Files access control with wallet address
   - [x] Desktop app support using PWA technology
+  - [x] Define IPFS service with user API Key
 
 </details>
 
@@ -79,12 +82,14 @@ d-workspace integrat IPFS Core powered by Filecoin to enable users to store, man
 ## Technology Stack
 
 - [IFPS Core](https://js.ipfs.tech) Browser implementation of the IPFS protocol to manage files storage and retrieval to IPFS network 
-- [Pinata API](https://pinata.cloud) Default pinning CID service to pin files to IPFS network
+- [Pinata](https://pinata.cloud) Default pinning CID service to pin files to IPFS network
+- [Web3.storage](https.//web3.storage) Alternative pinning CID service available and configurable with user API Key
 - [Ceramic](https://ceramic.network) Decentralized database to manage storage metadata files and user profile data
 - [XMTP](https://xmtp.org/) Decentralized messaging service to manage in app notifications and messaging
 - [Ceramic 3id Connect](https://github.com/ceramicstudio/js-3id) Decentralized authentication service to manage user identity and Cryptography Access Control
 - [Ethersjs](https://docs.ethers.io/v5/) Ethereum SDK to manage Web3 wallet connection and account management 
 - [Web3 onBoard](https://onboard.blocknative.com/) SDK to onboard users to web3 apps
+- [Covalent](https://www.covalenthq.com) Unified API bringing visibility to billions Web3 data points
 - [Valist](https://app.valist.io/) Software distribution tool to manage releases and updates hosted on IPFS
 
 ## Usage & Installation
