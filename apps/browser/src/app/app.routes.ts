@@ -11,6 +11,17 @@ export const appRoutes: Route[] = [
     path: '',
     children: [
       {
+        path: 'ipfs',
+        // loadComponent: () => import('./components/ipfs/ipfs.component').then(m => m.IpfsComponent),
+        children: [
+          {
+            path: ':cid',
+            loadComponent: () => import('./components/ipfs/ipfs.component').then(m => m.IpfsComponent),
+
+          }
+        ]
+      },
+      {
         path: 'd',
         component: DashboardComponent,
         canActivate: [AppGuard],

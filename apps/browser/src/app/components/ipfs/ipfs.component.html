@@ -1,0 +1,92 @@
+<ion-content [fullscreen]="true" class="ion-no-padding">
+  <ion-grid class="ion-no-padding" *ngIf="fileUrl$.value as url">
+    <ion-row class="ion-align-items-center ion-no-padding">
+      <ion-col size="12" size-md="7" class="ion-text-center preview ion-no-padding">
+        <ng-container [ngSwitch]="true">
+          <!-- image -->
+          <div *ngSwitchCase="url?.endsWith('jpg')||url?.endsWith('jpeg')||url?.endsWith('png')||url?.endsWith('gif')">
+              <div class="bg-image" [style.backgroundImage]="'url('+ url+')'"></div>
+              <img
+                alt="image preview"
+                [src]="url"
+              />
+          </div>
+          <div *ngSwitchCase="url?.endsWith('mp3')||url?.endsWith('wave')">
+            <audio
+              controls
+              autoplay
+              [src]="url"
+            ></audio>
+          </div>
+          <!-- video -->
+          <div *ngSwitchCase="url?.endsWith('mp4')">
+            <video
+              controls
+              autoplay
+              [src]="url"
+            ></video>
+          </div>
+          <!-- others -->
+          <div *ngSwitchDefault>
+            <img class="default" alt="default preview" src="./assets/drive/images/my-doc.svg" />
+          </div>
+        </ng-container>
+        <ion-buttons class="options-btn">
+          <ion-button
+            fill="solid"
+            expand="block"
+            >Download</ion-button
+          >
+        </ion-buttons>
+      </ion-col>
+      <ion-col size="12" size-md="5">
+        <ion-list lines="none" class="ion-padding">
+          <ion-item>
+            <ion-label class="ion-text-wrap">
+              <p>Name</p>
+              <ion-text color="dark">
+                <!-- <p>{{ item.name }}</p> -->
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Type</p>
+              <ion-text color="dark">
+                <!-- <p>{{ item.type }}</p> -->
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Size</p>
+              <ion-text color="dark">
+                <!-- <p>{{ item.size | bytesToSize }}</p> -->
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>IPFS CID</p>
+              <ion-text color="dark">
+                <p class="ion-no-margin ion-text-wrap">
+                  <!-- {{ item.cid }} -->
+                </p>
+              </ion-text>
+            </ion-label>
+            <!-- <ion-button
+              slot="end"
+              fill="none"
+              target="_blank"
+              href="https://ipfs.io/ipfs/{{ item.cid }}"
+            >
+              <ion-icon icon-only size="small" name="open-outline"></ion-icon>
+            </ion-button> -->
+          </ion-item>
+          
+          
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
