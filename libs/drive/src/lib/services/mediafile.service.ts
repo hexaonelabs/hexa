@@ -159,7 +159,7 @@ export class MediaFileService {
               storeCodec: 'dag-jose', 
               hashAlg: 'sha2-256',
               pin: true,
-              preload: true,
+              preload: false,
               timeout: 10000,
             }); 
             console.log('[INFO] {MediafileService} dagCID: ', dagCID);                     

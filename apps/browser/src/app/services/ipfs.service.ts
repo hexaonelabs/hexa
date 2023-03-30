@@ -27,7 +27,7 @@ export class IPFSService implements IIPFSService {
     }
     const { cid } = await this._ipfsNode.add(file, {
       timeout: 10000,
-      preload: true,
+      preload: false,
       progress: (prog: any) => console.log(`received: ${prog}`),
     });
     if (s) {
@@ -56,7 +56,7 @@ export class IPFSService implements IIPFSService {
     }
     const asyncUint8Array = this._ipfsNode.cat(cid, {
       timeout: 10000,
-      preload: true,
+      preload: false,
     });
     const blobsPart = [];
     for await (const chunk of asyncUint8Array) {
