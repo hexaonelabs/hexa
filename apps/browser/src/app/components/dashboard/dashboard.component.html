@@ -102,5 +102,66 @@
       </ion-toolbar>
     </ion-footer>
   </ion-menu>
-  <ion-router-outlet id="main" mode="md"></ion-router-outlet>
+  <ion-router-outlet id="main" mode="md">
+    <ion-button mode="ios" class="authMiniDash" id="profil-trigger">
+      <ion-icon src="./assets/images/logo-colored.svg"></ion-icon>
+      <ion-img [src]="account$.value | addressToAvatar | async"></ion-img>
+    </ion-button>
+
+    <ion-popover
+      #popOverProfil
+      class="profil-popover"
+      trigger="profil-trigger"
+      size="auto"
+      side="bottom"
+      alignment="start"
+      [keepContentsMounted]="true"
+      [dismissOnSelect]="false"
+    >
+      <ng-template>
+        <ion-content class="ion-padding">
+          <ion-item *ngIf="account$.value as accountId" lines="none" class="item-profil"> 
+            <ion-avatar slot="start" >
+              <ion-img
+                [ngClass]="{'online': true}"
+                [src]="accountId | addressToAvatar | async"></ion-img>
+            </ion-avatar>
+            <ion-label class="ion-text-nowrap">
+              <label>
+                <ion-text color="medium">
+                  <small>Connected address</small>
+                </ion-text>
+              </label>
+              {{ accountId }}
+              <!-- <label>
+                <ion-text color="medium">
+                  <label>
+                    <small>Chain</small>
+                  </label>
+                </ion-text>
+              </label>
+              {{ chainId$ | async | networkName }} -->
+            </ion-label>
+          </ion-item>
+          <!-- <ion-item lines="none" class="ion-margin-top">
+            <ion-icon size="small" name="moon-outline" slot="start"></ion-icon>
+            <ion-toggle slot="end" color="primary" [checked]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+            <ion-label>
+              Dark mode
+            </ion-label>
+          </ion-item> -->
+          <ion-item
+            lines="none"
+            class="ion-margin-top"
+            (click)="disconnect();popOverProfil.dismiss();"
+          >
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-label>
+              <ion-text> Disconnect </ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </ion-router-outlet>
 </ion-split-pane>

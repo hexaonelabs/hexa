@@ -46,9 +46,7 @@ export class AppGuard implements CanActivate {
     // Connect the most recently connected wallet (first in the array)
     // this._authService.onboard.connectWallet({ autoSelect: previouslyConnectedWallets[0] });
     // You can also auto connect "silently" and disable all onboard modals to avoid them flashing on page load
-    await this._authService.onboard.connectWallet({
-      autoSelect: { label: previouslyConnectedWallets[0], disableModals: true },
-    });
+    await this._authService.connectWallet(previouslyConnectedWallets[0]);
     // OR - loop through and initiate connection for all previously connected wallets
     // note: This UX might not be great as the user may need to login to each wallet one after the other
     // for (walletLabel in previouslyConnectedWallets) {
