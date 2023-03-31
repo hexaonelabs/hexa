@@ -5,9 +5,11 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-
 if (environment.production) {
   enableProdMode();
+  window.console.log = (...data: any[]) => {
+    // disabling console.log in production
+  };
 }
 
 platformBrowserDynamic()
