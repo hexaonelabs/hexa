@@ -88,7 +88,7 @@ d-workspace integrat IPFS Core powered by Filecoin to enable users to store, man
 - [XMTP](https://xmtp.org/) Decentralized messaging service to manage in app notifications and messaging
 - [Ceramic 3id Connect](https://github.com/ceramicstudio/js-3id) Decentralized authentication service to manage user identity and Cryptography Access Control
 - [Ethersjs](https://docs.ethers.io/v5/) Ethereum SDK to manage Web3 wallet connection and account management 
-- [Web3 onBoard](https://onboard.blocknative.com/) SDK to onboard users to web3 apps
+- [Magic.link](https://magic.link/) SDK to onboard users to web3 apps
 - [Covalent](https://www.covalenthq.com) Unified API bringing visibility to billions Web3 data points
 - [Valist](https://app.valist.io/) Software distribution tool to manage releases and updates hosted on IPFS
 
