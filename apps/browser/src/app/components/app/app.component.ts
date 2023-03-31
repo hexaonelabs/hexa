@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ILoadingService } from '@d-workspace/interfaces';
 import { environment } from '../../../environments/environment';
 import '@khmyznikov/pwa-install';
+import { EnvironmentInjector } from '@angular/core';
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 @Component({
@@ -11,14 +12,16 @@ import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 })
 export class AppComponent implements OnInit {
   constructor(
+    public readonly environmentInjector: EnvironmentInjector,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IS_PROD)) public readonly isProd: boolean,
     @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) public readonly loaderService: ILoadingService
   ) {}
 
   ngOnInit(): void {
     console.log(
       `[INFO] d-workspace PWA APP Version: ${
-        environment.production ? 'PROD' : 'DEV'
-      } ${environment.version}`
+        this.isProd ? 'PROD' : 'DEV'
+      } ${this.isProd}`
     );
   }
 }

@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true" class="ion-no-padding">
+  <ion-grid class="ion-no-padding" *ngIf="fileUrl$.value as url">
+    <ion-row class="ion-align-items-center ion-justify-content-center ion-no-padding">
+      <ion-col size-sm="12" size-md="8" size-lg="4" class="ion-text-center preview ion-no-padding">
+        <a href="/">
+          <ion-img class="logo" src="./assets/images/logo-colored.svg"></ion-img>
+        </a>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>IPFS hosting</ion-card-title>
+            <p>
+              This file is hosted on IPFS and can be accessed by anyone with the link. You can download the file by clicking the button below.
+            </p>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-icon slot="start" name="document-outline"></ion-icon>
+              <ion-label class="ion-text-wrap">
+                <h2>{{ cid$.value + '.' + ext$.value }}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-button
+              fill="solid"
+              class="ion-margin-top"
+              (click)="downloadFile()"
+              >Download</ion-button
+            >
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

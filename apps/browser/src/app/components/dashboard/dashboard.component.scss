@@ -1,0 +1,123 @@
+:host {
+  ion-split-pane {
+    --side-width: 70px!important;
+    --side-min-width: 70px!important;
+    --side-max-width: 70px!important;
+
+    ion-menu {
+      border: none;
+
+      ion-footer {
+        ion-toolbar {
+          border-top: none;
+
+          &::after {
+            content: '';
+            display: none;
+          }
+        }
+
+      }
+
+      &::part(container) {
+        min-width: 70px!important;
+        max-width: 70px!important;
+      }
+    }
+  }
+  ion-header, ion-toolbar {
+    --background: var(--ion-color-primary)!important;
+  }
+  .header-md::after {
+    display: none;
+  }
+  ion-header {
+    .logo {
+      margin: 10px auto 20px;
+      padding: 0px;
+      max-width: 42px;
+    }
+
+  }
+  .ion-page {
+    background: #f3f3f3;
+    > ion-content {
+      --background: #f3f3f3;
+    }  
+  }
+  
+  .centervert {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    ion-button {
+      margin: 0
+    }
+
+    .link {
+      ion-icon {
+        transition: all ease-in-out 125ms;
+        color: var(--ion-color-secondary)!important;
+      }
+    }
+    .active-link {
+      ion-icon {
+        color: var(--ion-color-primary)!important;
+      }
+    }
+    ion-button:hover ion-icon {
+      transform: scale(.9);
+      color: var(--ion-color-primary)!important;
+    }
+  }
+
+  .authMiniDash {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    min-height: 56px;
+    width: 80px;
+    --background: white;
+    --background-hover: white;
+    --border-color: var(--ion-color-medium);
+    --border-width: 1px;
+    --border-style: solid;
+
+    ion-img {
+      max-width: 24px;
+      border-radius: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+ion-popover.profil-popover {
+  --width: 100%;
+  --max-width: 328px;
+
+
+  ion-item {
+    --padding-start: 0;
+
+    ion-avatar {
+      width: 64px;
+      height: 64px;
+    }
+
+    ion-label {
+      line-height: 1.5rem;
+
+      label {
+        display: block;
+      }
+    }
+
+  }
+
+  .item-profil {
+    margin-bottom: 2rem;
+  }
+}

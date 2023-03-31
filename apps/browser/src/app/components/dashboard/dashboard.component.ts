@@ -8,83 +8,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
 @Component({
   selector: 'd-workspace-dashboard',
   templateUrl: `./dashboard.component.html`,
-  styles: [`
-    :host {
-      ion-split-pane {
-        --side-width: 70px!important;
-        --side-min-width: 70px!important;
-        --side-max-width: 70px!important;
-
-        ion-menu {
-          border: none;
-
-          ion-footer {
-            ion-toolbar {
-              border-top: none;
-
-              &::after {
-                content: '';
-                display: none;
-              }
-            }
-  
-          }
-
-          &::part(container) {
-            min-width: 70px!important;
-            max-width: 70px!important;
-          }
-        }
-      }
-      ion-header, ion-toolbar {
-        --background: var(--ion-color-primary)!important;
-      }
-      .header-md::after {
-        display: none;
-      }
-      ion-header {
-        .logo {
-          margin: 10px auto 20px;
-          padding: 0 10pxpx;
-          max-width: 42px;
-        }
-
-      }
-      .ion-page {
-        background: #f3f3f3;
-        > ion-content {
-          --background: #f3f3f3;
-        }  
-      }
-      
-      .centervert {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    
-        ion-button {
-          margin: 0
-        }
-    
-        .link {
-          ion-icon {
-            transition: all ease-in-out 125ms;
-            color: var(--ion-color-secondary)!important;
-          }
-        }
-        .active-link {
-          ion-icon {
-            color: var(--ion-color-primary)!important;
-          }
-        }
-        ion-button:hover ion-icon {
-          transform: scale(.9);
-          color: var(--ion-color-primary)!important;
-        }
-      }
-    }
-  `],
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   // public routerUrl$: Observable<string>;
@@ -101,6 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   .sort((a,b) => a.sort - b.sort)
   .filter(f => f.isVisible);
   public readonly isNotifEnabled$ = this._notificationService.isConnected$;
+  public readonly account$ = this._authService.account$;
   private readonly _subs: Subscription[] = [];
 
   constructor(
@@ -204,6 +129,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ...config
       }
     });
+  }
+
+  async disconnect() {
+    await this._authService.disconnect();
   }
 
 }

@@ -356,7 +356,7 @@ export class DrivePageComponent {
   private async _share(item: MediafileInterface) {
     if (!item.accessControlConditions && !item.encryptedSymmetricKey) {
       // TODO: use browser API too share CID link from IPFS gateway
-      const url = `https://ipfs.io/ipfs/${item.cid}`;
+      const url = `http://localhost:4200/#/ipfs/${item.cid}.${item.name.split('.').pop()}`;
       await this._mediaFileService.shareWithWebAPI(item, url);
     } else {
       // // open share modal

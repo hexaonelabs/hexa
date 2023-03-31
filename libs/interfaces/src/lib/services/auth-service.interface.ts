@@ -13,9 +13,10 @@ export interface IAuthUser {
 }
 
 export interface IAuthGuardService {
-  onboard: {
-    connectWallet: (options?: ConnectOptions | ConnectOptionsString | undefined) => Promise<WalletState[]>;
-  },
+  // onboard: {
+  //   connectWallet: (options?: ConnectOptions | ConnectOptionsString | undefined) => Promise<WalletState[]>;
+  // },
+  connectWallet(address: string): Promise<boolean>;
   isWaiting$: BehaviorSubject<boolean>
 }
 export interface IAuthService {
@@ -24,7 +25,7 @@ export interface IAuthService {
   account$: BehaviorSubject<string>;
   profile$: BehaviorSubject<IAuthUser>;
   did$: BehaviorSubject<DID>;
-  connect(redirectUrl?: string): Promise<boolean>;
+  connect(accountToConnect?: string): Promise<boolean>;
   disconnect(): Promise<void>;
   getAccountDID(address: string, chainParam?: string): Promise<string>;
   getProfilData(): Promise<IAuthUser>;

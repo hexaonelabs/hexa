@@ -8,6 +8,9 @@ export const environment = {
     unpinning_service_endpoint: process.env['NG_APP_UNPINNING_ENDPOINT'],
     api_endpoint: process.env['NG_APP_IPFS_API_ENDPOINT'],
   },
+  auth: {
+    apikey: process.env['NG_APP_AUTH_APIKEY']
+  },
   wallet_service_apikey: process.env['NG_APP_WALLET_SERVICE_APIKEY'],
   availableChainsId: {
     // ETH

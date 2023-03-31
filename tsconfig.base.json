@@ -34,7 +34,9 @@
       "http": ["./node_modules/stream-http"],
       "https": ["./node_modules/https-browserify"],
       "stream": ["./node_modules/stream-browserify"],
-      "url": ["./node_modules/url"]
+      "url": ["./node_modules/url"],
+      "os": ["./node_modules/os-browserify"],
+      "process": ["./node_modules/process"]
     }
   },
   "exclude": ["node_modules", "tmp"]

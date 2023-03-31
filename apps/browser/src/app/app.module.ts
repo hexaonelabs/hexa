@@ -10,9 +10,13 @@ import { AppGuard } from './app.guard';
 import { COMPONENTS, MAIN_COMPONENT } from './components';
 import { environment } from '../environments/environment';
 import { PROVIDERS } from './providers';
+import { PIPES } from './pipes';
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [
+    ...COMPONENTS,
+    ...PIPES,
+  ],
   imports: [
     BrowserModule,
     CommonModule,

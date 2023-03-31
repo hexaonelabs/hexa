@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 import { CID } from 'multiformats/cid';
+import { Share } from '@capacitor/share';
 import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy, IPromptStrategyService} from "@d-workspace/interfaces";
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
@@ -159,7 +160,7 @@ export class MediaFileService {
               storeCodec: 'dag-jose', 
               hashAlg: 'sha2-256',
               pin: true,
-              preload: true,
+              preload: false,
               timeout: 10000,
             }); 
             console.log('[INFO] {MediafileService} dagCID: ', dagCID);                     
@@ -366,12 +367,28 @@ export class MediaFileService {
     if (!file) {
       throw new Error('File not found');
     }
-    await navigator.share({
-      title: 'dDrive Share file',
-      text: `You received a file from dDrive. You can click here to download from IPFS Network: ${url}`,
-      url,
-      files: [file]
-    });
+    try {
+      const {value: canShare} = await Share.canShare();
+      if (canShare) {
+        await Share.share({
+          title: 'd-workspace share a file',
+          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
+          url,
+          // sfiles: [file]
+        });
+      } else {
+        // use browser polyfill
+        await navigator.share({
+          title: 'd-workspace Share file',
+          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
+          url,
+          files: [file]
+        });
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error('Share API not supported');
+    }
   }
 
   searchByName(name: string | null) {

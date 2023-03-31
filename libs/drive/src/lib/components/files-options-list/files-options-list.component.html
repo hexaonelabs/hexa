@@ -1,42 +1,45 @@
 <ion-list class="ion-no-padding">
+  <ion-list-header class="ion-margin-bottom">
+    <ion-label>{{isFolder ? 'Folder' : 'File'}} options</ion-label>
+  </ion-list-header>
   <ion-item [hidden]="!isFolder" (click)="popCtrl.dismiss('navTo')">
-    <ion-icon name="folder-open-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="folder-open-outline" slot="start"></ion-icon>
     <ion-label>
       Open
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('preview')">
-    <ion-icon name="eye-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="eye-outline" slot="start"></ion-icon>
     <ion-label>
       Preview
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('download')">
-    <ion-icon name="download-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="download-outline" slot="start"></ion-icon>
     <ion-label>
       Download
     </ion-label>
   </ion-item>
   <ion-item (click)="popCtrl.dismiss('rename')">
-    <ion-icon name="pencil-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>
     <ion-label>
       Rename
     </ion-label>
   </ion-item>
   <ion-item (click)="popCtrl.dismiss('move')">
-    <ion-icon name="arrow-redo-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="arrow-redo-outline" slot="start"></ion-icon>
     <ion-label>
       Move to
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('share')">
-    <ion-icon name="share-social-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="share-social-outline" slot="start"></ion-icon>
     <ion-label>
       Share
     </ion-label>
   </ion-item>
   <ion-item lines="none" (click)="popCtrl.dismiss('delete')">
-    <ion-icon name="trash-outline" slot="start"></ion-icon>
+    <ion-icon size="small" name="trash-outline" slot="start"></ion-icon>
     <ion-label>
       Delete
     </ion-label>

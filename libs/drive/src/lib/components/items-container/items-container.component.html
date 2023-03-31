@@ -27,7 +27,6 @@
         size="small"
         class="ion-margin-start"
         *ngIf="
-          item.encryptedSymmetricKey &&
           item.isFolder !== true &&
           (item.accessControlConditions | isShared: account)
         "

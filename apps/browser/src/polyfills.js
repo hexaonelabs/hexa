@@ -56,11 +56,17 @@
 if (typeof window !== 'undefined') {
   window.global = window;
 }
-// define global `process` variable
+
+import { Buffer } from "buffer";
+
+(window).global = window;
+global.Buffer = Buffer;
 global.process = {
   env: { DEBUG: undefined },
+  version: "",
+  nextTick: require("next-tick"),
 };
-// define Buffer if not defined
-if (typeof Buffer === 'undefined') {
-  global.Buffer = require('buffer').Buffer;
-}
+
+
+// polyfill for Share API
+import 'share-api-polyfill';
