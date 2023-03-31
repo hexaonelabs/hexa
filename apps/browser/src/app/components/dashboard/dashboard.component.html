@@ -132,7 +132,7 @@
                   <small>Connected address</small>
                 </ion-text>
               </label>
-              {{ accountId }}
+              {{ accountId.slice(0, 6) }}...{{ accountId.slice(-4) }}
               <!-- <label>
                 <ion-text color="medium">
                   <label>
@@ -142,6 +142,20 @@
               </label>
               {{ chainId$ | async | networkName }} -->
             </ion-label>
+            <ion-buttons
+              slot="end"
+              class="ion-no-margin ion-margin-start"
+              (click)="copyAccountAddressToClipboard()"
+            >
+              <ion-button size="small" fill="clear">
+                <ion-icon
+                  color="medium"
+                  size="small"
+                  slot="icon-only"
+                  name="copy-outline"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-item>
           <!-- <ion-item lines="none" class="ion-margin-top">
             <ion-icon size="small" name="moon-outline" slot="start"></ion-icon>
@@ -152,7 +166,7 @@
           </ion-item> -->
           <ion-item
             lines="none"
-            class="ion-margin-top"
+            class="ion-margin-top disconnect-item"
             (click)="disconnect();popOverProfil.dismiss();"
           >
             <ion-icon slot="start" name="log-out-outline"></ion-icon>

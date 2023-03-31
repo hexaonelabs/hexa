@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <title>d-workspace</title>
-    <meta name="description" content="Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)">
+    <meta
+      name="description"
+      content="Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)"
+    />
     <base href="/" />
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -13,7 +16,6 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#386fff" />
     <meta name="color-scheme" content="light dark" />
-
 
     <link
       rel="image_src"
@@ -97,7 +99,7 @@
         body {
           font-family: Arial, Helvetica, sans-serif;
           height: 100%;
-          background:  rgb(244,248,248);
+          background: rgb(244, 248, 248);
           text-align: center;
         }
         body.dark {
@@ -131,11 +133,57 @@
           margin: 1rem auto;
           max-width: 280px;
         }
+        /* Loader base */
+        #loading-bar-left {
+          animation: loading-bar-morph 1s linear 0.1s infinite;
+          transform-origin: center;
+        }
+
+        #loading-bar-middle {
+          animation: loading-bar-morph 1s linear 0.2s infinite;
+          transform-origin: center;
+        }
+
+        #loading-bar-right {
+          animation: loading-bar-morph 1s linear 0.4s infinite;
+          transform-origin: center;
+        }
+
+        @keyframes loading-bar-morph {
+          0% {
+            transform: scaleY(1);
+          }
+          25% {
+            transform: scaleY(0.3);
+          }
+          50% {
+            transform: scaleY(0.7);
+          }
+          75% {
+            transform: scaleY(0.15);
+          }
+        }
       </style>
       <img src="./assets/images/logo-colored.svg" alt="d-workspace Logo" />
       <h1>d-workspace</h1>
-			<p>Decentralized censorship-resistant, tamper-proof and privacy compliant cloud solution</p>
-      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+      <p>
+        Decentralized censorship-resistant, tamper-proof and privacy compliant
+        cloud solution
+      </p>
+      <svg
+        id="loading-bar"
+        xmlns="http://www.w3.org/2000/svg"
+        width="36"
+        height="22"
+        viewBox="0 0 36 22"
+      >
+        <g>
+          <rect id="loading-bar-left" width="3" height="22" fill="#386fff"/>
+          <rect id="loading-bar-middle" width="3" height="22" x="14" fill="#386fff"/>
+          <rect id="loading-bar-right" width="3" height="22" x="28" fill="#386fff"/>
+        </g>
+      </svg>
+      
     </d-workspace-root>
     <noscript>
       Please enable JavaScript to continue using this application.
