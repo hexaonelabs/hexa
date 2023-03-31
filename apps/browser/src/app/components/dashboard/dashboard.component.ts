@@ -135,4 +135,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     await this._authService.disconnect();
   }
 
+  copyAccountAddressToClipboard() {
+    const account = this._authService.account$.value;
+    if (account) {
+      navigator.clipboard.writeText(account);
+      // display toast
+      this._toastService.create({
+        message: 'Account address copied to clipboard',
+        duration: 2000,
+        color: 'success',
+        position: 'bottom',
+      }).then((toast) => toast.present());
+    }
+  }
+
 }

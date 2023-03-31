@@ -98,7 +98,10 @@ ion-popover.profil-popover {
   --width: 100%;
   --max-width: 328px;
 
-
+  .disconnect-item {
+    cursor: pointer;
+  }
+  
   ion-item {
     --padding-start: 0;
 
