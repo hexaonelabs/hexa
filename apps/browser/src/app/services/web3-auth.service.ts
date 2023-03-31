@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-import Onboard from '@web3-onboard/core';
-import injectedModule from '@web3-onboard/injected-wallets';
-import ledgerModule from '@web3-onboard/ledger';
-import coinbaseModule from '@web3-onboard/coinbase';
+// import Onboard from '@web3-onboard/core';
+// import injectedModule from '@web3-onboard/injected-wallets';
+// import ledgerModule from '@web3-onboard/ledger';
+// import coinbaseModule from '@web3-onboard/coinbase';
 // import magicModule from '@web3-onboard/magic';
 // import web3authModule from '@web3-onboard/web3auth';
+// import torusModule from '@web3-onboard/torus';
 import { Magic } from 'magic-sdk';
 import { WebAuthnExtension } from '@magic-ext/webauthn';
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 
-import torusModule from '@web3-onboard/torus';
 import {
   BehaviorSubject,
   distinctUntilChanged,
@@ -36,14 +36,14 @@ import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 const DB_NAME = 'd-workspace';
 const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
 const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
-const injected = injectedModule();
-const ledger = ledgerModule();
-const coinbase = coinbaseModule();
+// const injected = injectedModule();
+// const ledger = ledgerModule();
+// const coinbase = coinbaseModule();
 // const web3Auth = web3authModule({
 //   clientId: ''
 // });
 // const enkrypt = enrkyptModule();
-const torus = torusModule();
+// const torus = torusModule();
 // const walletConnect = walletConnectModule();
 // const magic = magicModule({
 //   apiKey: 'API_KEY',
@@ -61,14 +61,11 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   public readonly profile$: BehaviorSubject<IAuthUser> = new BehaviorSubject(
     null as any
   );
-  public readonly onboard = this._onboard();
   public readonly magic = this._magicWeb3();
   public readonly did$ = this._did.did$;
   public isWaiting$ = new BehaviorSubject(false); // used by app guard to prevent navigation while waiting for wallet connection
-  private unsubscribe!: () => void;
 
   constructor(
-    private readonly _ngZone: NgZone,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     @Inject(getInjectionToken(TOKENS_NAME.APP_MESSAGING_SERVICE))
@@ -78,9 +75,10 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     @Inject(getInjectionToken(TOKENS_NAME.APP_CERAMIC_SERVICE))
     private readonly _ceramic: CeramicClient,
     @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE))
-    private readonly _datastore: IDatastoreService<DIDDataStore>
+    private readonly _datastore: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_AUTH_APIKEY)) 
+    private readonly _authApiKey: string,
   ) {
-    this._init();
   }
 
   async connect(accountToConnect?: string) {
@@ -172,11 +170,6 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     return recoveredAddress.toLocaleLowerCase() === account.toLocaleLowerCase();
   };
 
-
-  private async _init() {
-    // await this._initWithOnboard();
-  }
-
   private async _connectDID(
     provider: ethers.providers.ExternalProvider | undefined,
     accountAddress: string
@@ -209,113 +202,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     }
   }
 
-  private async _connectWithOnboard() {
-    if (this.unsubscribe) this.unsubscribe();
-    try {
-      const wallets = await this.onboard.connectWallet();
-      if (wallets[0]) {
-        const account = await firstValueFrom(
-          this.account$.pipe(filter((account) => !!account))
-        );
-        console.log('account', account);
-        // // get provider from signer
-        // const provider = wallets[0].provider;
-        // await this._did.connectWallet(provider, this.account$.value);
-        // console.log('profil', profil);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  }
-
-  private async _initWithOnboard() {
-    if (!this.onboard) {
-      throw new Error('Onboard is not initialized');
-    }
-    const wallets = this.onboard.state.select('wallets');
-    const { unsubscribe } = wallets
-      .pipe(
-        distinctUntilChanged(
-          (prev, next) =>
-            JSON.stringify(prev?.[0]?.accounts?.[0]?.address || '') ===
-            JSON.stringify(next?.[0]?.accounts?.[0]?.address || '')
-        )
-      )
-      .subscribe(async (update) => {
-        console.log('[INFO] {Web3AuthService} Wallets update: ', update);
-        this.isWaiting$.next(true);
-        if (update?.[0]) {
-          const connectedWallets = update.map(({ label }) => label);
-          window.localStorage.setItem(
-            'connectedWallets',
-            JSON.stringify(connectedWallets)
-          );
-          // set the signer
-          const { provider } = update[0];
-          const ethersProvider = new ethers.providers.Web3Provider(
-            provider,
-            'any'
-          );
-          const accountAddress = update[0].accounts[0].address;
-          // connect DID service
-          const isDIDConnected = await this._did
-            .connectWallet(provider, accountAddress)
-            .then(() => true)
-            .catch((error) => error as Error);
-          // set resolver
-          console.log('[INFO] Set resolver');
-          const resolvers = { ...get3IDResolver(this._ceramic) };
-          const did = this._did.did$.value;
-          did.setResolver(resolvers as any);
-          console.log('[INFO] Authenticate with DID provider');
-          // Authenticate the DID using the 3ID provider from 3ID Connect, this will trigger the
-          // authentication flow using 3ID Connect and the Ethereum provider
-          const isAuth = await did.authenticate();
-          this._ceramic.did = did;
-          console.log('[INFO] DID ', isAuth);
-          // update profile or set default profile if not exist
-          await this.updateProfilData({
-            latestConnectionISODatetime: new Date().toISOString(),
-          });
-          // throw error if DID connection failed
-          if (!isDIDConnected || isDIDConnected instanceof Error) {
-            await this.disconnect();
-            this.isWaiting$.next(false);
-            throw Error(
-              isDIDConnected instanceof Error
-                ? isDIDConnected.message ||
-                    'Could not connect wallet to DID service.'
-                : 'Could not connect wallet to DID service.'
-            );
-          }
-          // run inside angular zone to avoid change detection errors
-          this._ngZone.run(async () => {
-            // update state
-            this.ethereumProvider$.next(ethersProvider);
-            this.signer$.next(ethersProvider.getSigner());
-            this.account$.next(accountAddress);
-            this.isWaiting$.next(false);
-            await this._connectOthersServices();
-          });
-        } else {
-          await this.disconnect();
-        }
-        this.isWaiting$.next(false);
-      });
-    // store unsubscribe function to disconnect wallet on destroy
-    this.unsubscribe = unsubscribe;
-  }
-
   private async _connectWithMagic(accountToConnect?: string) {
-    // const {walletType = null} = await this.magic.wallet.getInfo().catch(() => ({}));
-    // console.log('walletType', walletType);
-    // if (walletType) {
-    //   const aa = await this.magic.rpcProvider.
-    // }
     const provider = this.magic.rpcProvider;  
     if (accountToConnect) {
       return {
@@ -333,76 +220,11 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   private _magicWeb3() {
-    const magic = new Magic('pk_live_14CF924A984BA93D', {
+    const magic = new Magic(this._authApiKey, {
       network: 'mainnet', // or your own custom node url in the format of { rpcUrl: string chainId: number }
       extensions: [new WebAuthnExtension()],
     });
     return magic;
-  }
-
-  private _onboard() {
-    return Onboard({
-      wallets: [
-        injected,
-        ledger,
-        coinbase,
-        // magic,
-        // enkrypt,
-        // torus,
-        // web3Auth,
-      ],
-      chains: [
-        {
-          id: '0x1', // chain ID must be in hexadecimel
-          token: 'ETH', // main chain token
-          namespace: 'evm',
-          label: 'Ethereum Mainnet',
-          rpcUrl: MAINNET_RPC_URL,
-        },
-        // {
-        //   id: "0x3",
-        //   token: "tROP",
-        //   namespace: "evm",
-        //   label: "Ethereum Ropsten Testnet",
-        //   rpcUrl: ROPSTEN_RPC_URL
-        // },
-        // {
-        //   id: "0x4",
-        //   token: "rETH",
-        //   namespace: "evm",
-        //   label: "Ethereum Rinkeby Testnet",
-        //   rpcUrl: RINKEBY_RPC_URL
-        // },
-        // {
-        //   id: '0x89',
-        //   token: 'MATIC',
-        //   label: 'Polygon',
-        //   rpcUrl: MATIC_RPC_URL
-        // }
-      ],
-      appMetadata: {
-        name: 'd-workspace',
-        icon: './assets/images/logo-colored.svg',
-        logo: './assets/images/logo-colored.svg',
-        description: 'Decentralized workspace solution',
-        recommendedInjectedWallets: [
-          { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
-          { name: 'MetaMask', url: 'https://metamask.io' },
-        ],
-      },
-      accountCenter: {
-        desktop: {
-          minimal: true,
-          enabled: true,
-          position: 'topRight',
-        },
-        mobile: {
-          minimal: true,
-          enabled: true,
-          position: 'topRight',
-        },
-      },
-    });
   }
 
   /**

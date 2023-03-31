@@ -39,6 +39,7 @@ jobs:
           NG_APP_PINNING_ENDPOINT: ${{ secrets.NG_APP_PINNING_ENDPOINT }}
           NG_APP_UNPINNING_ENDPOINT: ${{ secrets.NG_APP_UNPINNING_ENDPOINT }}
           NG_APP_WALLET_SERVICE_APIKEY: ${{ secrets.NG_APP_WALLET_SERVICE_APIKEY }}
+          NG_APP_AUTH_APIKEY: ${{ secrets.NG_APP_AUTH_APIKEY }}
 
       - name: Tag last-release
         shell: bash
