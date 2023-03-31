@@ -1,23 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-// import Onboard from '@web3-onboard/core';
-// import injectedModule from '@web3-onboard/injected-wallets';
-// import ledgerModule from '@web3-onboard/ledger';
-// import coinbaseModule from '@web3-onboard/coinbase';
-// import magicModule from '@web3-onboard/magic';
-// import web3authModule from '@web3-onboard/web3auth';
-// import torusModule from '@web3-onboard/torus';
 import { Magic } from 'magic-sdk';
 import { WebAuthnExtension } from '@magic-ext/webauthn';
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
-
-import {
-  BehaviorSubject,
-  distinctUntilChanged,
-  filter,
-  firstValueFrom,
-} from 'rxjs';
-import { NgZone } from '@angular/core';
+import { BehaviorSubject} from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IAuthService,
@@ -34,20 +20,8 @@ import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
 
 const DB_NAME = 'd-workspace';
-const MAINNET_RPC_URL = 'https://ethereum.publicnode.com/';
+const MAINNET_RPC_URL = 'https://rpc.ankr.com/eth';
 const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
-// const injected = injectedModule();
-// const ledger = ledgerModule();
-// const coinbase = coinbaseModule();
-// const web3Auth = web3authModule({
-//   clientId: ''
-// });
-// const enkrypt = enrkyptModule();
-// const torus = torusModule();
-// const walletConnect = walletConnectModule();
-// const magic = magicModule({
-//   apiKey: 'API_KEY',
-// })
 
 @Injectable()
 export class Web3AuthService implements IAuthService, IAuthGuardService {
@@ -109,7 +83,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     this.signer$.next(ethersProvider.getSigner());
     this.account$.next(account);
     this.isWaiting$.next(false);
-    await this._connectOthersServices();
+    // try listen events wallet
     ethersProvider.on('accountsChanged', async (accounts: string[]) => {
       console.log('[INFO] Accounts changed', accounts);
       await this.disconnect();
@@ -121,7 +95,8 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
       if (oldNetwork) {
         await this.disconnect();
       }
-  });
+    });
+    await this._connectOthersServices();
     return Boolean(account)
   }
 
@@ -220,8 +195,12 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   private _magicWeb3() {
+    const customNodeOptions = {
+      rpcUrl: MAINNET_RPC_URL, // your ethereum, polygon, or optimism mainnet/testnet rpc URL
+      chainId: 1 // corresponding chainId for your rpc url
+    }
     const magic = new Magic(this._authApiKey, {
-      network: 'mainnet', // or your own custom node url in the format of { rpcUrl: string chainId: number }
+      network: customNodeOptions, // 'mainnet', // or your own custom node url in the format of { rpcUrl: string chainId: number }
       extensions: [new WebAuthnExtension()],
     });
     return magic;
