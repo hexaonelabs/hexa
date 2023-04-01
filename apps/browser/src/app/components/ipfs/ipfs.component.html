@@ -1,15 +1,26 @@
 <ion-content [fullscreen]="true" class="ion-no-padding">
   <ion-grid class="ion-no-padding" *ngIf="fileUrl$.value as url">
-    <ion-row class="ion-align-items-center ion-justify-content-center ion-no-padding">
-      <ion-col size-sm="12" size-md="8" size-lg="4" class="ion-text-center preview ion-no-padding">
+    <ion-row
+      class="ion-align-items-center ion-justify-content-center ion-no-padding"
+    >
+      <ion-col
+        size-sm="12"
+        size-md="8"
+        size-lg="4"
+        class="ion-text-center preview ion-no-padding"
+      >
         <a href="/">
-          <ion-img class="logo" src="./assets/images/logo-colored.svg"></ion-img>
+          <ion-img
+            class="logo"
+            src="./assets/images/logo-colored.svg"
+          ></ion-img>
         </a>
         <ion-card>
           <ion-card-header>
             <ion-card-title>IPFS hosting</ion-card-title>
             <p>
-              This file is hosted on IPFS and can be accessed by anyone with the link. You can download the file by clicking the button below.
+              This file is hosted on IPFS and can be accessed by anyone with the
+              link. You can download the file by clicking the button below.
             </p>
           </ion-card-header>
           <ion-card-content>
@@ -30,4 +41,28 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <div class="footer">
+    <p>
+      Build with <span>❤️</span> by
+      <a
+        href="https://github.com/FazioNico/d-workspace"
+        target="_blank"
+        rel="noopener"
+        >d-workspace </a
+      >team. Powered by
+      <a href="https://ipfs.io" target="_blank" rel="noopener">
+        <ion-icon
+          src="./assets/images/logo-ipfs.svg"
+        ></ion-icon>
+        IPFS
+      </a> &
+      <a href="http://filecoin.io" target="_blank" rel="noopener"
+        ><ion-icon
+          src="./assets/images/logo-filecoin.svg"
+        ></ion-icon>
+        Filecoin</a
+      >
+    </p>
+  </div>
+  <canvas #canvas></canvas>
 </ion-content>
