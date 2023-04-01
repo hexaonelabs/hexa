@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { IIPFSService } from '@d-workspace/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import * as confetti from 'canvas-confetti';
 
 @Component({
   standalone: true,
@@ -15,6 +16,7 @@ import { BehaviorSubject } from 'rxjs';
   imports: [CommonModule, IonicModule],
 })
 export class IpfsComponent implements OnInit {
+  @ViewChild('canvas', {static: false, read: ElementRef}) canvas!: ElementRef<HTMLCanvasElement>;
   cid$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined as any);
   ext$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined as any);
   fileUrl$: BehaviorSubject<SafeHtml | SafeUrl> = new BehaviorSubject<SafeHtml | SafeUrl>(
@@ -23,7 +25,9 @@ export class IpfsComponent implements OnInit {
 
   constructor(
     private readonly _route: ActivatedRoute,
-    protected sanitizer: DomSanitizer,
+    protected readonly sanitizer: DomSanitizer,
+    private readonly renderer2: Renderer2,
+    private readonly _toastCtrl: ToastController,
     @Inject(getInjectionToken(TOKENS_NAME.APP_IPFS_SERVICE))
     private readonly _fileService: IIPFSService
   ) {}
@@ -68,6 +72,21 @@ export class IpfsComponent implements OnInit {
     link.href = url;
     link.download = this.cid$.value  + ext;
     link.click();
+    // show toast
+    const toast = await this._toastCtrl.create({
+      message: 'File is downloading...',
+      duration: 5000,
+      position: 'bottom',
+      color: 'primary',
+      buttons: [
+        { text: 'ok', role: 'cancel', handler: () => {
+          toast.dismiss();
+        } }, 
+      ],
+    });
+    await toast.present();
+    // display confetti
+    await this._confetti();
   }
 
   private _safeUrl(value: any, type: string): SafeHtml | SafeUrl {
@@ -79,5 +98,15 @@ export class IpfsComponent implements OnInit {
 			case 'resourceUrl': return this.sanitizer.bypassSecurityTrustResourceUrl(value);
 			default: throw new Error(`Invalid safe type specified: ${type}`);
 		}
+  }
+
+  private async _confetti() {
+    this.renderer2.setStyle(this.canvas.nativeElement, 'display', 'block');
+    const myConfetti = confetti.create(this.canvas.nativeElement, {
+      resize: true,
+      useWorker: true,
+    });
+    await myConfetti();
+    this.renderer2.setStyle(this.canvas.nativeElement, 'display', 'none');
   }
 }

@@ -7,4 +7,42 @@
     padding: 0 10px;
     max-width: 80px;
   }
+  ion-item {
+    --background: rgba(var(--ion-color-primary-rgb), 0.05);
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 0px 10px;
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+
+    span {
+      font-size: 0.5rem;
+      opacity: 0.8;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--ion-color-medium-shade);
+
+      &:hover {
+        color: var(--ion-color-medium);
+      }
+    }
+
+    ion-icon {
+      vertical-align: middle;
+      opacity: 0.8;
+    }
+  }
+  canvas {
+    height: 100%; /* we need these for full-screen effect */
+    width: 100%;
+    top: 0;
+    position: absolute;
+    display: none;
+  }
 }
