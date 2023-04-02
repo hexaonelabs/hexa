@@ -264,7 +264,7 @@ AppComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵ
   selectors: [["d-workspace-root"]],
   decls: 5,
   vars: 4,
-  consts: [[3, "environmentInjector"], ["type", "indeterminate", 4, "ngIf"], ["manifest-url", "/manifest.webmanifest"], ["type", "indeterminate"]],
+  consts: [[3, "environmentInjector"], ["type", "indeterminate", 4, "ngIf"], ["manifest-url", "./manifest.webmanifest"], ["type", "indeterminate"]],
   template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "ion-router-outlet", 0);
@@ -3798,4 +3798,4 @@ module.exports = webpackAsyncContext;
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.f3c1c134c9c8f5bd.js.map
+//# sourceMappingURL=main.d7810928f12b6553.js.map
