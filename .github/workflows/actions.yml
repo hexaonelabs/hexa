@@ -60,35 +60,35 @@ jobs:
   # publish to gh-pages
   ghpage_publish:
     if: github.event.pull_request.merged == true
-      runs-on: ubuntu-latest
-      environment: prod-ghpage
-      steps:
+    runs-on: ubuntu-latest
+    environment: prod-ghpage
+    steps:
 
-        - name: Checkout
-          uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        - name: Setup Node JS
-          uses: actions/setup-node@v3
-          with:
-            node-version: '16'
+      - name: Setup Node JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-        - name: Install dependencies
-          run: npm ci --force
+      - name: Install dependencies
+        run: npm ci --force
 
-        - name: Set Version variable
-          run: | 
-            CURRENT_VERSION=$(grep '"version":' package.json | cut -d\" -f4);
-            echo "version=$CURRENT_VERSION" >> $GITHUB_ENV
-        - name: ghPage Deploy
-          run: |
-            npm run deploy:ghpages
-          env:
-            NG_APP_VERSION: ${{env.version}}
-            NG_APP_IPFS_API_ENDPOINT: ${{ secrets.NG_APP_IPFS_API_ENDPOINT }}
-            NG_APP_PINNING_JWT: ${{ secrets.NG_APP_PINNING_JWT }}
-            NG_APP_PINNING_ENDPOINT: ${{ secrets.NG_APP_PINNING_ENDPOINT }}
-            NG_APP_UNPINNING_ENDPOINT: ${{ secrets.NG_APP_UNPINNING_ENDPOINT }}
-            NG_APP_WALLET_SERVICE_APIKEY: ${{ secrets.NG_APP_WALLET_SERVICE_APIKEY }}
-            NG_APP_AUTH_APIKEY: ${{ secrets.NG_APP_AUTH_APIKEY }}
+      - name: Set Version variable
+        run: | 
+          CURRENT_VERSION=$(grep '"version":' package.json | cut -d\" -f4);
+          echo "version=$CURRENT_VERSION" >> $GITHUB_ENV
+      - name: ghPage Deploy
+        run: |
+          npm run deploy:ghpages
+        env:
+          NG_APP_VERSION: ${{env.version}}
+          NG_APP_IPFS_API_ENDPOINT: ${{ secrets.NG_APP_IPFS_API_ENDPOINT }}
+          NG_APP_PINNING_JWT: ${{ secrets.NG_APP_PINNING_JWT }}
+          NG_APP_PINNING_ENDPOINT: ${{ secrets.NG_APP_PINNING_ENDPOINT }}
+          NG_APP_UNPINNING_ENDPOINT: ${{ secrets.NG_APP_UNPINNING_ENDPOINT }}
+          NG_APP_WALLET_SERVICE_APIKEY: ${{ secrets.NG_APP_WALLET_SERVICE_APIKEY }}
+          NG_APP_AUTH_APIKEY: ${{ secrets.NG_APP_AUTH_APIKEY }}
