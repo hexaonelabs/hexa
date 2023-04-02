@@ -57,7 +57,7 @@ jobs:
           
   #         platform-web: dist/apps/browser
 
-  publish to gh-pages
+  # publish to gh-pages
   ghpage_publish:
     if: github.event.pull_request.merged == true
       runs-on: ubuntu-latest
