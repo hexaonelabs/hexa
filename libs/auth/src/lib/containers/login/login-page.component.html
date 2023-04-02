@@ -1,4 +1,8 @@
 <ion-content class="ion-padding">
+  <ion-item lines="none" class="logo-header">
+    <ion-icon slot="start" src="./assets/images/logo.svg" size="large"></ion-icon>
+    <ion-label>HEXA</ion-label>
+  </ion-item>
   <div>
     <h1>Develop and manage your digital datas with blockchain technology</h1>
     <p>
@@ -15,7 +19,7 @@
     >
     <ng-template #auth>
       <ion-button size="large" [disabled]="(isLoaderVisible$ | async)" (click)="connectWallet()">{{
-        (isLoaderVisible$ | async) === true ? 'Loading...' : 'Connect Wallet'
+        (isLoaderVisible$ | async) === true ? 'Loading...' : 'Connect'
       }}</ion-button>
     </ng-template>
   </div>

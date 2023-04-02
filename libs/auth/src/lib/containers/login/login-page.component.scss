@@ -1,28 +1,45 @@
 :host {
   ion-content {
     --color: #fff;
-    --background: url(https://images.unsplash.com/photo-1451187580459-43490279c0fa) transparent no-repeat center center  / cover;
+    --background: url(../../../../../../apps/browser/src/assets/images/bg.jpeg) transparent no-repeat left top  / cover;
+    position: relative;
+    
+    .logo-header {
+      position: absolute;
+      top: 1rem;
+      left: 4rem;
+      font-size: 0.8rem;
+      --background: transparent;
+      --color: #fff;
+      --font-size: 1.5rem;
+      font-weight: 700;
+
+      ion-icon {
+        margin-right: 1rem;
+      }
+    }
+    
     div {
       text-align: left;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      padding: 0 4rem;
+      padding: 8rem 4rem 0;
       height: 100%;
 
       h1 {
-        font-size: 5rem;
-        line-height: 4.5rem;
-        font-weight: 700;
+        font-size: 6rem;
+        line-height: 5.8rem;
+        font-weight: 600;
         margin-bottom: 1rem;
-        text-shadow: 6px 4px 2px #3064ff;
+        // text-shadow: 6px 2px 2px #3064ff;
       }
 
       p {
         font-size: 1.8rem;
         margin-top: 0;
-        text-shadow: 0px 0px 25px rgb(0 0 0);
+        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
       }
 
       ion-icon {
@@ -34,9 +51,22 @@
         // margin: 0 auto;
       }
 
-      // rules for mobile
-      @media (max-width: 768px) {
+      a {
+        color: #fff;
+      }
+      
+    }
+    // rules for mobile
+    @media (max-width: 768px) {
+      
+      
+      .logo-header {
+        left: 1rem;
+      }
+
+      div {
         padding: 0 1rem;
+
         h1 {
           font-size: 3rem;
           line-height: 2.8rem;
@@ -44,6 +74,7 @@
         p {
           font-size: 1.1rem;
         }
+
       }
     }
   } 
