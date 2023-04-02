@@ -1,12 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IAuthService, INotificationService, IPromptStrategyService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAuthService, INotificationService, IPromptStrategyService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { AlertController, IonPopover, IonToggle, LoadingController, ToastController } from '@ionic/angular';
 import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'd-workspace-dashboard',
+  selector: 'hexa-dashboard',
   templateUrl: `./dashboard.component.html`,
   styleUrls: ['./dashboard.component.scss'],
 })

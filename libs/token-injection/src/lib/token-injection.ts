@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { IAuthService, IMessagingService, INotificationService, IPiningServiceConfig } from "@d-workspace/interfaces";
+import { IAuthService, IMessagingService, INotificationService, IPiningServiceConfig } from "@hexa/interfaces";
 
 const APP_DID_SERVICE_TOKEN = new InjectionToken<IAuthService>('APP_DID_SERVICE');
 const APP_WEB3AUTH_SERVICE_TOKEN = new InjectionToken<IAuthService>('APP_WEB3AUTH_SERVICE');

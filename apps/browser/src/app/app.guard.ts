@@ -4,8 +4,8 @@ import { filter, firstValueFrom } from 'rxjs';
 import {
   IIdentityService,
   IAuthGuardService
-} from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+} from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
 @Injectable()
 export class AppGuard implements CanActivate {

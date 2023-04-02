@@ -21,7 +21,7 @@ import { PreviewFilePipe } from './pipes/preview-file.pipe';
 import { SliceAddressPipe } from './pipes/slice-address.pipe';
 import { TotalStoragePipe } from './pipes/total-storage.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UiModule } from '@d-workspace/ui';
+import { UiModule } from '@hexa/ui';
 
 @NgModule({
   declarations: [

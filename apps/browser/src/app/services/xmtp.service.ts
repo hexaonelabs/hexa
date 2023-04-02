@@ -7,8 +7,8 @@ import {
 } from '@xmtp/xmtp-js';
 import { BehaviorSubject, map } from 'rxjs';
 import { ethers } from 'ethers';
-import { IBaseMessage, IMessagingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IBaseMessage, IMessagingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
 export type XMTPConversation = Conversation;
 export type XMTPConversationMessage = DecodedMessage;
@@ -94,7 +94,7 @@ export class XMTPService implements IMessagingService {
     // await conversation.send(message);
   }
 
-  private async _startNewConversation(address: string, conversationId: string = 'd-workspace') {
+  private async _startNewConversation(address: string, conversationId: string = 'hexa') {
     if (!this._web3Provider) {
       throw '{XMTPService} Web3Provider not found. Please unlock your Ethereum account, refresh the page and try again.';
     }
@@ -113,7 +113,7 @@ export class XMTPService implements IMessagingService {
     return { conversation };
   }
 
-  private async _getConversations(conversationId = 'd-workspace') {
+  private async _getConversations(conversationId = 'hexa') {
     if (!this._web3Provider) {
       throw '{XMTPService} Web3Provider not found. Please unlock your Ethereum account, refresh the page and try again.';
     }

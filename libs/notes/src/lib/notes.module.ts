@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UiModule } from '@d-workspace/ui';
+import { UiModule } from '@hexa/ui';
 import { notesRoutes } from './lib.routes';
 import { NotesPageComponent } from './containers/notes-page/notes-page.component';
 import { NotesService } from './services/notes.service';

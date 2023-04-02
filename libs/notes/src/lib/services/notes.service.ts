@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
-import { IDatastoreService, IEncryptionService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IDatastoreService, IEncryptionService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 

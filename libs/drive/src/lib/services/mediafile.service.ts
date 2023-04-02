@@ -3,8 +3,8 @@ import { BehaviorSubject, combineLatest, filter, map } from "rxjs";
 import { v4 as uuidV4 } from 'uuid';
 import { CID } from 'multiformats/cid';
 import { Share } from '@capacitor/share';
-import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy, IPromptStrategyService} from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAuthService, IDatastoreService, IEncryptionService, IIPFSService, INotificationService, IPinningServiceStrategy, IPromptStrategyService} from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { IAccessControlConditions, MediafileInterface } from "../interfaces/mediafile.interface";
 import { b64ToFile, fileToB64 } from "../drive.utils";
 
@@ -371,16 +371,16 @@ export class MediaFileService {
       const {value: canShare} = await Share.canShare();
       if (canShare) {
         await Share.share({
-          title: 'd-workspace share a file',
-          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
+          title: 'hexa share a file',
+          text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
           url,
           // sfiles: [file]
         });
       } else {
         // use browser polyfill
         await navigator.share({
-          title: 'd-workspace Share file',
-          text: `You received a file from d-workspace. You can click here to download from IPFS Network: ${url}`,
+          title: 'hexa Share file',
+          text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
           url,
           files: [file]
         });

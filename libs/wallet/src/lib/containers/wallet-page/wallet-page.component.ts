@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { ILoadingService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { ILoadingService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { AlertController, ModalController, PopoverController, ToastController } from "@ionic/angular";
 import { ethers } from "ethers";
 import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, map, tap } from "rxjs";
@@ -9,7 +9,7 @@ import { TokenInterface } from "../../interfaces/token.interface";
 import { WalletService } from "../../services/wallet.service";
 
 @Component({
-  selector: "d-workspace-wallet-page",
+  selector: "hexa-wallet-page",
   templateUrl: "./wallet-page.component.html",
   styleUrls: ["./wallet-page.component.scss"]
 })

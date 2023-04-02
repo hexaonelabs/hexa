@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
-import { ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { environment } from '../../../environments/environment';
 import '@khmyznikov/pwa-install';
 
 @Component({
-  selector: 'd-workspace-root',
+  selector: 'hexa-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const version = environment.version;
-    const env = `[INFO] d-workspace PWA APP\nVersion: ${version} - ${
+    const env = `[INFO] hexa PWA APP\nVersion: ${version} - ${
       this.isProd ? 'PROD' : 'DEV'
     }`;
     (window as any)['env'] = env;

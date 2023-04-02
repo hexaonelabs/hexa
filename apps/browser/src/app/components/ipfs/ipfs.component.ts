@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { IIPFSService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IIPFSService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import * as confetti from 'canvas-confetti';
 
 @Component({
   standalone: true,
-  selector: 'd-workspace-ipfs',
+  selector: 'hexa-ipfs',
   templateUrl: './ipfs.component.html',
   styleUrls: ['./ipfs.component.scss'],
   imports: [CommonModule, IonicModule],

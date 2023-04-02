@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { ethers } from 'ethers';
-import { DID } from '@d-workspace/dids';
+import { DID } from '@hexa/dids';
 import { ConnectOptions } from '@web3-onboard/core';
 import { ConnectOptionsString, WalletState } from '@web3-onboard/core/dist/types';
 import { IPiningServiceConfig } from "./pining-service.interface";

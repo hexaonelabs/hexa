@@ -186,10 +186,10 @@
             </ion-row>
           </ion-grid>
           <div>
-            <d-workspace-items-container
+            <hexa-items-container
               [items]="tokensBalances | assetsType : 'token'"
               (actionsEvent)="actions($event.type, $event.payload)"
-            ></d-workspace-items-container>
+            ></hexa-items-container>
           </div>
         </ion-col>
         <ng-template #noItems>

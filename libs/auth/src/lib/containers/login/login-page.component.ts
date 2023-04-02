@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import {IAuthService, ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import {IAuthService, ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
 @Component({
-  selector: 'd-workspace-login-page',
+  selector: 'hexa-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
 })

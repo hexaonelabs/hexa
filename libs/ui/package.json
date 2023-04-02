@@ -1,5 +1,5 @@
 {
-  "name": "@d-workspace/ui",
+  "name": "@hexa/ui",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^15.0.0",

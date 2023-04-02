@@ -5,7 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 export const appRoutes: Route[] = [
   {
     path: 'auth',
-    loadChildren: () => import('@d-workspace/auth').then(m => m.AuthModule)
+    loadChildren: () => import('@hexa/auth').then(m => m.AuthModule)
   },
   {
     path: '',
@@ -28,23 +28,23 @@ export const appRoutes: Route[] = [
         children: [
           {
             path: 'welcome',
-            loadChildren: () => import('@d-workspace/welcome').then(m => m.WelcomeModule)
+            loadChildren: () => import('@hexa/welcome').then(m => m.WelcomeModule)
           },
           {
             path: 'calendar',
-            loadChildren: () => import('@d-workspace/calendar').then(m => m.CalendarModule)
+            loadChildren: () => import('@hexa/calendar').then(m => m.CalendarModule)
           },
           {
             path: 'drive',
-            loadChildren: () => import('@d-workspace/drive').then(m => m.DriveModule)
+            loadChildren: () => import('@hexa/drive').then(m => m.DriveModule)
           },
           {
             path: 'wallet',
-            loadChildren: () => import('@d-workspace/wallet').then(m => m.WalletModule)
+            loadChildren: () => import('@hexa/wallet').then(m => m.WalletModule)
           },
           {
             path: 'notes',
-            loadChildren: () => import('@d-workspace/notes').then(m => m.NotesModule)
+            loadChildren: () => import('@hexa/notes').then(m => m.NotesModule)
           },
           {
             path: '',

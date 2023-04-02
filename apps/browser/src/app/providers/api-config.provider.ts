@@ -1,5 +1,5 @@
-import { IPiningServiceConfig } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IPiningServiceConfig } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { environment } from "../../environments/environment";
 
 const defaultValue: IPiningServiceConfig = {

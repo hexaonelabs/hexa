@@ -1,26 +1,26 @@
 <img src="./apps/browser/src/assets/images/logo-colored.svg" />
 
-# d-workspace - Decentralized Cloud Solution 
+# hexa - Decentralized Cloud Solution 
 
 > Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) 
 
 ## Project Description
-d-workspace is a fully decentralized and open-source cloud solution which replace traditional cloud providers having centralized governance, cumbersome infrastructure, inadequate security and privacy measures with users datasets. 
+hexa is a fully decentralized and open-source cloud solution which replace traditional cloud providers having centralized governance, cumbersome infrastructure, inadequate security and privacy measures with users datasets. 
 
-d-workspace is build on top of IPFS and inherits all the features of Blockchain Technology to emerge as an immutable, censorship-resistant, tamper-proof and privacy complient with user dataset.
+hexa is build on top of IPFS and inherits all the features of Blockchain Technology to emerge as an immutable, censorship-resistant, tamper-proof and privacy complient with user dataset.
 
 ## Value Proposition
-d-workspace integrat IPFS Core powered by Filecoin to enable users to store, manage and share their datas in a decentralized way. Few of the core value propositions are:
+hexa integrat IPFS Core powered by Filecoin to enable users to store, manage and share their datas in a decentralized way. Few of the core value propositions are:
 
 - Increased User Adoption: 
   Providing a smooth and intuitive process with seamless user experience to store, manage and share datas in a decentralized way will increase the adoption of IPFS and Filecoin.
 
 - Real-world utility: 
-  d-workspace provide a real-world utility for censorship-resistant, tamper-proof and privacy complient cloud solution by providing multi services composition that allow users to manage datas with total privacy and security controls of access by using Encryption and Decryption technologies to increase data acces security.
+  hexa provide a real-world utility for censorship-resistant, tamper-proof and privacy complient cloud solution by providing multi services composition that allow users to manage datas with total privacy and security controls of access by using Encryption and Decryption technologies to increase data acces security.
 
 ## 👀 Overview
 
-<img src="./tools/images/d-workspace-screenshot-001.png" />
+<img src="./tools/images/hexa-screenshot-001.png" />
 
 ## 🚀 Features
 
@@ -94,29 +94,29 @@ d-workspace integrat IPFS Core powered by Filecoin to enable users to store, man
 
 ## Usage & Installation
 
-d-workspace is a web application that can be used in any modern browser. 
+hexa is a web application that can be used in any modern browser. 
 
-You can also install d-workspace as a desktop application using Progressive Web App (PWA) technology by click `install` icon from browser url section or from `options` section of your browser. You can find more informations about PWA installation and specification [here](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen).
+You can also install hexa as a desktop application using Progressive Web App (PWA) technology by click `install` icon from browser url section or from `options` section of your browser. You can find more informations about PWA installation and specification [here](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen).
 
-**Distribution link to install d-workspace PWA application:** [https://app.valist.io/d-workspace/d-workspace-pwa](https://app.valist.io/d-workspace/d-workspace-pwa) (click launch button)
+**Distribution link to install hexa PWA application:** [https://app.valist.io/hexa/hexa-pwa](https://app.valist.io/hexa/hexa-pwa) (click launch button)
 
 ## Development
 
-- Clone the d-workspace repository
+- Clone the hexa repository
 - Install dependencies using NodeJS and NPM
 - Install Nx Workspace CLI to manage workspace project
 - Provide environment variables in `.env` file (see `Environment Variables` section)
-- Run developpment server using `nx serve` command will open the d-workspace application in the browser
+- Run developpment server using `nx serve` command will open the hexa application in the browser
 - This project was generated using [Nx Workspace](https://nx.dev).
 
 ## Build
-- Run `nx build:browser` to build the d-workspace application for the browser as PWA. 
+- Run `nx build:browser` to build the hexa application for the browser as PWA. 
 
 The build artifacts will be stored in the `dist/` directory.
 
 ## Deployment 
 
-d-workspace is deployed automatically using Github Actions. Every commit to the `main` branch will trigger a new deployment.
+hexa is deployed automatically using Github Actions. Every commit to the `main` branch will trigger a new deployment.
 
 ## Documentation
 
@@ -148,7 +148,7 @@ Project is Open Source and available under the [MIT License](LICENSE).
   
   Software Architect & Blockchain Developer
 
-  Mr. Fazio is a software architect and blockchain developer with over 15 years of industry experience. He has worked on a variety of projects ranging from cloud enterprise software to blockchain applications focusing last 3 years exclusively in the Web 3 industry. He is passionate about building decentralized solutions and is currently working on the d-workspace project.
+  Mr. Fazio is a software architect and blockchain developer with over 15 years of industry experience. He has worked on a variety of projects ranging from cloud enterprise software to blockchain applications focusing last 3 years exclusively in the Web 3 industry. He is passionate about building decentralized solutions and is currently working on the hexa project.
 
   LinkedIn: [https://www.linkedin.com/in/fazio-nicolas/](https://www.linkedin.com/in/fazio-nicolas/)
 

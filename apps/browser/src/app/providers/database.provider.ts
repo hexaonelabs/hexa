@@ -1,5 +1,5 @@
 import { CeramicClient } from "@ceramicnetwork/http-client";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { DatastoreService } from "../services";
 
 const CERAMIC_CLIENT = new CeramicClient('https://ceramic-clay.3boxlabs.com');

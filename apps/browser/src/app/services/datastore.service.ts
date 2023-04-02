@@ -2,9 +2,9 @@ import { Inject, Injectable } from "@angular/core";
 import { CeramicClient } from '@ceramicnetwork/http-client';
 import { DIDDataStore } from '@glazed/did-datastore';
 import { TileDocument } from '@ceramicnetwork/stream-tile'
-import { IDatastoreService, IIdentityService } from "@d-workspace/interfaces";
+import { IDatastoreService, IIdentityService } from "@hexa/interfaces";
 import { AlertController, LoadingController, ToastController } from "@ionic/angular";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 
 @Injectable()
 export class DatastoreService implements IDatastoreService<DIDDataStore> {

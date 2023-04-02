@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { parseISO, getDate, getMonth, getYear } from 'date-fns';
 
 @Component({
-  selector: 'd-workspace-appointment-modal',
+  selector: 'hexa-appointment-modal',
   templateUrl: './appointment-modal.component.html',
   styleUrls: ['./appointment-modal.component.scss'],
 })

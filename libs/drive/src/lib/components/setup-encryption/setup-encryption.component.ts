@@ -7,7 +7,7 @@ import {
 } from '../../interfaces/mediafile.interface';
 
 @Component({
-  selector: 'd-workspace-setup-encryption',
+  selector: 'hexa-setup-encryption',
   templateUrl: './setup-encryption.component.html',
   styleUrls: ['./setup-encryption.component.scss'],
 })

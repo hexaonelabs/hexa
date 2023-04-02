@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
-  selector: 'd-workspace-files-options-list',
+  selector: 'hexa-files-options-list',
   templateUrl: './files-options-list.component.html',
   styleUrls: ['./files-options-list.component.scss']
 })

@@ -1,5 +1,5 @@
-import { ILoadingService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { ILoadingService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { BehaviorSubject, debounceTime, distinctUntilChanged } from "rxjs";
 
 export const LOADER_PROVIDER = [{

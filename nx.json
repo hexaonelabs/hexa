@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "d-workspace",
+  "npmScope": "hexa",
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",

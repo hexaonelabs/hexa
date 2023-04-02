@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { DID } from '@d-workspace/dids';
+import { DID } from '@hexa/dids';
 import { ethers} from 'ethers';
 import { BehaviorSubject } from "rxjs";
-import { IIdentityService } from "@d-workspace/interfaces";
+import { IIdentityService } from "@hexa/interfaces";
 import { EthereumAuthProvider as ThreeIdAuthProvider, ThreeIdConnect } from '@3id/connect';
 import { EthereumAuthProvider as EthSelfIDAuthProvider, SelfID } from '@self.id/web';
 

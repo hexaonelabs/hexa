@@ -1,4 +1,4 @@
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { DIDService, Web3AuthService } from "../services";
 
 export const AUTHENTICATION_PROVIDER = [

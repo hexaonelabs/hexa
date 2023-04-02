@@ -4,7 +4,7 @@ import { ModalController } from "@ionic/angular";
 import { NoteInterface } from "../../services/notes.service";
 
 @Component({
-  selector: "d-workspace-note-modal",
+  selector: "hexa-note-modal",
   templateUrl: "./note-modal.component.html",
   styleUrls: ["./note-modal.component.scss"]
 })

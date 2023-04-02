@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
-import { IDatastoreService, ILoadingService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IDatastoreService, ILoadingService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { DateSpanApi, EventClickArg, EventDropArg, EventInput, EventMountArg, EventSourceInput } from '@fullcalendar/core';
 import { EventImpl } from "@fullcalendar/core/internal";

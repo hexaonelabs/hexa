@@ -4,7 +4,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { MediafileInterface } from '../../interfaces/mediafile.interface';
 
 @Component({
-  selector: 'd-workspace-select-folder',
+  selector: 'hexa-select-folder',
   templateUrl: './select-folder.component.html',
   styleUrls: ['./select-folder.component.scss'],
 })

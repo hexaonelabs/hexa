@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
-import { IEncryptionService, IIdentityService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IEncryptionService, IIdentityService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { JWE } from 'did-jwt';
 
 // Doc: https://blog.ceramic.network/how-to-store-signed-and-encrypted-data-on-ipfs/   

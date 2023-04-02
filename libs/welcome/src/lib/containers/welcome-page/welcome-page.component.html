@@ -68,15 +68,15 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <d-workspace-background
+  <hexa-background
     [clientId]="config?.background?.unsplashClientId"
     [query]="config?.background?.query"
     [url]="config?.background?.url"
     [isDevMode]="!isProd"
   >
     <div id="flexContainer">
-      <d-workspace-current-time></d-workspace-current-time>
+      <hexa-current-time></hexa-current-time>
       <h1>{{ text }}!</h1>
     </div>
-  </d-workspace-background>
+  </hexa-background>
 </ion-content>

@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { IAuthService, ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAuthService, ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { AlertController, AlertOptions, IonSearchbar, ModalController, ToastController, ToastOptions } from '@ionic/angular';
 import { OverlayBaseController } from '@ionic/angular/util/overlay';
 import { firstValueFrom, map } from 'rxjs';
@@ -10,7 +10,7 @@ import { MediafileInterface } from '../../interfaces/mediafile.interface';
 import { MediaFileService } from '../../services/mediafile.service';
 
 @Component({
-  selector: 'd-workspace-drive-page',
+  selector: 'hexa-drive-page',
   templateUrl: './drive-page.component.html',
   styleUrls: ['./drive-page.component.scss'],
 })

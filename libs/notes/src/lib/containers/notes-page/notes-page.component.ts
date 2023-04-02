@@ -1,12 +1,12 @@
 import { Component, Inject } from "@angular/core";
-import { ILoadingService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { ILoadingService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { ModalController } from "@ionic/angular";
 import { NoteModalComponent } from "../../components/note-modal/note-modal.component";
 import { NoteInterface, NotesService } from "../../services/notes.service";
 
 @Component({
-  selector: "d-workspace-notes-page",
+  selector: "hexa-notes-page",
   templateUrl: "./notes-page.component.html",
   styleUrls: ["./notes-page.component.scss"]
 })

@@ -13,7 +13,7 @@ import { TokenInterface } from '../../interfaces/token.interface';
 const MAX_ITEMS_TO_DISPLAY = 25;
 
 @Component({
-  selector: 'd-workspace-items-container',
+  selector: 'hexa-items-container',
   templateUrl: './items-container.component.html',
   styleUrls: ['./items-container.component.scss'],
 })

@@ -3,9 +3,9 @@ import {
   IAuthService,
   IPiningService,
   IPiningServiceConfig,
-} from '@d-workspace/interfaces';
+} from '@hexa/interfaces';
 import { firstValueFrom } from 'rxjs';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
 @Injectable()
 export class PinataService implements IPiningService {

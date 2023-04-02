@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { TokenInterface } from '../../interfaces/token.interface';
 
 @Component({
-  selector: 'd-workspace-swap-assets-modal',
+  selector: 'hexa-swap-assets-modal',
   templateUrl: './swap-assets-modal.component.html',
   styleUrls: ['./swap-assets-modal.component.scss'],
 })

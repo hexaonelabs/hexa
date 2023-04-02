@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'd-workspace-dropable',
+  selector: 'hexa-dropable',
   templateUrl: './dropable.component.html',
   styleUrls: ['./dropable.component.scss'],
 })

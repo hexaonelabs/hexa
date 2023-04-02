@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { MediafileInterface } from '../../interfaces/mediafile.interface';
 
 @Component({
-  selector: 'd-workspace-item-preview',
+  selector: 'hexa-item-preview',
   templateUrl: './item-preview.component.html',
   styleUrls: ['./item-preview.component.scss'],
 })

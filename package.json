@@ -1,5 +1,5 @@
 {
-  "name": "d-workspace",
+  "name": "hexa",
   "version": "0.0.17",
   "description": "Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)",
   "license": "MIT",
@@ -7,7 +7,7 @@
     "start": "nx serve",
     "build": "nx build",
     "build:browser": "nx run browser:build:production",
-    "deploy:ghpages": "nx run browser:deploy-ghpage --base-href=/d-workspace/",
+    "deploy:ghpages": "nx run browser:deploy-ghpage --base-href=/hexa/",
     "test": "nx test"
   },
   "private": true,
@@ -128,7 +128,7 @@
     "url": "^0.11.0"
   },
   "repository": {
-    "url": "https://github.com/FazioNico/d-workspace"
+    "url": "https://github.com/FazioNico/hexa"
   },
   "author": {
     "name": "Nicolas Fazio",

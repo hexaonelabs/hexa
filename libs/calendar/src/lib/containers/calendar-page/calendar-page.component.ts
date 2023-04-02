@@ -7,11 +7,11 @@ import { FullCalendarService } from '../../fullcalendar.service';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { isAfter, isBefore, addWeeks, subWeeks } from 'date-fns';
 import { AppointmentModalComponent } from '../../components/appointment-modal/appointment-modal.component';
-import { ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
 @Component({
-  selector: 'd-workspace-calendar-page',
+  selector: 'hexa-calendar-page',
   templateUrl: './calendar-page.component.html',
   styles: [`
     :host {

@@ -1,6 +1,6 @@
 import { EnvironmentProviders, Provider } from "@angular/core";
-import { IAuthService, IPiningService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAuthService, IPiningService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { IPFSService, PinataService } from "../services";
 import { Web3storageService } from "../services/web3storage.service";
 import { IPFSPinningStrategy } from "../strategies";

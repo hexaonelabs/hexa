@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { IAuthService, IMessagingService, INotificationService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IAuthService, IMessagingService, INotificationService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { LoadingController } from '@ionic/angular';
 import { debounceTime, map, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class NotificationService implements INotificationService {
         .map((message) => message.messagesInConversation)
         .flat()
         // filter only application messages
-        .filter((m) => m.content.startsWith('d-workspace'))
+        .filter((m) => m.content.startsWith('hexa'))
         // parse message
         .map((m) => this._parseMessage(m.content))
 
@@ -88,7 +88,7 @@ export class NotificationService implements INotificationService {
       createdISODateTime: new Date().toISOString(),
     };
     // encoding message
-    const base64Data = `d-workspace/${filterKey}:${btoa(
+    const base64Data = `hexa/${filterKey}:${btoa(
       JSON.stringify(messageData)
     )}`;
     // send message
@@ -100,7 +100,7 @@ export class NotificationService implements INotificationService {
   }
 
   private _parseMessage(value: string) {
-    const base64Message = value.replace('d-workspace/', '');
+    const base64Message = value.replace('hexa/', '');
     const [prefixKey, ...b64messageArray] = base64Message.split(':');
     const jsonMessage = atob(b64messageArray.toString());
     let message;

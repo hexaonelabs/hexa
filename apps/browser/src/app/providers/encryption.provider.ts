@@ -1,5 +1,5 @@
-import { IEncryptionService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IEncryptionService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { DIDEncryptionService } from "../services";
 import { EncryptionStrategy } from "../strategies";
 

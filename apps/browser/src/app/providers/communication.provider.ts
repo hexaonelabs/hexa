@@ -1,4 +1,4 @@
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { NotificationService, XMTPService } from "../services";
 
 export const COMMUNICATION_PROVIDER = [

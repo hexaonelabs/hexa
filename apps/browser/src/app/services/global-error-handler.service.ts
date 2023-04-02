@@ -1,6 +1,6 @@
 import { ErrorHandler, Inject, Injectable, NgZone } from '@angular/core';
-import { ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { AlertController, LoadingController } from '@ionic/angular';
 
 @Injectable()

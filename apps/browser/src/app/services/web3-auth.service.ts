@@ -12,14 +12,14 @@ import {
   IAuthUser,
   IAuthGuardService,
   IMessagingService,
-} from '@d-workspace/interfaces';
+} from '@hexa/interfaces';
 import { CeramicClient } from '@ceramicnetwork/http-client';
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver';
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 
-const DB_NAME = 'd-workspace';
+const DB_NAME = 'hexa';
 const MAINNET_RPC_URL = 'https://rpc.ankr.com/eth';
 const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
 
@@ -132,7 +132,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   async signAndVerify(signer: ethers.providers.JsonRpcSigner, account: string) {
-    const message = 'd-workspace authentication with wallet signature.';
+    const message = 'hexa authentication with wallet signature.';
     const signedMessage = await signer.signMessage(message).catch(async (error) => {
       await this.disconnect();
       throw error;

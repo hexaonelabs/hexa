@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { create, IPFS  } from 'ipfs-core';
 import { BehaviorSubject } from 'rxjs';
 import { CID } from 'multiformats/cid';
-import { DagAPI, IIPFSService, IPiningService } from '@d-workspace/interfaces';
+import { DagAPI, IIPFSService, IPiningService } from '@hexa/interfaces';
 
 @Injectable()
 export class IPFSService implements IIPFSService {

@@ -1,5 +1,5 @@
 {
-  "name": "@d-workspace/calendar",
+  "name": "@hexa/calendar",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^15.0.0",

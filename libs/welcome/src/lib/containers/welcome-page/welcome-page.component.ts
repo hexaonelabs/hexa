@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IDatastoreService, ILoadingService } from '@d-workspace/interfaces';
-import { getInjectionToken, TOKENS_NAME } from '@d-workspace/token-injection';
+import { IDatastoreService, ILoadingService } from '@hexa/interfaces';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { AlertController, AlertInput, ModalController, PopoverController } from '@ionic/angular';
 import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import { DIDDataStore } from '@glazed/did-datastore';
@@ -44,7 +44,7 @@ const WIDGETS_INPUTS_OPTIONS = {
 }
 
 @Component({
-  selector: 'd-workspace-welcome-page',
+  selector: 'hexa-welcome-page',
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.scss'],
 })

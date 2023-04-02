@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
-import { IPiningService, IAuthService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IPiningService, IAuthService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { firstValueFrom } from "rxjs";
 
 @Injectable()

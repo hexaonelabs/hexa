@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IPromptStrategyService } from "@d-workspace/interfaces";
+import { IPromptStrategyService } from "@hexa/interfaces";
 import { AlertController } from "@ionic/angular";
 
 @Injectable()

@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { HeaderComponent } from "../header/header.component";
 
 @Component({
-  selector: "d-workspace-breadcrumbs",
+  selector: "hexa-breadcrumbs",
   templateUrl: "./breadcrumbs.component.html",
   styleUrls: ["./breadcrumbs.component.scss"],
 })

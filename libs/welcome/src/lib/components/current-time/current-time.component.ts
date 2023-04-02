@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'd-workspace-current-time',
+  selector: 'hexa-current-time',
   templateUrl: './current-time.component.html',
   styleUrls: ['./current-time.component.scss']
 })

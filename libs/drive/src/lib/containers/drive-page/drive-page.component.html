@@ -1,5 +1,5 @@
 <ion-header collapse="fade" mode="ios">
-  <d-workspace-ui-header>
+  <hexa-ui-header>
     <ng-container slot="start">
       <ion-searchbar
         enterkeyhint="search"
@@ -22,7 +22,7 @@
         New Folder
       </ion-button>
     </ng-container>
-  </d-workspace-ui-header>
+  </hexa-ui-header>
 </ion-header>
 <ion-menu side="end" menuId="seconde" contentId="drive">
   <ion-header>
@@ -52,10 +52,10 @@
         <ng-container *ngIf="items.length > 0 || (allMedia$ | async)?.length !== 0; else noItems">
           <ion-grid class="header-grid">
             <ion-row class="ion-align-items-center ion-padding-bottom">
-              <d-workspace-breadcrumbs 
+              <hexa-breadcrumbs 
                 [breadcrumbs]="breadcrumbs$|async"
                 [isSearching]="(searchbarElement?.nativeElement?.value?.length || 0) > 0"
-                (actions)="actions($event.type, $event.payload)"></d-workspace-breadcrumbs>
+                (actions)="actions($event.type, $event.payload)"></hexa-breadcrumbs>
               <ion-col class="ion-no-padding">
                 <span lines="none" class="ion-float-end item-stats ion-text-end">
                   <ion-label color="medium"
@@ -70,13 +70,13 @@
             </ion-row>
           </ion-grid>
           <div>
-            <d-workspace-items-container 
+            <hexa-items-container 
               [items]="items"
               [account]="account$.value"
-              (actionsEvent)="actions($event.type, $event.payload)"></d-workspace-items-container>
-            <d-workspace-dropable 
+              (actionsEvent)="actions($event.type, $event.payload)"></hexa-items-container>
+            <hexa-dropable 
               *ngIf="items.length <= 0"
-              (actions)="actions($event.type, $event.payload)"></d-workspace-dropable>
+              (actions)="actions($event.type, $event.payload)"></hexa-dropable>
           </div>
           <ion-infinite-scroll
               *ngIf="items.length > 0"
@@ -103,7 +103,7 @@
                 </ion-text>
               </ion-col>
             </ion-row>
-            <d-workspace-dropable (actions)="actions($event.type, $event.payload)"></d-workspace-dropable>
+            <hexa-dropable (actions)="actions($event.type, $event.payload)"></hexa-dropable>
           </ion-grid>
         </ng-template>
       </ion-col>

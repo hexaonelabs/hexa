@@ -50,8 +50,8 @@ jobs:
   #     - name: Valist Deploy
   #       uses: valist-io/valist-github-action@v2
   #       with:
-  #         private-key: ${{ secrets.VALIST_SIGNER }}
-  #         account: d-workspace
+  #         privatehexaecrets.VALIST_SIGNER }}
+  #         accounthexace
   #         project: d-workspace-pwa
   #         release: ${{ env.version }}
           

@@ -5,7 +5,7 @@ import { filter, map, merge, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'd-workspace-update',
+  selector: 'hexa-update',
   template: `<div *ngIf="updateAvailable$ | async"></div>`,
   styles: [``],
 })

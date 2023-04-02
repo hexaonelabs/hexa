@@ -1,4 +1,4 @@
-import { IEncryptionService } from "@d-workspace/interfaces";
+import { IEncryptionService } from "@hexa/interfaces";
 
 /**
  * Strategy pattern for encryption and decryption services

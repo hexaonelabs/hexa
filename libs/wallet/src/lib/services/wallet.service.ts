@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { DIDDataStore } from '@glazed/did-datastore';
-import { IAuthService, IDatastoreService, ILoadingService } from "@d-workspace/interfaces";
-import { getInjectionToken, TOKENS_NAME } from "@d-workspace/token-injection";
+import { IAuthService, IDatastoreService, ILoadingService } from "@hexa/interfaces";
+import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { BehaviorSubject, distinctUntilChanged, filter, tap } from "rxjs";
 import { TokenInterface } from "../interfaces/token.interface";
 

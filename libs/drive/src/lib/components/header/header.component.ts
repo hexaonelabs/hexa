@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'd-workspace-header',
+  selector: 'hexa-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })

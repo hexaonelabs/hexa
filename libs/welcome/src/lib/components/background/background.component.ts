@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'd-workspace-background',
+  selector: 'hexa-background',
   templateUrl: './background.component.html',
   styleUrls: ['./background.component.scss']
 })
