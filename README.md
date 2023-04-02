@@ -70,10 +70,11 @@ hexa integrat IPFS Core powered by Filecoin to enable users to store, manage and
   <summary><b>Others</b></summary>
 
   - [x] EVM chain support
+  - [x] Authentication with email support
   - [x] Shared file Notifications
-  - [x] Data encryption 
+  - [x] Data encryption with EIP-2844 standard
   - [x] Files access control with wallet address
-  - [x] Desktop app support using PWA technology
+  - [x] Desktop & cross platform support using PWA technology
   - [x] Define IPFS service with user API Key
 
 </details>
@@ -98,7 +99,9 @@ hexa is a web application that can be used in any modern browser.
 
 You can also install hexa as a desktop application using Progressive Web App (PWA) technology by click `install` icon from browser url section or from `options` section of your browser. You can find more informations about PWA installation and specification [here](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen).
 
-**Distribution link to install hexa PWA application:** [https://app.valist.io/hexa/hexa-pwa](https://app.valist.io/hexa/hexa-pwa) (click launch button)
+**Distribution link to install hexa PWA application:** [https://hexaone-labs.github.io/hexa/](https://hexaone-labs.github.io/hexa/)
+
+<!-- **Distribution link to install hexa PWA application:** [https://app.valist.io/hexa/hexa-pwa](https://app.valist.io/hexa/hexa-pwa) (click launch button) -->
 
 ## Development
 
