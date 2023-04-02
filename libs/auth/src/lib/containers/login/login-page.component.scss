@@ -18,6 +18,14 @@
         margin-right: 1rem;
       }
     }
+
+    .link-header {
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+      --background: transparent;
+      --color: #fff;
+    }
     
     div {
       text-align: left;
@@ -64,6 +72,9 @@
         left: 1rem;
       }
 
+      .link-header {
+        right: 1rem;
+      }
       div {
         padding: 0 1rem;
 
