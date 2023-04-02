@@ -647,24 +647,6 @@ You may obtain a copy of the License at
 
 
 
-@d-workspace/auth
-
-@d-workspace/calendar
-
-@d-workspace/drive
-
-@d-workspace/interfaces
-
-@d-workspace/notes
-
-@d-workspace/token-injection
-
-@d-workspace/ui
-
-@d-workspace/wallet
-
-@d-workspace/welcome
-
 @didtools/cacao
 (Apache-2.0 OR MIT)
 
@@ -2255,6 +2237,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 @glazed/tile-loader
 (Apache-2.0 OR MIT)
+
+@hexa/auth
+
+@hexa/calendar
+
+@hexa/drive
+
+@hexa/interfaces
+
+@hexa/notes
+
+@hexa/token-injection
+
+@hexa/ui
+
+@hexa/wallet
+
+@hexa/welcome
 
 @ionic/angular
 MIT
