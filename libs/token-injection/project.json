@@ -6,19 +6,27 @@
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/token-injection",
         "main": "libs/token-injection/src/index.ts",
         "tsConfig": "libs/token-injection/tsconfig.lib.json",
-        "assets": ["libs/token-injection/*.md"]
+        "assets": [
+          "libs/token-injection/*.md"
+        ]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/token-injection/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/token-injection/**/*.ts"
+        ]
       }
     }
   },
