@@ -18,9 +18,6 @@ hexa integrat IPFS Core powered by Filecoin to enable users to store, manage and
 - Real-world utility: 
   hexa provide a real-world utility for censorship-resistant, tamper-proof and privacy complient cloud solution by providing multi services composition that allow users to manage datas with total privacy and security controls of access by using Encryption and Decryption technologies to increase data acces security.
 
-## 👀 Overview
-
-<img src="./tools/images/hexa-screenshot-001.png" />
 
 ## 🚀 Features
 
