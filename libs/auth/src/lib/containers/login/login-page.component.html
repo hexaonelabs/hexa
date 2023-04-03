@@ -34,8 +34,8 @@
   <section class="ion-text-start">
     <ion-grid class="ion-no-padding">
       <ion-row class="ion-no-padding">
-        <ion-col size-xs="12" size-md="12" size-lg="4" class="ion-padding-horizontal">
-          <div class="sticky ion-padding-top ion-padding-horizontal">
+        <ion-col size-xs="12" size-md="12" size-lg="4" class="ion-padding-horizontal ion-padding-bottom">
+          <div class="sticky ion-padding-top ion-padding-horizontal ion-padding-bottom">
             <ion-text color="primary ion-text-uppercase">
               <span>
                 Everything you need
@@ -92,13 +92,13 @@
   <div class="call-action">
     <ion-grid class="ion-no-padding">
       <ion-row>
-        <ion-col size-sm="12" size-md="8" size-lg="8">
+        <ion-col size-xs="12" size-md="8" size-lg="8">
           <h2>Ready to be a part of it?</h2>
           <p>
             Get started now and enjoy the benefits of decentralized storage.
           </p>
         </ion-col>
-        <ion-col size-sm="12" size-md="4" size-lg="4" class="ion-text-end">
+        <ion-col size-xs="12" size-md="4" size-lg="4" class="ion-padding-vertical">
           <ion-button
             size="large"
             *ngIf="account$ | async; else auth2"

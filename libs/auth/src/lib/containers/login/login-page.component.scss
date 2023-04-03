@@ -33,9 +33,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      padding: 8rem 5rem 0;
+      padding: 8rem 5rem 2rem;
       min-height: 100vh;
-      height: 100%;
 
       h1 {
         font-size: 6rem;
@@ -69,7 +68,7 @@
     section {
       background-color: #272747;
       color: #fff;
-      padding: 5rem 3rem 5rem;
+      padding: 10rem 3rem;
       margin-top: 0rem;
       display: flex;
       flex-direction: column;
@@ -87,11 +86,13 @@
 
       h2 {
         font-size: 2.5rem;
+        line-height: 2.5rem;
         margin-bottom: 1rem;
       }
 
       h3 {
         font-size: 1.618rem;
+        line-height: 1.618rem;
         margin-top: 0;
         margin-bottom: 1rem;
         font-weight: 600;
@@ -141,11 +142,16 @@
 
       h2 {
         font-size: 3rem;
-        margin: 0;
+        line-height: 3rem;
+        margin: 0 0 1rem;
       }
 
       p {
         margin: 0;
+      }
+
+      ion-button {
+        text-align: right;
       }
     }
     // rules for mobile
@@ -153,14 +159,15 @@
       
       
       .logo-header {
-        left: 1rem;
+        left: 0.5rem;
       }
 
       .link-header {
         right: 1rem;
       }
+
       div.header-landing {
-        padding: 0 1rem;
+        padding: 0 2rem;
 
         h1 {
           font-size: 3rem;
@@ -170,6 +177,23 @@
           font-size: 1.1rem;
         }
 
+      }
+
+      section {
+        padding: 4rem 0rem;
+
+        div.sticky {
+          position: static;
+        }
+
+      }
+
+      .call-action {
+        padding: 4rem 2rem;
+
+        ion-button {
+          text-align: left;
+        }
       }
 
       .footer {
