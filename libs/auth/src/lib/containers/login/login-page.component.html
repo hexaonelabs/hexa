@@ -1,4 +1,5 @@
-<ion-content class="ion-padding">
+<ion-content class="ion-no-padding">
+
   <ion-item lines="none" class="logo-header">
     <ion-icon slot="start" src="./assets/images/logo.svg" size="large"></ion-icon>
     <ion-label>HEXA</ion-label>
@@ -8,7 +9,8 @@
       <ion-icon color="light" slot="start" name="logo-github"></ion-icon>
     </a>
   </ion-item>
-  <div>
+
+  <div class="header-landing">
     <h1>Develop and manage your digital datas with blockchain technology</h1>
     <p>
       Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) 
@@ -27,5 +29,113 @@
         (isLoaderVisible$ | async) === true ? 'Loading...' : 'Connect'
       }}</ion-button>
     </ng-template>
+  </div>
+
+  <section class="ion-text-start">
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-no-padding">
+        <ion-col size-xs="12" size-md="12" size-lg="4" class="ion-padding-horizontal">
+          <div class="sticky ion-padding-top ion-padding-horizontal">
+            <ion-text color="primary ion-text-uppercase">
+              <span>
+                Everything you need
+              </span>
+            </ion-text>
+            <h2>
+              All-in-one platform
+            </h2>
+            <p>
+              Store data on IPFS using our free cross-platform client.
+            </p>
+          </div>
+        </ion-col>
+        <ion-col size-xs="12" size-md="12" size-lg="8">
+          <ion-grid class="call-list ion-no-padding ion-padding-top">
+            <ion-row class="ion-padding-horizontal">
+              <ion-col size-xs="12" size-sm="12" size-md="6">
+                <h3>
+                  Zero-knowledge architecture
+                </h3>
+                <p>
+                  Hexa is built on zero-knowledge architecture, meaning that we know nothing about what you do in app. Not only is this more secure, but it also gives you complete censorship-resistant and privacy compliant solution.
+                </p>
+              </ion-col>
+              <ion-col size-xs="12" size-sm="12" size-md="6">
+                <h3>
+                  Access data securely wherever you are
+                </h3>
+                <p>
+                  Store files securely on IPFS and access them from anywhere. Hexa is a fully decentralized, tamper-proof platform and hosted on IPFS, meaning that you can access your data from any device, anywhere in the world.
+                </p>
+              </ion-col>
+              <ion-col size-xs="12" size-sm="12" size-md="6">
+                <h3>
+                  Secure sharing datas
+                </h3>
+                <p>
+                  Share a copy of your file to anyone wusing dedicated upload page. Hexa allow you to share with others ERC20 address a encrypted copy of your file with custom access controls and permission settings.
+                </p>
+              </ion-col>
+              <ion-col size-xs="12" size-sm="12" size-md="6">
+                <h3>Free and Open-source</h3>
+                <p>
+                  Hexa is free and open-source, meaning that you can audit the code and be sure that your data is safe. You can also download the source code and run it on your own server or contribute to the project and help us make Hexa even better.
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <div class="call-action">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size-sm="12" size-md="8" size-lg="8">
+          <h2>Ready to be a part of it?</h2>
+          <p>
+            Get started now and enjoy the benefits of decentralized storage.
+          </p>
+        </ion-col>
+        <ion-col size-sm="12" size-md="4" size-lg="4" class="ion-text-end">
+          <ion-button
+            size="large"
+            *ngIf="account$ | async; else auth2"
+            (click)="disconnect()"
+            >Disconnect</ion-button
+          >
+          <ng-template #auth2>
+            <ion-button size="large" [disabled]="(isLoaderVisible$ | async)" (click)="connectWallet()">{{
+              (isLoaderVisible$ | async) === true ? 'Loading...' : 'Get Started'
+            }}</ion-button>
+          </ng-template>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="footer">
+    <p>
+      Build by
+      <a
+        href="https://github.com/hexaone-labs"
+        target="_blank"
+        rel="noopener"
+        >HEXA ONE Labs</a
+      >. Powered by
+      <a href="https://ipfs.io" target="_blank" rel="noopener">
+        <ion-icon
+          src="./assets/images/logo-ipfs.svg"
+        ></ion-icon>
+        IPFS
+      </a> and
+      <a href="http://filecoin.io" target="_blank" rel="noopener"
+        ><ion-icon
+          src="./assets/images/logo-filecoin.svg"
+        ></ion-icon>
+        Filecoin</a
+      >
+    </p>
   </div>
 </ion-content>

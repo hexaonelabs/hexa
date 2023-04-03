@@ -27,13 +27,14 @@
       --color: #fff;
     }
     
-    div {
+    div.header-landing {
       text-align: left;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      padding: 8rem 4rem 0;
+      padding: 8rem 5rem 0;
+      min-height: 100vh;
       height: 100%;
 
       h1 {
@@ -64,6 +65,89 @@
       }
       
     }
+
+    section {
+      background-color: #272747;
+      color: #fff;
+      padding: 5rem 3rem 5rem;
+      margin-top: 0rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+      width: 100%;
+
+      div.sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 5rem;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.618rem;
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 1.5rem;
+        margin-top: 0;
+      }
+
+      .call-list {
+        ion-col {
+          padding: 0 1rem;
+          margin-bottom: 4rem;
+        }
+      }
+    }
+
+    .footer {
+      background: #14162d;
+      padding: 0 4rem;
+
+      p {
+        margin: 0;
+        padding: 1rem;
+        font-size: 0.8rem;
+        color: var(--ion-color-medium);
+      }
+      a {
+        text-decoration: none;
+        color: var(--ion-color-medium-shade);
+  
+        &:hover {
+          color: var(--ion-color-medium);
+        }
+      }
+  
+      ion-icon {
+        vertical-align: middle;
+        opacity: 0.8;
+      }
+    }
+
+    .call-action {
+      background-color: #1c203a;
+      padding: 8rem 5rem;
+
+      h2 {
+        font-size: 3rem;
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
     // rules for mobile
     @media (max-width: 768px) {
       
@@ -75,7 +159,7 @@
       .link-header {
         right: 1rem;
       }
-      div {
+      div.header-landing {
         padding: 0 1rem;
 
         h1 {
@@ -86,6 +170,10 @@
           font-size: 1.1rem;
         }
 
+      }
+
+      .footer {
+        padding: 0 1rem;
       }
     }
   } 
