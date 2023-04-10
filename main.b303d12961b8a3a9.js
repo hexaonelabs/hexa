@@ -180,11 +180,11 @@ const appRoutes = [{
       loadComponent: () => __webpack_require__.e(/*! import() */ 52).then(__webpack_require__.bind(__webpack_require__, /*! ./components/ipfs/ipfs.component */ 50052)).then(m => m.IpfsComponent)
     }]
   }, {
-    path: 'd',
+    path: 'h',
     component: _components_dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_1__.DashboardComponent,
     canActivate: [_app_guard__WEBPACK_IMPORTED_MODULE_0__.AppGuard],
     children: [{
-      path: 'welcome',
+      path: 'dashboard',
       loadChildren: () => __webpack_require__.e(/*! import() */ 7185).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/welcome */ 77185)).then(m => m.WelcomeModule)
     }, {
       path: 'calendar',
@@ -200,7 +200,7 @@ const appRoutes = [{
       loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(8592), __webpack_require__.e(3161)]).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/notes */ 3161)).then(m => m.NotesModule)
     }, {
       path: '',
-      redirectTo: 'drive',
+      redirectTo: 'dashboard',
       pathMatch: 'full'
     }]
   }, {
@@ -452,13 +452,9 @@ class DashboardComponent {
     this._notificationService = _notificationService;
     this._promptStrategy = _promptStrategy;
     // public routerUrl$: Observable<string>;
-    this.features = [{
-      name: 'home',
-      url: 'welcome',
-      sort: 0,
-      isEnabled: false,
-      isVisible: false
-    }, {
+    this.features = [
+    // {name: 'home', url: 'dashboard', sort: 0, isEnabled: false, isVisible: false},
+    {
       name: 'folder-open',
       url: 'drive',
       sort: 5,
@@ -542,7 +538,7 @@ class DashboardComponent {
     const {
       id: streamId
     } = this._route.snapshot.params;
-    this._router.navigate([`/d/${path}`]);
+    this._router.navigate([`/h/${path}`]);
   }
   toogleNotification(popoverElement, toggleElement) {
     var _this2 = this;
@@ -632,12 +628,18 @@ DashboardComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_3
   selectors: [["hexa-dashboard"]],
   decls: 25,
   vars: 9,
-  consts: [["contentId", "main", "when", "sm"], ["contentId", "main"], ["menuElement", ""], [1, "ion-no-border"], ["src", "./assets/images/logo.svg", 1, "logo"], ["color", "primary", 3, "fullscreen"], [1, "centervert"], ["fill", "clear", "expand", "block", "size", "large", "class", "link", "routerLinkActive", "active-link", 3, "disabled", "ngClass", "click", 4, "ngFor", "ngForOf"], ["id", "setting-options", "fill", "clear"], ["slot", "icon-only", "color", "light", "size", "small", "name", "settings-outline"], ["trigger", "setting-options", "triggerAction", "click"], ["popoverSettingElement", ""], ["id", "main", "mode", "md"], ["mode", "ios", "id", "profil-trigger", 1, "authMiniDash"], ["src", "./assets/images/logo-colored.svg"], [3, "src"], ["trigger", "profil-trigger", "size", "auto", "side", "bottom", "alignment", "start", 1, "profil-popover", 3, "keepContentsMounted", "dismissOnSelect"], ["popOverProfil", ""], ["fill", "clear", "expand", "block", "size", "large", "routerLinkActive", "active-link", 1, "link", 3, "disabled", "ngClass", "click"], ["slot", "icon-only", "color", "light", 3, "name"], [1, "ion-no-padding"], ["lines", "none", 1, "ion-no-padding"], ["button", "", 3, "click"], ["slot", "end", "size", "small", 3, "checked", "click"], ["toggleNotifElement", ""], [1, "ion-padding"], ["lines", "none", "class", "item-profil", 4, "ngIf"], ["lines", "none", 1, "ion-margin-top", "disconnect-item", 3, "click"], ["slot", "start", "name", "log-out-outline"], ["lines", "none", 1, "item-profil"], ["slot", "start"], [3, "ngClass", "src"], [1, "ion-text-nowrap"], ["color", "medium"], ["slot", "end", 1, "ion-no-margin", "ion-margin-start", 3, "click"], ["size", "small", "fill", "clear"], ["color", "medium", "size", "small", "slot", "icon-only", "name", "copy-outline"]],
+  consts: [["contentId", "main", "when", "sm"], ["contentId", "main"], ["menuElement", ""], [1, "ion-no-border"], ["src", "./assets/images/logo.svg", 1, "logo", 3, "click"], ["color", "primary", 3, "fullscreen"], [1, "centervert"], ["fill", "clear", "expand", "block", "size", "large", "class", "link", "routerLinkActive", "active-link", 3, "disabled", "ngClass", "click", 4, "ngFor", "ngForOf"], ["id", "setting-options", "fill", "clear"], ["slot", "icon-only", "color", "light", "size", "small", "name", "settings-outline"], ["trigger", "setting-options", "triggerAction", "click"], ["popoverSettingElement", ""], ["id", "main", "mode", "md"], ["mode", "ios", "id", "profil-trigger", 1, "authMiniDash"], ["src", "./assets/images/logo-colored.svg"], [3, "src"], ["trigger", "profil-trigger", "size", "auto", "side", "bottom", "alignment", "start", 1, "profil-popover", 3, "keepContentsMounted", "dismissOnSelect"], ["popOverProfil", ""], ["fill", "clear", "expand", "block", "size", "large", "routerLinkActive", "active-link", 1, "link", 3, "disabled", "ngClass", "click"], ["slot", "icon-only", "color", "light", 3, "name"], [1, "ion-no-padding"], ["lines", "none", 1, "ion-no-padding"], ["button", "", 3, "click"], ["slot", "end", "size", "small", 3, "checked", "click"], ["toggleNotifElement", ""], [1, "ion-padding"], ["lines", "none", "class", "item-profil", 4, "ngIf"], ["lines", "none", 1, "ion-margin-top", "disconnect-item", 3, "click"], ["slot", "start", "name", "log-out-outline"], ["lines", "none", 1, "item-profil"], ["slot", "start"], [3, "ngClass", "src"], [1, "ion-text-nowrap"], ["color", "medium"], ["slot", "end", 1, "ion-no-margin", "ion-margin-start", 3, "click"], ["size", "small", "fill", "clear"], ["color", "medium", "size", "small", "slot", "icon-only", "name", "copy-outline"]],
   template: function DashboardComponent_Template(rf, ctx) {
     if (rf & 1) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "ion-split-pane", 0)(1, "ion-menu", 1, 2)(3, "ion-header", 3)(4, "ion-toolbar");
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](5, "ion-img", 4);
-      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
+      const _r20 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "ion-split-pane", 0)(1, "ion-menu", 1, 2)(3, "ion-header", 3)(4, "ion-toolbar")(5, "ion-img", 4);
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function DashboardComponent_Template_ion_img_click_5_listener() {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r20);
+        const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
+        ctx.togglePage("dashboard");
+        return _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵresetView"](_r0.close());
+      });
+      _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()()();
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](6, "ion-content", 5)(7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](8, DashboardComponent_ion_button_8_Template, 2, 5, "ion-button", 7);
       _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]()();
@@ -3798,4 +3800,4 @@ module.exports = webpackAsyncContext;
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.02c2fca36a20f3cb.js.map
+//# sourceMappingURL=main.b303d12961b8a3a9.js.map
