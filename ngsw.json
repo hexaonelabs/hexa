@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1681739308537,
+  "timestamp": 1681764775857,
   "index": "/hexa/index.html",
   "assetGroups": [
     {
@@ -86,7 +86,7 @@
         "/hexa/common.7e53dc889ba7f375.js",
         "/hexa/favicon.ico",
         "/hexa/index.html",
-        "/hexa/main.f7c22c3a6e02d099.js",
+        "/hexa/main.b6c2ec25b7139a22.js",
         "/hexa/manifest.webmanifest",
         "/hexa/polyfills-core-js.36d4c791b768cf7c.js",
         "/hexa/polyfills-dom.fd0f4e6217459bf5.js",
@@ -95,7 +95,7 @@
         "/hexa/stencil-polyfills-css-shim.3abfcd5587077ec0.js",
         "/hexa/stencil-polyfills-dom.1dac106716299433.js",
         "/hexa/styles.7c4caba7163ddbff.css",
-        "/hexa/vendor.2dbf97ba60619f4b.js"
+        "/hexa/vendor.18f3004ea5877203.js"
       ],
       "patterns": []
     },
@@ -233,8 +233,8 @@
     "/hexa/bg.897829dd3b531ad0.jpeg": "e54f08643f661847048aa197c0b717b564aad60d",
     "/hexa/common.7e53dc889ba7f375.js": "24eb99d444a4de55643c2a48aba0d080c397a762",
     "/hexa/favicon.ico": "4aab6d6e034a7e033189f27000c6579115c8b2a3",
-    "/hexa/index.html": "f5cdd2095ec7ef63b08ab96ad9d6fab1f1abf40e",
-    "/hexa/main.f7c22c3a6e02d099.js": "f03dbc8bc8c5e31baa2c4a08f9613097db98a869",
+    "/hexa/index.html": "8bdaad458993d05b9088dbd05324b6695b4a2b58",
+    "/hexa/main.b6c2ec25b7139a22.js": "dd0571458a1b516ab3b07ae7cf5f02c8c31f1cd8",
     "/hexa/manifest.webmanifest": "98bd3e17467c233337e21fb91d3731e2c1977ecd",
     "/hexa/polyfills-core-js.36d4c791b768cf7c.js": "5bcebf3707267748e8c909c2f4533e8b3e6c3424",
     "/hexa/polyfills-dom.fd0f4e6217459bf5.js": "2967b236456b7d8e89c139d0da4197ff02e6a6ed",
@@ -243,7 +243,7 @@
     "/hexa/stencil-polyfills-css-shim.3abfcd5587077ec0.js": "9c4d11a13a808579e7bc2482ec9e1e392b99fb47",
     "/hexa/stencil-polyfills-dom.1dac106716299433.js": "c06f543d75b35164a30a99436c166ce60fe95d8d",
     "/hexa/styles.7c4caba7163ddbff.css": "7822b8e9ba32ec8f21da5a4e541164ffb28e8675",
-    "/hexa/vendor.2dbf97ba60619f4b.js": "1635ad11892e33bc7321ba34c87751f423d7431f"
+    "/hexa/vendor.18f3004ea5877203.js": "9b79330bc289b2cef56bcffd0f4108c3537ceda9"
   },
   "navigationUrls": [
     {
