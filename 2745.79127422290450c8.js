@@ -203,7 +203,7 @@ LoginPageComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "ion-icon", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 6)(9, "h1");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, " Use the full potential of the internet ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, " Use the full potential of internet ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "p");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, " Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) ");
@@ -358,4 +358,4 @@ const authRoutes = [{
 /***/ })
 
 }]);
-//# sourceMappingURL=2745.6f7ba934d1edeb61.js.map
+//# sourceMappingURL=2745.79127422290450c8.js.map

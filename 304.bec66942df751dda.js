@@ -3125,18 +3125,12 @@ class MediaFileService {
         } = yield _capacitor_share__WEBPACK_IMPORTED_MODULE_2__.Share.canShare();
         if (canShare) {
           yield _capacitor_share__WEBPACK_IMPORTED_MODULE_2__.Share.share({
-            title: 'hexa share a file',
-            text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
-            url
-            // sfiles: [file]
+            text: `${url}`
           });
         } else {
           // use browser polyfill
           yield navigator.share({
-            title: 'hexa Share file',
-            text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
-            url,
-            files: [file]
+            text: `${url}`
           });
         }
       } catch (error) {
@@ -3987,4 +3981,4 @@ const Share = (0,_capacitor_core__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('S
 /***/ })
 
 }]);
-//# sourceMappingURL=304.cb03dc2e2c421272.js.map
+//# sourceMappingURL=304.bec66942df751dda.js.map
