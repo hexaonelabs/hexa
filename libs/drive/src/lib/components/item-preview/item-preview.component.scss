@@ -43,6 +43,22 @@
     justify-content: center;
     align-items: stretch;
     align-content: center;
+    background: var(--ion-background-color);
+
+    ion-item {
+      --background: var(--ion-background-color);
+    }
+
+    // remove margin of the first child `chip` element inside `.withChip`
+    .withChip ion-chip:first-of-type {
+      margin-left: -10px;
+    }
+
+    ion-label {
+      ion-text p {
+        font-size: 1rem;
+      }
+    }
   }
 
   ion-chip {
@@ -51,11 +67,6 @@
 
   img {
     max-height: 100vh;
-  }
-
-  .options-btn {
-    position: absolute;
-    bottom: 2rem;
   }
   
   .bg-image {

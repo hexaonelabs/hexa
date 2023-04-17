@@ -7,9 +7,7 @@ import { Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChang
 })
 export class BackgroundComponent implements OnInit, OnChanges {
 
-  @Input() clientId: string|undefined;
   @Input() isDevMode: boolean|undefined;
-  @Input() query: string|undefined = undefined;
   @Input() url: string|undefined = undefined;
   imgUrl: string|undefined;
 
@@ -21,19 +19,28 @@ export class BackgroundComponent implements OnInit, OnChanges {
   async ngOnInit(): Promise<void> {
     this.imgUrl = (Boolean(this.url) === true) 
       ? this.url
-      : await this.getBackgroundImageFromUnsplashAPI()
-        .catch(error => {
-          this.fadeIn();
-          return undefined;
-        });
+      : undefined;
+    // check url valid formating
     if (this.imgUrl) {
-      this.el.nativeElement.style.backgroundImage = `url(${this.imgUrl})`;
+      try {
+        const isUrlValid = new URL(this.imgUrl);
+        if (isUrlValid) {
+          this.el.nativeElement.style.backgroundImage = `url(${this.imgUrl})`;
+        }
+      } catch (error) {
+        console.log(`[ERROR] {BackgroundComponent} Invalide URL formatting: "${this.imgUrl}"`);
+        this.fadeIn();
+        throw new Error(`Invalide URL formatting: "${this.imgUrl}"`);
+      }
     } 
     this.fadeIn();
   }
 
   async ngOnChanges(simpleChanges: SimpleChanges): Promise<void> {
-    if (simpleChanges?.['query']?.firstChange) {
+    if (!simpleChanges?.['url']) {
+      return;
+    }
+    if (simpleChanges?.['url']?.firstChange) {
       return;
     }
     this._renderer.setStyle(
@@ -42,24 +49,6 @@ export class BackgroundComponent implements OnInit, OnChanges {
       0
     );
     this.ngOnInit();
-  }
-
-  async getBackgroundImageFromUnsplashAPI(): Promise<string|undefined> {
-    // check if client id is provided
-    if (!this.clientId) {
-      return undefined;
-    }
-    if (this.isDevMode){
-      return `https://images.unsplash.com/photo-1506034861661-ad49bbcf7198?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNjEyfDB8MXxyYW5kb218fHx8fHx8fHwxNjcwODI5OTYx&ixlib=rb-4.0.3&q=80&w=1080`;
-    }
-    const query = this.query !== undefined && this.query.length > 0 ? '&query=' + this.query : '';
-    const json = await fetch(`https://api.unsplash.com/photos/random?client_id=${this.clientId}${query}`)
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        throw new Error('api not available');
-      });
-    return json?.urls?.regular;
   }
 
   fadeIn() {

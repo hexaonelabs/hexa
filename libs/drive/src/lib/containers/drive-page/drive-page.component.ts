@@ -408,13 +408,13 @@ export class DrivePageComponent {
   
   private async _askFoEncryption() {
     const walletAddress = this._authService.account$.value;
-    const {chainId, name: chainName} = this._authService.signer$.value.provider.network;
+    // const {chainId, name: chainName} = this._authService.signer$.value.provider.network;
     const ionModal = await this._modalCtrl.create({
       component: SetupEncryptionComponent,
       cssClass: 'modalAlert',
       componentProps: {
         walletAddress,
-        chainName
+        // chainName
       },
     });
     await ionModal.present();

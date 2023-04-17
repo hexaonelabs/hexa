@@ -85,14 +85,15 @@
       }
 
       h2 {
-        font-size: 4.5rem;
-        line-height: 4.5rem;
+        font-size: 4rem;
+        line-height: 4rem;
+        font-weight: 600;
         margin-bottom: 1rem;
       }
 
       h3 {
-        font-size: 1.618rem;
-        line-height: 1.618rem;
+        font-size: 1.718rem;
+        line-height: 1.718rem;
         margin-top: 0;
         margin-bottom: 1rem;
         font-weight: 600;
@@ -101,6 +102,10 @@
       p {
         font-size: 1.5rem;
         margin-top: 0;
+      }
+
+      span {
+        font-weight: 600;
       }
 
       .call-list {
@@ -146,6 +151,7 @@
 
       h2 {
         font-size: 3rem;
+        font-weight: 600;
         line-height: 3rem;
         margin: 0 0 1rem;
       }

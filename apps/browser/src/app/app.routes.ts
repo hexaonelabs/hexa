@@ -4,12 +4,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const appRoutes: Route[] = [
   {
-    path: 'auth',
-    loadChildren: () => import('@hexa/auth').then(m => m.AuthModule)
-  },
-  {
     path: '',
     children: [
+      {
+        path: 'auth',
+        loadChildren: () => import('@hexa/auth').then(m => m.AuthModule)
+      },
       {
         path: 'ipfs',
         // loadComponent: () => import('./components/ipfs/ipfs.component').then(m => m.IpfsComponent),
@@ -22,12 +22,12 @@ export const appRoutes: Route[] = [
         ]
       },
       {
-        path: 'd',
+        path: 'h',
         component: DashboardComponent,
         canActivate: [AppGuard],
         children: [
           {
-            path: 'welcome',
+            path: 'dashboard',
             loadChildren: () => import('@hexa/welcome').then(m => m.WelcomeModule)
           },
           {
@@ -48,7 +48,7 @@ export const appRoutes: Route[] = [
           },
           {
             path: '',
-            redirectTo: 'drive',
+            redirectTo: 'dashboard',
             pathMatch: 'full'
           }
         ]

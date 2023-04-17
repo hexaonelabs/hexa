@@ -13,7 +13,7 @@ import {
 })
 export class SetupEncryptionComponent {
   @Input() walletAddress!: string;
-  @Input() chainName!: string;
+  // @Input() chainName!: string;
   @Input() item!: MediafileInterface;
   form!: FormGroup;
   isDisplayConditionForm = false;
@@ -172,7 +172,7 @@ export class SetupEncryptionComponent {
           return condition;
         }
         return {
-          chain: this._normalizeChainName(this.chainName),
+          // chain: this._normalizeChainName(this.chainName),
           ...condition,
         };
       });

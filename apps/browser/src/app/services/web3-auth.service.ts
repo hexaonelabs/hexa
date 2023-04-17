@@ -18,6 +18,7 @@ import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver'
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
+import { DID } from '@hexa/dids';
 
 const DB_NAME = 'hexa';
 const MAINNET_RPC_URL = 'https://rpc.ankr.com/eth';
@@ -209,9 +210,9 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   /**
    * Method that check the current route and redirect to root if the route is not the root
    */
-  private _redirectToRoot() {
+  private async _redirectToRoot() {
     if (this._router.url !== '/') {
-      this._router.navigate(['/'], { relativeTo: this._route });
+      await this._router.navigateByUrl('/');
     }
   }
 
@@ -275,4 +276,80 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     this.profile$.next(result);
     return result;
   }
+}
+
+
+@Injectable()
+export class LocalAuthService implements IAuthService, IAuthGuardService {
+  ethereumProvider$ = new BehaviorSubject<any>(null);
+  signer$ = new BehaviorSubject<any>(null);
+  account$ = new BehaviorSubject<any>(null as any);
+  profile$ = new BehaviorSubject<IAuthUser>(null as any);
+  did$ = this._did.did$;
+  isWaiting$ = new BehaviorSubject(false)
+
+  constructor(
+    private readonly _router: Router,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DID_SERVICE))
+    private readonly _did: IIdentityService,  
+  ) {
+    console.log('[INFO]: LocalAuthService');
+  }
+
+  private _setLocalUser() {
+    this.account$.next('0xlocal');
+    this.profile$.next({
+      latestConnectionISODatetime: new Date().toISOString(),
+      latestNotifedISODatetime: new Date().toISOString(),
+      creationISODatetime: new Date().toISOString(),
+    });
+  }
+
+  async connectWallet(address: string) {
+    return this.connect(address);
+  }
+
+  async connect(accountToConnect?: string): Promise<boolean> {
+    await this._did.connectWallet(undefined, accountToConnect||'');
+    this._setLocalUser();
+    if (this.account$.value) {
+      window.localStorage.setItem('connectedWallets', JSON.stringify([this.account$.value]));
+    }
+    return true;
+  }
+  
+  async disconnect(): Promise<void> {
+    // reset local user
+    this.account$.next(null as any);
+    this.profile$.next(null as any);
+    this.did$.next(null as any);
+    // reset local storage
+    window.localStorage.removeItem('connectedWallets');
+    this._redirectToRoot();
+    console.log('disconnect');    
+  }
+  async getAccountDID(address: string, chainParam?: string): Promise<string>{
+    return `did:3:${address}`;
+  }
+  async getProfilData(): Promise<IAuthUser> {
+    return this.account$.value;
+  }
+
+  async updateProfilData(data: Partial<IAuthUser>): Promise<IAuthUser> {
+    return {
+      latestConnectionISODatetime: new Date().toISOString(),
+      latestNotifedISODatetime: new Date().toISOString(),
+      creationISODatetime: new Date().toISOString(),
+      ...data
+    }
+  }
+
+    /**
+   * Method that check the current route and redirect to root if the route is not the root
+   */
+    private async _redirectToRoot() {
+      if (this._router.url !== '/') {
+        await this._router.navigateByUrl('/');
+      }
+    }
 }

@@ -8,13 +8,13 @@
         <ion-col size="auto">
           <h1>Wallet</h1>
         </ion-col>
-        <ion-col class="ion-padding-start">
+        <ion-col>
           <ion-chip id="accounts-list" color="primary">
-            <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
+            <!-- <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
             <ion-label>
               {{ account | sliceAddress }}
-            </ion-label>
-            <ion-icon size="small" name="chevron-down"></ion-icon>
+            </ion-label> -->
+            <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
           </ion-chip>
           <ion-popover
             id="wallet-account-popover"
@@ -34,12 +34,12 @@
                       checked
                       (click)="actions('toggle-account', { account, event: $event })"
                     ></ion-checkbox>
-                    <ion-avatar
+                    <!-- <ion-avatar
                       class="isConnected"
                       slot="start"
                       avatar
                       [address]="account"
-                    ></ion-avatar>
+                    ></ion-avatar> -->
                     <ion-label>
                       <h3>{{ account | sliceAddress }}</h3>
                       <p></p>
@@ -145,7 +145,7 @@
                 <h1>${{ tokensBalances | netWorth }}</h1>
               </ion-text>
             </ion-col>
-            <ion-col size="3" class="ion-text-end">
+            <ion-col size-xs="6" size-sm="6" size-md="6" size-lg="3" size-xl="2" class="ion-text-end">
               <ion-segment [value]="selectedSegment" mode="ios">
                 <ion-segment-button
                   value="tokens"
@@ -297,5 +297,32 @@
         </ion-col>
       </ion-row>
     </ng-template>
+    <!-- Receive Assets Modal -->
+    <ion-modal mode="ios" [isOpen]="isReceiveAssetsModalOpen$.value" (ionModalDidDismiss)="isReceiveAssetsModalOpen$.next(false)">
+      <ng-template>
+        <ion-header class="ion-no-border">
+          <ion-toolbar>
+            <ion-title>
+              Receive Assets
+            </ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="isReceiveAssetsModalOpen$.next(false)">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center" *ngIf="account$|async as account">
+          <div>
+            <ion-img style="max-width: 80%;margin: auto;" [src]="account| qrcode | async "></ion-img>
+          </div>
+          <ion-text color="primary">
+            <h4>
+              {{account}}
+            </h4>
+          </ion-text>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
   </ion-grid>
 </ion-content>

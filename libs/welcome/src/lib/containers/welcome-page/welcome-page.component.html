@@ -43,8 +43,8 @@
         <ion-popover trigger="settings-btn" triggerAction="click">
           <ng-template>
             <ion-content class="ion-no-padding">
-              <ion-list lines="none" class="ion-margin-bottom">
-                <ion-list-header>
+              <ion-list lines="none" class="ion-no-padding ion-margin-bottom">
+                <ion-list-header class="ion-margin-bottom">
                   <ion-label>Widgets Settings</ion-label>
                 </ion-list-header>
                 <ion-item
@@ -69,8 +69,6 @@
     </ion-row>
   </ion-grid>
   <hexa-background
-    [clientId]="config?.background?.unsplashClientId"
-    [query]="config?.background?.query"
     [url]="config?.background?.url"
     [isDevMode]="!isProd"
   >

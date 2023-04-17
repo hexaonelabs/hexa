@@ -25,7 +25,7 @@ export class LoginPageComponent {
     if (isConnected) {
       // const profil = await this._datastoreService.getProfileFromCeramic();
       // console.log('[INFO] Ceramic profil', profil);
-      this._router.navigate(['/d']);
+      this._router.navigate(['/h']);
     }
     this.loaderService.setStatus(false);
   }

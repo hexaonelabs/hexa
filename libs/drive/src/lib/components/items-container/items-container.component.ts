@@ -101,6 +101,7 @@ export class ItemsContainerComponent implements OnChanges {
       componentProps: { isFolder: item.isFolder },
       event: $event,
       translucent: true,
+      mode: 'md',
     });
     await ionPopover.present();
     // handle close event

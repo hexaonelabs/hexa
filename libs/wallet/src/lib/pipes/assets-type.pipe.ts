@@ -1,10 +1,10 @@
-import { Pipe } from "@angular/core";
+import { Pipe, PipeTransform } from "@angular/core";
 import { TokenInterface } from "../interfaces/token.interface";
 
 @Pipe({
   name: "assetsType"
 })
-export class AssetsTypePipe {
+export class AssetsTypePipe implements PipeTransform {
   transform(value: TokenInterface[], typeName: 'token'|'nft'|'tx'): any {
     if (!value) return [];
     if (!typeName) return value;

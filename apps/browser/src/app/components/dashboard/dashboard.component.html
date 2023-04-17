@@ -2,7 +2,10 @@
   <ion-menu contentId="main" #menuElement>
     <ion-header class="ion-no-border">
       <ion-toolbar>
-        <ion-img class="logo" src="./assets/images/logo.svg"></ion-img>
+        <ion-img 
+          (click)="togglePage('dashboard'); menuElement.close()" 
+          class="logo" 
+          src="./assets/images/logo.svg"></ion-img>
       </ion-toolbar>
     </ion-header>
     <ion-content [fullscreen]="true" color="primary">
@@ -15,12 +18,10 @@
           *ngFor="let feature of features; let i = index"
           [disabled]="!feature.isEnabled"
           (click)="togglePage(feature.url); menuElement.close()"
-          [ngClass]="{ 'active-link': i === 0 }"
           routerLinkActive="active-link"
         >
           <ion-icon
             slot="icon-only"
-            color="light"
             [name]="feature.name"
           ></ion-icon>
         </ion-button>
@@ -48,21 +49,25 @@
             name="settings-outline"
           ></ion-icon>
         </ion-button>
-        <ion-popover trigger="setting-options" triggerAction="click" #popoverSettingElement>
+        <ion-popover 
+          trigger="setting-options" 
+          triggerAction="click" 
+          #popoverSettingElement
+          size="auto"
+          mode="md"
+          [keepContentsMounted]="true"
+          [dismissOnSelect]="true">
           <ng-template>
-            <ion-content class="ion-no-padding">
-              <ion-list lines="none" class="ion-no-padding">
-                <ion-list-header>
-                  <ion-label>Global Settings</ion-label>
+            <ion-content class="ion-no-padding" mode="ios">
+              <ion-list lines="none" class="ion-no-padding ion-margin-bottom">
+                <ion-list-header class="ion-margin-bottom">
+                  <ion-label>
+                    Global Settings
+                    <p>
+                      <small>HEXA {{version}}</small>
+                    </p>
+                  </ion-label>
                 </ion-list-header>
-                <!-- <ion-item>
-                  <ion-label>Dark Mode</ion-label>
-                  <ion-toggle
-                    slot="end"
-                    [checked]="(isDarkMode$ | async)"
-                    (ionChange)="toggleDarkMode($event)"
-                  ></ion-toggle>
-                </ion-item> -->
                 <ion-item button 
                 (click)="setupIPFSPinService(popoverSettingElement)">
                   <ion-label>
@@ -93,6 +98,19 @@
                     size="small"
                     [checked]="isNotifEnabled$ | async"
                     (click)="toogleNotification(popoverSettingElement, toggleNotifElement)"
+                  ></ion-toggle>
+                </ion-item>
+                <ion-item>
+                  <ion-label>
+                    <h3>Dark mode</h3>
+                    <p>
+                      Enable or disable
+                    </p>
+                  </ion-label>
+                  <ion-toggle
+                    slot="end"
+                    [checked]="(isDarkMode$ | async)"
+                    (ionChange)="toggleDarkMode($event)"
                   ></ion-toggle>
                 </ion-item>
               </ion-list>

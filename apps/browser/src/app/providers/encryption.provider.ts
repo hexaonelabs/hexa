@@ -1,12 +1,15 @@
 import { IEncryptionService } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
-import { DIDEncryptionService } from "../services";
+import { environment } from "../../environments/environment";
+import { DIDEncryptionService, LocalEncryptionService } from "../services";
 import { EncryptionStrategy } from "../strategies";
 
 export const ENCRYPTION_PROVIDER = [
   {
     provide: getInjectionToken(TOKENS_NAME.APP_DID_ENCRYPTION_SERVICE),
-    useClass: DIDEncryptionService,
+    useClass: (environment?.version?.includes('local')||false)
+      ? LocalEncryptionService
+      : DIDEncryptionService
   },
   {
     provide: getInjectionToken(TOKENS_NAME.APP_ENCRYPTION_SERVICE),

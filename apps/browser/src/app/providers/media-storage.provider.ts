@@ -1,7 +1,8 @@
 import { EnvironmentProviders, Provider } from "@angular/core";
 import { IAuthService, IPiningService } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
-import { IPFSService, PinataService } from "../services";
+import { environment } from "../../environments/environment";
+import { IPFSService, PinataService, LocalIPFSService } from "../services";
 import { Web3storageService } from "../services/web3storage.service";
 import { IPFSPinningStrategy } from "../strategies";
 
@@ -16,7 +17,9 @@ export const MEDIA_STORAGE_PROVIDER: (Provider | EnvironmentProviders)[]= [
   },
   {
     provide: getInjectionToken(TOKENS_NAME.APP_IPFS_SERVICE),
-    useClass: IPFSService,
+    useClass: (environment?.version?.includes('local')||false)
+      ? LocalIPFSService
+      : IPFSService
   },
   {
     provide: getInjectionToken(TOKENS_NAME.APP_IPFS_PINNING_SERVICE),
@@ -33,7 +36,17 @@ export const MEDIA_STORAGE_PROVIDER: (Provider | EnvironmentProviders)[]= [
       (serviceName) 
         ? strategy.setStrategy<string>(serviceName)
         : strategy.setStrategy<string>('pinata'); // default service
-      return strategy;
+      // use local if local
+      return (environment?.version?.includes('local')||false)
+        ? <IPiningService>{
+          pin: async (hash: string) => {
+            console.log(`[LocalIPFSPinningStrategy] pin: ${hash}`);
+          },
+          unpin: async (hash: string) => {
+            console.log(`[LocalIPFSPinningStrategy] unpin: ${hash}`);
+          }
+        }
+        : strategy;
     },
     deps: [
       getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE), 

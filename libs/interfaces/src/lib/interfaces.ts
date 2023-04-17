@@ -10,3 +10,5 @@ export * from './services/messaging-service.interface';
 export * from './services/prompt-strategy-service.interface';
 
 export * from './abstracts/strategy';
+
+export * from './objects/token.interface';

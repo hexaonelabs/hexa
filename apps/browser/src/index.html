@@ -89,7 +89,7 @@
       type="image/png"
     />
   </head>
-  <body>
+  <body class="dark">
     <hexa-root>
       <style>
         html:not(.hydrated) body {
@@ -103,7 +103,7 @@
           text-align: center;
         }
         body.dark {
-          background: #152122;
+          background: #272747;
         }
         h1 {
           margin: 0;
@@ -125,8 +125,11 @@
           margin: 0.5rem;
           color: rgb(53, 53, 53);
         }
+        body.dark h1 {
+          color: #e9edec;
+        }
         body.dark p {
-          background: #152122;
+          background: #272747;
           color: #e9edec;
         }
         img {
@@ -164,7 +167,7 @@
           }
         }
       </style>
-      <img src="./assets/images/logo-colored.svg" alt="hexa Logo" />
+      <img src="./assets/images/logo.svg" alt="hexa Logo" />
       <h1>HEXA</h1>
       <p>
         Decentralized censorship-resistant, tamper-proof and privacy compliant
@@ -178,9 +181,9 @@
         viewBox="0 0 30 22"
       >
         <g>
-          <rect id="loading-bar-left" width="3" height="22" fill="#386fff"/>
-          <rect id="loading-bar-middle" width="3" height="22" x="14" fill="#386fff"/>
-          <rect id="loading-bar-right" width="3" height="22" x="28" fill="#386fff"/>
+          <rect id="loading-bar-left" width="3" height="22" fill="#e9edec"/>
+          <rect id="loading-bar-middle" width="3" height="22" x="14" fill="#e9edec"/>
+          <rect id="loading-bar-right" width="3" height="22" x="28" fill="#e9edec"/>
         </g>
       </svg>
       

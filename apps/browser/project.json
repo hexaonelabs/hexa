@@ -109,6 +109,20 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/browser/src/environments/environment.ts",
+              "with": "apps/browser/src/environments/environment.local.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -121,6 +135,9 @@
         },
         "development": {
           "browserTarget": "browser:build:development"
+        },
+        "local": {
+          "browserTarget": "browser:build:local"
         }
       },
       "defaultConfiguration": "development"

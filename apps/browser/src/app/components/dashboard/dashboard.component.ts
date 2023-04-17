@@ -1,9 +1,11 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAuthService, INotificationService, IPromptStrategyService } from '@hexa/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { AlertController, IonPopover, IonToggle, LoadingController, ToastController } from '@ionic/angular';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { BehaviorSubject, firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
   selector: 'hexa-dashboard',
@@ -12,8 +14,10 @@ import { firstValueFrom, Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   // public routerUrl$: Observable<string>;
+  public isDarkMode$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public version = (environment.production ? '' : '[DEV]') + `${environment.version}`;
   public features = [
-    {name: 'home', url: 'welcome', sort: 0, isEnabled: false, isVisible: false},
+    // {name: 'home', url: 'dashboard', sort: 0, isEnabled: false, isVisible: false},
     {name: 'folder-open', url: 'drive', sort: 5, isEnabled: true, isVisible: true},
     {name: 'wallet-sharp', url: 'wallet', sort: 10, isEnabled: true, isVisible: true},
     {name: 'calendar-number', url: 'calendar', sort: 20, isEnabled: true, isVisible: false},
@@ -32,12 +36,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _toastService: ToastController,
+    @Inject(DOCUMENT) private readonly _document: Document,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_NOTIFICATION_SERVICE)) private readonly _notificationService: INotificationService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_PROMPT_STRATEGY_SERVICE)) private readonly _promptStrategy: IPromptStrategyService,
     ) {}
 
   ngOnInit() {
+    this._checkDarkModeSetting();
     const sub = this._notificationService.notifications$.subscribe(
       async (messages) => {
         if (messages.length === 1) {
@@ -69,7 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   togglePage(path: string) {    
     const {id: streamId} = this._route.snapshot.params;
-    this._router.navigate([`/d/${path}`])
+    this._router.navigate([`/h/${path}`])
   }
 
   async toogleNotification(popoverElement: IonPopover, toggleElement: IonToggle) {
@@ -135,6 +141,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     await this._authService.disconnect();
   }
 
+  async toggleDarkMode($event: any) {
+    // toggle dark mode class
+    this._document.body.classList.toggle('dark');
+    // get current dark mode value and save it to local storage
+    const isDarkmode = this._document.body.classList.contains('dark');
+    this._document.defaultView?.localStorage.setItem('hexa:darkMode', isDarkmode.toString());
+    // update dark mode value
+    this.isDarkMode$.next(isDarkmode);
+  }
+
   copyAccountAddressToClipboard() {
     const account = this._authService.account$.value;
     if (account) {
@@ -149,4 +165,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  private _checkDarkModeSetting() {
+    const isSettingSaved = this._document.defaultView?.localStorage.getItem('hexa:darkMode');
+    if (!isSettingSaved) {
+      this.isDarkMode$.next(this._document.body.classList.contains('dark'));
+      return;
+    } 
+    if (isSettingSaved === 'true') {
+      this._document.body.classList.add('dark');
+      this.isDarkMode$.next(true);
+    } else {
+      this._document.body.classList.remove('dark');
+      this.isDarkMode$.next(false);
+    }
+  }
 }

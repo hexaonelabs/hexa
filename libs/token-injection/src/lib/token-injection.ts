@@ -4,7 +4,7 @@ import { IAuthService, IMessagingService, INotificationService, IPiningServiceCo
 const APP_DID_SERVICE_TOKEN = new InjectionToken<IAuthService>('APP_DID_SERVICE');
 const APP_WEB3AUTH_SERVICE_TOKEN = new InjectionToken<IAuthService>('APP_WEB3AUTH_SERVICE');
 const APP_PINNING_SERVICE_DEFAULT_CONFIG_TOKEN = new InjectionToken<IPiningServiceConfig>('APP_PINNING_SERVICE_DEFAULT_CONFIG');
-const APP_WALLET_SERVICE_APIKEY_TOKEN = new InjectionToken<string>('APP_WALLET_SERVICE_APIKEY');
+const APP_WALLET_SERVICE_APIKEY_TOKEN = new InjectionToken('APP_WALLET_SERVICE_APIKEY');
 const APP_MESSAGING_SERVICE_TOKEN = new InjectionToken<IMessagingService>('APP_MESSAGING_SERVICE');
 const APP_NOTIFICATION_SERVICE_TOKEN = new InjectionToken<INotificationService>('APP_NOTIFICATION_SERVICE');
 const APP_CERAMIC_SERVICE_TOKEN = new InjectionToken('APP_CERAMIC_SERVICE');

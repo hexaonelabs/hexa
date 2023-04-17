@@ -87,3 +87,88 @@ export class IPFSService implements IIPFSService {
   }
 
 }
+
+
+@Injectable()
+export class LocalIPFSService implements IIPFSService {
+  async disconect(){
+    console.log('disconect');
+  }
+
+  async add(file: File | Blob): Promise<{
+    cid: string;
+  }>{
+    // get local drive database from localStorage
+    const existingKey = localStorage.getItem('local:hexa:drive:ipfs');
+    let existingData: any = {};
+    if (existingKey) {
+      existingData = JSON.parse(existingKey);
+    }
+    // store file as base64 to local storage
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    const cid: string = await new Promise((resolve, reject) => {
+      reader.onload = () => {
+        const name = (file as any)?.name||'filename';
+        const base64 = reader.result?.toString();
+        existingData[name] = base64;
+        localStorage.setItem('local:hexa:drive:ipfs', JSON.stringify(existingData));
+        resolve(name)
+      };
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+        reject(error as any);
+      };
+    });
+    return {
+      cid
+    }
+  }
+
+  async getFromCID(cid: string, type?: string): Promise<File>{
+    const existingKey = localStorage.getItem('local:hexa:drive:ipfs');
+    let existingData: any = {};
+    if (existingKey) {
+      existingData = JSON.parse(existingKey);
+    }
+    const base64 = existingData[cid];
+    // create file from base64
+    const response = await fetch(base64);
+    const blob = await response.blob();
+    const file = new File([blob], cid, { type });
+    return file;
+  }
+
+  async getDag(): Promise<any> {
+    return {
+      put: async (node: [key: string, value: any]) => {
+        // get local drive database from localStorage
+        const existingKey = localStorage.getItem('local:hexa:drive:ipfs');
+        let existingData: any = {};
+        if (existingKey) {
+          existingData = JSON.parse(existingKey);
+        }
+        const cid = 'cid-' + Date.now();
+        existingData[cid] = JSON.stringify(node);
+        localStorage.setItem('local:hexa:drive:ipfs', JSON.stringify(existingData));
+        return {
+          cid: {
+            toString: () => cid
+          }
+        }
+      },
+      get: async (cid: any) => {
+        // get local drive database from localStorage
+        const existingKey = localStorage.getItem('local:hexa:drive:ipfs');
+        let existingData: any = {};
+        if (existingKey) {
+          existingData = JSON.parse(existingKey);
+        }
+        const value = existingData[cid] as string;
+        return {
+          value 
+        }
+      },
+    };
+  }
+}

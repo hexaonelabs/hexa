@@ -51,20 +51,6 @@
             <img class="default" alt="default preview" src="./assets/drive/images/my-doc.svg" />
           </div>
         </ng-container>
-        <ion-buttons class="options-btn">
-          <ion-button
-            fill="solid"
-            expand="block"
-            (click)="modalCtrl.dismiss(item, 'download')"
-            >Download</ion-button
-          >
-          <ion-button
-            fill="solid"
-            expand="block"
-            (click)="modalCtrl.dismiss(item, 'share')"
-            >Share</ion-button
-          >
-        </ion-buttons>
       </ion-col>
       <ion-col size="12" size-md="5">
         <ion-list lines="none" class="ion-padding">
@@ -111,7 +97,7 @@
             </ion-button> -->
           </ion-item>
           <ion-item>
-            <ion-label class="ion-text-wrap">
+            <ion-label class="ion-text-wrap withChip">
               <p class="ion-margin-bottom">Encryption</p>
               <ion-chip
                 color="primary"
@@ -161,7 +147,20 @@
               </ion-text>
             </ion-label>
           </ion-item>
+          <div class="ion-margin-top ion-padding">
+            <ion-button
+              fill="solid"
+              (click)="modalCtrl.dismiss(item, 'download')"
+              >Download</ion-button
+            >
+            <ion-button
+              fill="outline"
+              (click)="modalCtrl.dismiss(item, 'share')"
+              >Share</ion-button
+            >
+          </div>
         </ion-list>
+
       </ion-col>
     </ion-row>
   </ion-grid>

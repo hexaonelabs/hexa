@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { ILoadingService } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
-import { AlertController, ModalController, PopoverController, ToastController } from "@ionic/angular";
-import { ethers } from "ethers";
-import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, map, tap } from "rxjs";
+import { AlertController, ModalController, PopoverController } from "@ionic/angular";
+import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { SwapAssetsModalComponent } from "../../components/swap-assets-modal/swap-assets-modal.component";
 import { TokenInterface } from "../../interfaces/token.interface";
 import { WalletService } from "../../services/wallet.service";
@@ -14,18 +14,41 @@ import { WalletService } from "../../services/wallet.service";
   styleUrls: ["./wallet-page.component.scss"]
 })
 export class WalletPageComponent  {
-  public selectedSegment: 'tokens'|'nfts'|'transactions'|string = 'nfts';
+  public selectedSegment: 'tokens'|'nfts'|'transactions'|string = 'tokens';
   public readonly account$ = this._walletService.account$;
   public readonly wallets$ = this._walletService.wallets$;
   public readonly tokensBalances$ = this._walletService.tokensBalances$;
+  public readonly isReceiveAssetsModalOpen$ = new BehaviorSubject(false);
 
   constructor(
     private readonly _alertCtrl: AlertController,
     private readonly _popoverCtrl: PopoverController,
     private readonly _modalCtrl: ModalController,
     private readonly _walletService: WalletService,
+    private readonly _route: ActivatedRoute,
     @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
   ) {}
+
+  async ionViewWillEnter() {
+    const {s = 't'} = this._route.snapshot.queryParams;
+    switch(true) {
+      case s === 't': {
+        this.selectedSegment = 'tokens';
+        break;
+      }
+      case s === 'n': {
+        this.selectedSegment = 'nfts';
+        break;
+      }
+      case s === 'tx': {
+        this.selectedSegment = 'transactions';
+        break;
+      }
+      default: 
+        this.selectedSegment = 'nfts';
+    }
+    
+  }
 
   async actions(type: string, payload?: any) {
     console.log('actions', type, payload);
@@ -55,16 +78,28 @@ export class WalletPageComponent  {
         this._loaderService.setStatus(false);
         break;
       }
-      case type === 'swap-asset': {
-        const {item:asset = null} = payload;
-        const { data, role } = await this._promptSwapAsset(asset);
-        console.log('swap-asset', asset, data);
-        if (role !== 'ok') return;
-        // TODO: implement swap with service
+      case type === 'receive-asset': {
+        // generate qrcode with account address and displax with modal using angular pipe
+        this.isReceiveAssetsModalOpen$.next(true);
         break;
       }
-      default:
+      // case type === 'swap-asset': {
+      //   const {item:asset = null} = payload;
+      //   const { data, role } = await this._promptSwapAsset(asset);
+      //   console.log('swap-asset', asset, data);
+      //   if (role !== 'ok') return;
+      //   // TODO: implement swap with service
+      //   break;
+      // }
+      default:{
+        const ionAlert = await this._alertCtrl.create({
+          header: 'Not implemented',
+          message: `Action "${type.toLocaleUpperCase()}" is not implemented yet`,
+          buttons: ['OK'],
+        });
+        ionAlert.present();
         break;
+      }
     }
     
   }

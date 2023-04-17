@@ -1,66 +1,76 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { IDatastoreService, ILoadingService } from '@hexa/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
-import { AlertController, AlertInput, ModalController, PopoverController } from '@ionic/angular';
+import {
+  AlertController,
+  AlertInput,
+  ModalController,
+  PopoverController,
+} from '@ionic/angular';
 import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import { DIDDataStore } from '@glazed/did-datastore';
+import { IConfig } from '../../interfaces/config.interface';
+import { IBackgroundConfig } from '../../interfaces/background-config.interface';
 
 const ROOT_DB_COLLECTION = 'd-welcome';
-const DEFAULT_WIDGETS_CONFIG = {
-  background: {
-    unsplashClientId: null,
-    query: null,
-    url: null,
-  },
-};
+const DEFAULT_WIDGETS_CONFIG: IConfig = {};
 const WIDGETS_MESSAGE = {
-  background: `You can provide a Unsplash client ID to get a random image from Unsplash API. If you don't have a Unsplash client ID, you can get it from https://unsplash.com/developers or leave it empty and use the URL address of the image.`,
-}
+  background: `You can provide a URL address of the image you want to use as a background.`,
+};
 const WIDGETS_INPUTS_OPTIONS = {
   background: (background: {
-    unsplashClientId?: string;
-    query?: string;
+    // apiKey?: string;
+    // query?: string;
     url?: string;
   }) => [
-    {
-      name: 'unsplashClientId',
-      type: 'text',
-      placeholder: 'Unsplash Client ID',
-      value: background?.unsplashClientId,
-    },
-    {
-      name: 'query',
-      type: 'text',
-      placeholder: 'Unsplash query to search images',
-      value: background?.query,
-    },
+    // {
+    //   name: 'unsplashClientId',
+    //   type: 'text',
+    //   placeholder: 'Unsplash Client ID',
+    //   value: background?.unsplashClientId,
+    // },
+    // {
+    //   name: 'query',
+    //   type: 'text',
+    //   placeholder: 'Unsplash query to search images',
+    //   value: background?.query,
+    // },
     {
       name: 'url',
       type: 'text',
-      placeholder: 'URL address of the image',
+      placeholder: 'Web URL address of the image',
       value: background?.url,
-    }
-  ]
-}
+    },
+  ],
+};
 
 @Component({
   selector: 'hexa-welcome-page',
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.scss'],
 })
-export class WelcomePageComponent  implements OnInit {
+export class WelcomePageComponent implements OnInit {
   text = 'Welcome';
-  private readonly _config$: BehaviorSubject<any> = new BehaviorSubject(null as any);
-  public readonly config$ = this._config$.asObservable().pipe(distinctUntilChanged(
-    (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
-  ));
+  private readonly _config$: BehaviorSubject<IConfig> = new BehaviorSubject(
+    null as any
+  );
+  public readonly config$ = this._config$
+    .asObservable()
+    .pipe(
+      distinctUntilChanged(
+        (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
+      )
+    );
   constructor(
     private readonly _modal: ModalController,
     private readonly _alertCtrl: AlertController,
     private readonly _popoverCtrl: PopoverController,
-    @Inject(getInjectionToken(TOKENS_NAME.APP_IS_PROD)) public readonly isProd: boolean,
-    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService<DIDDataStore>,
-    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_IS_PROD))
+    public readonly isProd: boolean,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE))
+    private readonly _datastoreService: IDatastoreService<DIDDataStore>,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE))
+    private readonly _loaderService: ILoadingService
   ) {}
 
   async ngOnInit() {
@@ -68,10 +78,10 @@ export class WelcomePageComponent  implements OnInit {
       return;
     }
     // get config from db
-    const {background} = await this._datastoreService.getData(
+    const { background } = await this._datastoreService.getData(
       ROOT_DB_COLLECTION,
       ['widgetsConfig'],
-      DEFAULT_WIDGETS_CONFIG,
+      DEFAULT_WIDGETS_CONFIG
     );
     // update app state
     this._config$.next({
@@ -82,10 +92,10 @@ export class WelcomePageComponent  implements OnInit {
   ionViewWillEnter() {
     this._sayHello();
   }
-  
+
   async actions(type: string, payload?: any) {
-    switch(true) {
-      case (type === 'open-settings-modal'): {
+    switch (true) {
+      case type === 'open-settings-modal': {
         // close existing popover
         const popover = await this._popoverCtrl.getTop();
         if (popover) {
@@ -101,16 +111,18 @@ export class WelcomePageComponent  implements OnInit {
         }
         break;
       }
-      case (type === 'saveConfig'): {
+      case type === 'saveConfig': {
         this._loaderService.setStatus(true);
         const data = {
           ...this._config$.value,
           ...payload,
         };
-        // update app state 
+        // update app state
         this._config$.next(data);
         // save config to db
-        await this._datastoreService.saveData(data, ROOT_DB_COLLECTION, ['widgetsConfig']);
+        await this._datastoreService.saveData(data, ROOT_DB_COLLECTION, [
+          'widgetsConfig',
+        ]);
         this._loaderService.setStatus(false);
         // TODO: display notification
         break;
@@ -121,46 +133,50 @@ export class WelcomePageComponent  implements OnInit {
   private _sayHello(): void {
     const currentDate = new Date();
     switch (true) {
-      case (currentDate.getHours() < 5):
+      case currentDate.getHours() < 5:
         this.text = 'Good night';
         break;
-      case (currentDate.getHours() < 12):
+      case currentDate.getHours() < 12:
         this.text = 'Good morning';
         break;
-      case (currentDate.getHours() < 18):
+      case currentDate.getHours() < 18:
         this.text = 'Good afternoon';
         break;
-      case (currentDate.getHours() < 24):
+      case currentDate.getHours() < 24:
         this.text = 'Good evening';
-        break;    
+        break;
       default:
         break;
     }
   }
 
   private async _openAlertSettings(widgetType: 'background') {
-    const inputs = WIDGETS_INPUTS_OPTIONS[widgetType](this._config$.value[widgetType]) as AlertInput[];
+    const inputs = WIDGETS_INPUTS_OPTIONS[widgetType](
+      this._config$.value[widgetType] as any
+    ) as AlertInput[];
     if (!inputs) {
       return;
     }
     // create header title capitalized
-    const header = `${widgetType[0].toUpperCase()}${widgetType.slice(1)} Settings`;
+    const header = `${widgetType[0].toUpperCase()}${widgetType.slice(
+      1
+    )} Settings`;
     const message = WIDGETS_MESSAGE[widgetType];
     const alert = await this._alertCtrl.create({
       header,
       message,
       inputs,
       buttons: [
-        { text: 'Cancel', role: 'cancel', cssClass: 'secondary' }, 
-        { text: 'Ok' }
-      ]
+        { text: 'Cancel', role: 'cancel', cssClass: 'secondary' },
+        { text: 'Ok' },
+      ],
     });
     await alert.present();
-    const {data, role} = await alert.onDidDismiss();
+    const { data, role } = await alert.onDidDismiss();
     if (role === 'cancel' || role === 'backdrop') {
       return;
     }
-    const {values = null} = data;
+    const { values = null } = data;
     return values;
   }
 }

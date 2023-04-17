@@ -1,9 +1,8 @@
 <ion-grid class="ion-no-padding">
   <ion-row 
       *ngFor="
-        let item of (items||[]) | slice: 0:maxItemToDisplay$.value;let i = index;
+        let item of (items||[]) | slice: 0:maxItemToDisplay$.value;trackBy: trackByFn;let i = index;
       "
-      (click)="actions('preview', {item})"
       class="item ion-align-items-center">
     <ion-col
         class="ion-align-items-center ion-text-wrap"
@@ -57,18 +56,47 @@
           name="ellipsis-vertical"
         ></ion-icon>
       </ion-fab-button>
-      <ion-popover trigger="options-btn-{{i}}" triggerAction="click">
+      <ion-popover 
+        [dismissOnSelect]="true"
+        trigger="options-btn-{{i}}" 
+        triggerAction="click">
         <ng-template>
           <ion-content class="ion-no-padding">
             <ion-list lines="none" class="ion-margin-bottom">
-              <ion-list-header>
+              <ion-list-header class="ion-margin-bottom">
                 <ion-label>Options</ion-label>
               </ion-list-header>
-              <ion-item detail (click)="actions('swap-asset', { item })">
-                <ion-label>Swap asset</ion-label>
+              <ion-item button (click)="actions('swap-asset', { item })">
+                <ion-label>
+                  <h3>Swap</h3>
+                  <p>
+                    Swap {{item.symbol|uppercase}} for another asset
+                  </p>
+                </ion-label>
               </ion-item>
-              <ion-item detail (click)="actions('openExternalLink', { item })">
-                <ion-label>View on block explorer</ion-label>
+              <ion-item button (click)="actions('send-asset', { item })">
+                <ion-label>
+                  <h3>Send</h3>
+                  <p>
+                    Transfer {{item.symbol|uppercase}} to another wallet
+                  </p>
+                </ion-label>
+              </ion-item>
+              <ion-item button (click)="actions('receive-asset', { item })">
+                <ion-label>
+                  <h3>Receive</h3>
+                  <p>
+                    Get a {{item.symbol|uppercase}} address to receive funds
+                  </p>
+                </ion-label>
+              </ion-item>
+              <ion-item detail (click)="actions('stack-asset', { item })">
+                <ion-label>
+                  <h3>Stack</h3>
+                  <p>
+                    Earn interest on your {{item.symbol|uppercase}} by stacking
+                  </p>
+                </ion-label>
               </ion-item>
             </ion-list>
           </ion-content>

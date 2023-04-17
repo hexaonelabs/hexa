@@ -1,47 +1,61 @@
-<ion-list class="ion-no-padding">
+<ion-list class="ion-no-padding" mode="ios" lines="none">
   <ion-list-header class="ion-margin-bottom">
     <ion-label>{{isFolder ? 'Folder' : 'File'}} options</ion-label>
   </ion-list-header>
   <ion-item [hidden]="!isFolder" (click)="popCtrl.dismiss('navTo')">
     <ion-icon size="small" name="folder-open-outline" slot="start"></ion-icon>
     <ion-label>
-      Open
+      <h3>
+        Open
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('preview')">
     <ion-icon size="small" name="eye-outline" slot="start"></ion-icon>
     <ion-label>
-      Preview
+      <h3>
+        Preview
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('download')">
     <ion-icon size="small" name="download-outline" slot="start"></ion-icon>
     <ion-label>
-      Download
+      <h3>
+        Download
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item (click)="popCtrl.dismiss('rename')">
     <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>
     <ion-label>
-      Rename
+      <h3>
+        Rename
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item (click)="popCtrl.dismiss('move')">
     <ion-icon size="small" name="arrow-redo-outline" slot="start"></ion-icon>
     <ion-label>
-      Move to
+      <h3>
+        Move to
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item [hidden]="isFolder" (click)="popCtrl.dismiss('share')">
     <ion-icon size="small" name="share-social-outline" slot="start"></ion-icon>
     <ion-label>
-      Share
+      <h3>
+        Share
+      </h3>
     </ion-label>
   </ion-item>
   <ion-item lines="none" (click)="popCtrl.dismiss('delete')">
     <ion-icon size="small" name="trash-outline" slot="start"></ion-icon>
     <ion-label>
-      Delete
+      <h3>
+        Delete
+      </h3>
     </ion-label>
   </ion-item>
 </ion-list>

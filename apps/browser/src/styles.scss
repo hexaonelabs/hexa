@@ -1,5 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&display=swap');
+
+// variable font family
+$font-family: 'Schibsted Grotesk', sans-serif;
+
+h1, h2, h3, h4 {
+  font-family: $font-family;
+}
 /* You can add global styles to this file, and also import other style files */
 // global
+* {
+  color-scheme: light dark;
+}
 
 ion-button {
   --border-radius: 16px;
@@ -10,15 +21,29 @@ ion-header {
   }
 }
 
-ion-content {
-  --background: #f5f8ff;
-}
+// ion-content {
+//   --background: #f5f8ff;
+// }
 
-ion-popover {
-  --width: 250px;
-}
 ion-popover::part(content) {
   border-radius: 24px;
+}
+
+ion-popover  {
+  --width: 250px;
+  ion-content {
+    --background: var(--ion-background-color);
+  }
+  ion-list {
+    background: transparent;
+  }
+  ion-item {
+    --background: var(--ion-background-color);
+  }
+}
+
+ion-list.list-ios {
+  background: transparent;
 }
 
 ion-list-header {
@@ -31,10 +56,20 @@ ion-avatar.isConnected {
   border-width: 2px;
   border-style: solid;
 }
+ion-segment-button {
+  --indicator-color: var(--ion-color-primary);
+}
 
 ion-alert {
+  
   .alert-wrapper.ion-overlay-wrapper {
-    border-radius: 24px;
+    background: var(--ion-background-color);
+    border-radius: 24px!important;
+    border: 1px solid var(--ion-border-color)!important;
+  }
+
+  .alert-button.alert-button-role-cancel {
+    color: var(--ion-color-danger)!important;
   }
 }
 
@@ -58,13 +93,6 @@ ion-popover#wallet-account-popover {
   .ion-accordion-toggle-icon {
     display: none;
   }
-}
-
-.alert-wrapper {
-  border-radius:  24px!important;
-  border: 1px solid var(--ion-border-color)!important;
-  // background: #fff!important;
-  // box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12)!important;
 }
 
 .modalSelectFolder {
@@ -99,12 +127,6 @@ ion-toast.notification-toast {
 }
 img.default {
   max-width: 420px;
-}
-
-ion-popover  {
-  ion-content {
-    --background: var(--ion-item-background, var(--ion-background-color));
-  }
 }
 
 
@@ -340,3 +362,25 @@ body.dark div#shareAPIPolyfill-container {
     color: var(--ion-text-color);
   }
 }
+
+body:not(.dark) #flexContainer {
+  background: radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.1) 0%, transparent 100%)!important;
+
+  time {
+    color: var(--ion-color-primary);
+  }
+}
+
+hexa-background {
+  .bgContainer {
+    background: var(--ion-background-color);
+  }
+}
+
+hexa-current-time {
+  time {
+    font-family: $font-family;
+    color: var(--ion-text-color)
+  }
+}
+

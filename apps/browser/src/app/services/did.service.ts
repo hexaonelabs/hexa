@@ -87,3 +87,16 @@ export class DIDService implements IIdentityService {
     // });
   }
 }
+
+
+@Injectable()
+export class LocalDIDServcie implements IIdentityService {
+  public readonly did$ = new BehaviorSubject<DID>(null as any);
+  public async connectWallet() {
+    this.did$.next({
+      id: 'did:3:0xlocal',
+      authenticated: true,
+    } as DID);
+    return true;
+  }
+}

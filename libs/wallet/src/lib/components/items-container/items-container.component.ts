@@ -43,38 +43,22 @@ export class ItemsContainerComponent implements OnChanges {
 
   async actions(type: string, payload?: any) {
     switch (true) {
-      case type === 'preview': {
-        this._preview(payload.item);
-        break;
-      }
       case type === 'openExternalLink': {
         const popover = await this._popCtrl.getTop();
         if (popover) await popover.dismiss();
         const {item = undefined} = payload;
         if (!item||!item.address) return;
         window.open(`https://etherscan.io/token/${item.address}`, '_blank');
+        break;
+      }
+      default: {
+        this.actionsEvent.emit({ type, payload });
       }
     }
-    this.actionsEvent.emit({ type, payload });
   }
 
-  async trackByfn(index: number, item: { _id: string }) {
-    return item._id;
-  }
-
-  private async _preview(item: TokenInterface) {
-    // const ionModal = await this._modalCtrl.create({
-    //   component: ItemPreviewComponent,
-    //   componentProps: {
-    //     item
-    //   },
-    //   cssClass: 'ion-modal-preview-file',
-    // });
-    // await ionModal.present();
-    // const { data, role = 'cancel' } = await ionModal.onDidDismiss();
-    // this.actions(role, { item: data });
-    console.log('preview', item);
-    
+  trackByFn(index: number) {
+    return index;
   }
 
 }

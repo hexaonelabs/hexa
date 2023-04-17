@@ -1,9 +1,8 @@
 import { Inject, Injectable } from "@angular/core";
 import { DIDDataStore } from '@glazed/did-datastore';
-import { IAuthService, IDatastoreService, ILoadingService } from "@hexa/interfaces";
+import { IAuthService, IDatastoreService, ILoadingService, TokenInterface } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
-import { BehaviorSubject, distinctUntilChanged, filter, tap } from "rxjs";
-import { TokenInterface } from "../interfaces/token.interface";
+import { BehaviorSubject, distinctUntilChanged, filter, map, Observable, tap } from "rxjs";
 
 const CHAIN_IDS = [
   { id: 1, name: "Ethereum Mainnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png' },
@@ -59,13 +58,26 @@ export class WalletService {
   );
   private readonly _wallets$ = new BehaviorSubject<{address: string;isDisabled?: boolean;}[]>(null as any);
   public readonly wallets$ = this._wallets$.asObservable();
-  private readonly _tokensBalances$ = new BehaviorSubject<TokenInterface[]>( null as any);
-  public readonly tokensBalances$ = this._tokensBalances$.asObservable()
+  private readonly _tokensBalances$ = new BehaviorSubject<TokenInterface[]>( null as any)
+  public readonly tokensBalances$: Observable<TokenInterface[]> = this._tokensBalances$.asObservable().pipe(
+    map(tokensBalances => tokensBalances.map(token => {
+      const chain = CHAIN_IDS.find(c => c.id === token.chainId);
+      return <TokenInterface>{
+        ...token,
+        chain,
+        logo: chain?.logo
+      };
+    })
+  ));
 
   constructor(
     @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService<DIDDataStore>,
-    @Inject(getInjectionToken(TOKENS_NAME.APP_WALLET_SERVICE_APIKEY)) private readonly _apiKey: string,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WALLET_SERVICE_APIKEY)) private readonly _apiService: {
+      getTokensBalances(chainId: string, address: string): Promise<{
+        balances: TokenInterface[];
+      }>
+    },
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {}
 
@@ -120,27 +132,10 @@ export class WalletService {
   }
 
   async  getTokensBalances(chainId: string, address: string) {
-    const res = await fetch(`https://api.covalenthq.com/v1/${chainId}/address/${address}/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key=${this._apiKey}`)
-    const balances = (await res.json()).data.items;
-    const formatedBalances: TokenInterface[] = balances.map((t:any) => {
-        return <TokenInterface>{
-            address: t.contract_address,
-            name: t.contract_name,
-            symbol: t.contract_ticker_symbol,
-            logo: t.logo_url,
-            type: t.type,
-            nft_data: t.nft_data,
-            decimals: t.contract_decimals,
-            balance: parseFloat((t.balance / 10 ** t.contract_decimals).toFixed(4)),
-            rate: t.quote_rate,
-            rate24h: t.quote_rate_24h,
-            value: t.quote ? parseFloat(t.quote.toFixed(2)) : 0,
-            chainId: parseInt(chainId),
-            chainLogo: CHAIN_IDS.find(c => c.id === parseInt(chainId))?.logo,
-            ownerAddress: address
-        }
-    });
-    return {balances: formatedBalances};
+    return await this._apiService.getTokensBalances(
+      chainId, 
+      address
+    );
   }
 
   private async _loadEVMTokensBalances(account: string) {

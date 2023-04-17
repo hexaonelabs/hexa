@@ -50,3 +50,15 @@ export class DIDEncryptionService implements IEncryptionService {
     return id;
   }
 }
+
+@Injectable()
+export class LocalEncryptionService implements IEncryptionService {
+  async decryptData(data: any){
+    console.log(`[LocalEncryptionStrategy] decryptData: ${data}`);
+    return data;
+  }
+  encryptData(data: any, authorizedDID: any) {
+    console.log(`[LocalEncryptionStrategy] encryptData: ${data}, ${authorizedDID}`);
+    return data;
+  }
+}

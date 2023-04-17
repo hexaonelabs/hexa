@@ -13,6 +13,7 @@ import { DiffPercentPipe } from './pipes/diff-percent.pipe';
 import { AvatarDirective } from './directives/avatar.directive';
 import { SwapAssetsModalComponent } from './components/swap-assets-modal/swap-assets-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { QRcodePipe } from './pipes/qrcode.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     SliceAddressPipe,
     AssetsTypePipe,
     DiffPercentPipe,
+    QRcodePipe,
   ],
   imports: [
     CommonModule, 

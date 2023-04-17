@@ -188,3 +188,48 @@ export class DatastoreService implements IDatastoreService<DIDDataStore> {
   // }
 
 }
+
+
+export class LocalDatastoreServcie implements IDatastoreService<Storage> {
+  get datastore() {
+    return window.localStorage;
+  }
+
+  async getData<T>(family: string, tags: string[], data?: T): Promise<T> {
+    // check if existing data
+    const key = `${family}:${tags.join(':')}`;
+    const existKey = this.datastore.getItem(key);
+    if (!existKey && data) {
+      const newValue = JSON.stringify(data);
+      this.datastore.setItem(key, newValue);
+    } 
+    const value = this.datastore.getItem(key);
+    if (value) {
+      return JSON.parse(value);
+    } else {
+      throw new Error(`No data found for key: ${key}`);
+    }
+  }
+
+  async loadData(streamId: string): Promise<{_id: string;}>{
+    throw new Error('Method not implemented.');
+  }
+
+  async saveData<T>(
+    data: T,
+    family: string,
+    tags: string[]
+  ): Promise<
+    {
+      _id: string;
+    } & T
+  >{
+    const key = `${family}:${tags.join(':')}`;
+    const newValue = JSON.stringify(data);
+    this.datastore.setItem(key, newValue);
+    return {
+      _id: Date.now().toString(),
+      ...data
+    };
+  }
+}
