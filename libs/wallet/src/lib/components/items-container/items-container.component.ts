@@ -6,9 +6,9 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { TokenInterface } from '@hexa/interfaces';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { TokenInterface } from '../../interfaces/token.interface';
 
 const MAX_ITEMS_TO_DISPLAY = 25;
 

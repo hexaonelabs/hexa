@@ -1,86 +1,48 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row
-        *ngIf="account$ | async as account"
-        class="ion-align-items-center ion-padding-start"
-      >
-        <ion-col size="auto">
-          <h1>Wallet</h1>
-        </ion-col>
-        <ion-col>
-          <ion-chip id="accounts-list" color="primary">
-            <!-- <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
-            <ion-label>
-              {{ account | sliceAddress }}
-            </ion-label> -->
-            <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
-          </ion-chip>
-          <ion-popover
-            id="wallet-account-popover"
-            trigger="accounts-list"
-            triggerAction="click"
-          >
-            <ng-template>
-              <ion-content class="ion-no-padding">
-                <ion-list lines="none" class="ion-margin-bottom">
-                  <ion-list-header>
-                    <ion-label>My accounts</ion-label>
-                  </ion-list-header>
-                  <ion-item class="ion-margin-top">
-                    <ion-checkbox
-                      mode="md"
-                      slot="start"
-                      checked
-                      (click)="actions('toggle-account', { account, event: $event })"
-                    ></ion-checkbox>
-                    <!-- <ion-avatar
-                      class="isConnected"
-                      slot="start"
-                      avatar
-                      [address]="account"
-                    ></ion-avatar> -->
-                    <ion-label>
-                      <h3>{{ account | sliceAddress }}</h3>
-                      <p></p>
-                    </ion-label>
-                    <ion-buttons
-                      slot="end"
-                      class="ion-no-margin ion-margin-start"
-                    >
-                      <ion-button size="small" fill="clear">
-                        <ion-icon
-                          color="medium"
-                          size="small"
-                          slot="icon-only"
-                          name="copy-outline"
-                        ></ion-icon>
-                      </ion-button>
-                      <ion-button size="small" fill="clear">
-                        <ion-icon
-                          color="medium"
-                          size="small"
-                          slot="icon-only"
-                          name="ellipsis-vertical-sharp"
-                        ></ion-icon>
-                      </ion-button>
-                    </ion-buttons>
-                  </ion-item>
-                  <ng-container *ngIf="((wallets$ | async)?.length || 0) > 0">
-                    <ion-item *ngFor="let wallet of wallets$ | async">
+<ion-header collapse="fade" mode="ios">
+  <hexa-ui-header>
+    <ng-container slot="start">
+      <ion-grid>
+        <ion-row
+          *ngIf="account$ | async as account"
+          class="ion-align-items-center ion-padding-start"
+        >
+          <ion-col size="auto">
+            <h1>Wallet</h1>
+          </ion-col>
+          <ion-col>
+            <ion-chip id="accounts-list" color="primary">
+              <!-- <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
+              <ion-label>
+                {{ account | sliceAddress }}
+              </ion-label> -->
+              <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
+            </ion-chip>
+            <ion-popover
+              id="wallet-account-popover"
+              trigger="accounts-list"
+              triggerAction="click"
+            >
+              <ng-template>
+                <ion-content class="ion-no-padding">
+                  <ion-list lines="none" class="ion-margin-bottom">
+                    <ion-list-header>
+                      <ion-label>My accounts</ion-label>
+                    </ion-list-header>
+                    <ion-item class="ion-margin-top">
                       <ion-checkbox
                         mode="md"
                         slot="start"
-                        [checked]="wallet.isDisabled === true ? false : true"
-                        (click)="actions('toggle-account', { account: wallet.address, event: $event })"
+                        checked
+                        (click)="actions('toggle-account', { account, event: $event })"
                       ></ion-checkbox>
-                      <ion-avatar
+                      <!-- <ion-avatar
+                        class="isConnected"
                         slot="start"
                         avatar
-                        [address]="wallet.address"
-                      ></ion-avatar>
+                        [address]="account"
+                      ></ion-avatar> -->
                       <ion-label>
-                        <h3>{{ wallet.address | sliceAddress }}</h3>
+                        <h3>{{ account | sliceAddress }}</h3>
                         <p></p>
                       </ion-label>
                       <ion-buttons
@@ -105,30 +67,75 @@
                         </ion-button>
                       </ion-buttons>
                     </ion-item>
-                  </ng-container>
-                  <ion-item
-                    button
-                    class="ion-margin-top"
-                    (click)="actions('add-account')"
-                  >
-                    <ion-icon
-                      size="small"
-                      color="medium"
-                      slot="start"
-                      name="add-outline"
-                    ></ion-icon>
-                    <ion-label>
-                      <h3>Add account</h3>
-                    </ion-label>
-                  </ion-item>
-                </ion-list>
-              </ion-content>
-            </ng-template>
-          </ion-popover>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+                    <ng-container *ngIf="((wallets$ | async)?.length || 0) > 0">
+                      <ion-item *ngFor="let wallet of wallets$ | async">
+                        <ion-checkbox
+                          mode="md"
+                          slot="start"
+                          [checked]="wallet.isDisabled === true ? false : true"
+                          (click)="actions('toggle-account', { account: wallet.address, event: $event })"
+                        ></ion-checkbox>
+                        <!-- <ion-avatar
+                          slot="start"
+                          avatar
+                          [address]="wallet.address"
+                        ></ion-avatar> -->
+                        <ion-label>
+                          <h3>{{ wallet.address | sliceAddress }}</h3>
+                          <p></p>
+                        </ion-label>
+                        <ion-buttons
+                          slot="end"
+                          class="ion-no-margin ion-margin-start"
+                        >
+                          <ion-button size="small" fill="clear">
+                            <ion-icon
+                              color="medium"
+                              size="small"
+                              slot="icon-only"
+                              name="copy-outline"
+                            ></ion-icon>
+                          </ion-button>
+                          <ion-button size="small" fill="clear">
+                            <ion-icon
+                              color="medium"
+                              size="small"
+                              slot="icon-only"
+                              name="ellipsis-vertical-sharp"
+                            ></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                      </ion-item>
+                    </ng-container>
+                    <ion-item
+                      button
+                      class="ion-margin-top"
+                      (click)="actions('add-account')"
+                    >
+                      <ion-icon
+                        size="small"
+                        color="medium"
+                        slot="start"
+                        name="add-outline"
+                      ></ion-icon>
+                      <ion-label>
+                        <h3>Add account</h3>
+                      </ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+    <ng-container slot="end">
+      <ion-button color="primary" (click)="actions('receive-asset')">
+        Receive Assets
+      </ion-button>
+    </ng-container>
+  </hexa-ui-header>
 </ion-header>
 <ion-content fullscreen id="drive" class="ion-padding-horizontal">
   <ion-grid>
@@ -169,7 +176,7 @@
       </ion-col>
       <!-- Tokens -->
       <ng-container *ngIf="selectedSegment === 'tokens'">
-        <ion-col size="12" *ngIf="(tokensBalances | assetsType : 'token')?.length||0 > 0; else noItems">
+        <ion-col size="12" *ngIf="(tokensBalances )?.length||0 > 0; else noItems">
           <ion-grid class="ion-no-padding ion-padding-bottom">
             <ion-row class="ion-align-items-start ion-margin-top">
               <ion-col size="4">

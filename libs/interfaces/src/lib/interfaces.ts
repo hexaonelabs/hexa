@@ -8,6 +8,8 @@ export * from './services/notification-service.interface';
 export * from './services/loading-service.interface';
 export * from './services/messaging-service.interface';
 export * from './services/prompt-strategy-service.interface';
+export * from './services/wallet-service.interface';
+export * from './services/wallet-utils.interface';
 
 export * from './abstracts/strategy';
 

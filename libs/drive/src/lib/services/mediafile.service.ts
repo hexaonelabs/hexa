@@ -370,19 +370,10 @@ export class MediaFileService {
     try {
       const {value: canShare} = await Share.canShare();
       if (canShare) {
-        await Share.share({
-          title: 'hexa share a file',
-          text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
-          url,
-          // sfiles: [file]
-        });
+        await Share.share({text: `${url}`});
       } else {
         // use browser polyfill
-        await navigator.share({
-          title: 'hexa Share file',
-          text: `You received a file from hexa. You can click here to download from IPFS Network: ${url}`,
-          url,
-          files: [file]
+        await navigator.share({text: `${url}`,
         });
       }
     } catch (error: any) {

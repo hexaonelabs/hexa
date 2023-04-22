@@ -8,4 +8,3 @@ export * from './notification.service';
 export * from './pinata.service';
 // export * from './nacl.service';
 export * from './web3-auth.service';
-export * from './covalenthq.service';

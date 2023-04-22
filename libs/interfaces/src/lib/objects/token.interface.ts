@@ -2,7 +2,8 @@ export interface TokenInterface {
   address: string;
   name: string;
   symbol: string;
-  logo: string;
+  logo?: string;
+  logoURI?: string;
   type: string;
   nft_data: any;
   decimals: number;

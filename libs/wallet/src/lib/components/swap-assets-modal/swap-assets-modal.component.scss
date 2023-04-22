@@ -1,0 +1,77 @@
+:host {
+  .disabledInput {
+    opacity: 1!important;
+  }
+
+  ion-toolbar {
+    --background: transparent;
+  }
+  
+  .assets_selection_container {
+    padding: 0 1rem;
+    background: var(--ion-background-color);
+
+    ion-col {
+      margin: 0;
+      padding: 1rem 0 0rem;
+    }
+
+    ion-item {
+  
+      --padding-start: 0;
+      --min-height: 72px;
+      font-size: 1.6rem;
+      
+  
+      ion-thumbnail {
+        padding: 0.5rem;
+      }
+
+      ion-label {
+        ion-button {
+          vertical-align: middle;
+          margin-left: 1rem;
+        }
+  
+        h2 {
+          font-size: 1.6rem;
+        }
+      }
+
+      ion-chip {
+        transform: scale(0.6);
+      }
+    }
+
+  }
+
+  .detailsFees {
+
+    padding: 0 1rem;
+
+    ion-col {
+      padding: 0;
+
+      ion-item {
+        font-size: 0.8rem;
+  
+        ion-note {
+          --color: var(--ion-text-color);
+        }
+      }
+    }
+    
+  }
+
+
+}
+
+ion-modal {
+  .assets-list-header {
+    padding: 0 0.5rem;
+
+    ion-searchbar {
+      
+    }
+  }
+}

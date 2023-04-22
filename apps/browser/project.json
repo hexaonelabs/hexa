@@ -30,6 +30,11 @@
             "input": "libs/drive/src/assets",
             "glob": "**/*",
             "output": "assets/drive"
+          },
+          {
+            "input": "libs/wallet/src/assets",
+            "glob": "**/*",
+            "output": "assets/wallet"
           }
         ],
         "styles": [

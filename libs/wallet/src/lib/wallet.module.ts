@@ -14,6 +14,11 @@ import { AvatarDirective } from './directives/avatar.directive';
 import { SwapAssetsModalComponent } from './components/swap-assets-modal/swap-assets-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { QRcodePipe } from './pipes/qrcode.pipe';
+import { SwapeServiceStrategy } from './services/swap-service.strategy';
+import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
+import { localWalletApiFactory } from './factories/local.factory';
+import { ankrFactory } from './factories/ankr.factory';
+import { UiModule } from '@hexa/ui';
 
 @NgModule({
   declarations: [
@@ -31,10 +36,26 @@ import { QRcodePipe } from './pipes/qrcode.pipe';
     CommonModule, 
     IonicModule,
     RouterModule.forChild(walletRoutes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UiModule
   ],
   providers: [
-    WalletService
+    {
+      provide: getInjectionToken(TOKENS_NAME.APP_WALLET_UTILS),
+      useFactory: (isProd: boolean) => {
+        return (!isProd)
+          ? localWalletApiFactory()
+          // : alchemyFactory('q8jTnGRDHP4g2uP6mkkfLU7RMB7aFRuC')
+          : ankrFactory()
+         //  : covalentFactory('cqt_rQBTdRtJhRPbhb6cpkmYM7bJkdm6')
+      },
+      deps: [
+        getInjectionToken(TOKENS_NAME.APP_IS_PROD)
+      ]
+    },
+    WalletService,
+    SwapeServiceStrategy,
+
   ]
 })
 export class WalletModule {}

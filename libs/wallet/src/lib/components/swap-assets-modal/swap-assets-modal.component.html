@@ -1,67 +1,224 @@
-<ion-content>
-  <h1>
-    Upcoming feature...
-  </h1>
-  <!-- <ion-grid>
-    <ion-row>
-      <ion-col size="12">
-        <ion-label position="stacked">Swap from</ion-label>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <!-- <ion-icon slot="start" src="./assets/wallet/icons/0x-zrx-logo.svg"></ion-icon> -->
+    <ion-title> Swap Assets</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="modalCtrl.dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding-horizontal">
+  <ion-grid>
+
+    <ion-row class="ion-align-items-center">
+      <ion-col size="auto" class="ion-text-start">
+        <ion-chip color="primary">
+          {{this.chainName|uppercase}}
+        </ion-chip>
       </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-select
+    </ion-row>
+
+    <ion-row class="assets_selection_container">
+      <ion-col size="12" class="ion-margin-top ion-text-start">
+        <ion-label position="stacked">Pay with</ion-label>
+      </ion-col>
+      <ion-col size="6" class="ion-text-start">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start" *ngIf="(fromAssetControl.value?.logo||fromAssetControl.value?.logoURI) as logo">
+            <ion-img [src]="logo"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{fromAssetControl.value?.symbol}}</h2>
+            <p>Balance: {{fromAssetBalance$|async}}</p>
+          </ion-label>
+          <!-- <ion-select
+            slot="end"
             [formControl]="fromAssetControl"
             (ionChange)="onFromAssetChange()"
           >
-            <ion-select-option
-              *ngFor="let asset of assets"
-              [value]="asset"
-              >{{ asset.symbol }}</ion-select-option
-            >
-          </ion-select>
+            <ion-select-option *ngFor="let asset of assets" [value]="asset||">
+              <ion-thumbnail slot="start">
+                <ion-img [src]="asset.logoURI"></ion-img>
+              </ion-thumbnail>
+              <ion-label>
+                <h3>
+                  {{ asset.symbol }}
+                </h3>
+              </ion-label>
+            </ion-select-option>
+          </ion-select> -->
         </ion-item>
-        <ion-item size="6">
+      </ion-col>
+      <ion-col size="6" class="ion-text-end">
+        <ion-item lines="none">
           <ion-input
+            #fromAmountInput
+            class="ion-text-end"
+            slot="end"
             type="number"
+            debounce="500"
+            placeholder="0"
+            enterkeyhint="done"
+            inputmode="numeric"
+            [max]="fromAssetBalance$|async"
             [formControl]="fromAmountControl"
+            (ionChange)="onFromAmountChange()"
           ></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-label position="stacked">Swap to</ion-label>
+
+    <ion-row class="assets_selection_container">
+      <ion-col size="12" class="ion-margin-top ion-text-start">
+        <ion-label position="stacked">Receive</ion-label>
       </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-select
+      <ion-col size="6" class="ion-text-start">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start" *ngIf="(toAssetControl.value?.logo||toAssetControl.value?.logoURI) as logo">
+            <ion-img [src]="logo"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h2 *ngIf="toAssetControl.value?.symbol as symbol; else placeholderToken">{{symbol}}</h2>
+            <ng-template #placeholderToken>
+              <ion-button size="small" (click)="isAssetsListUiVisible$.next(true)">
+                SELECT ASSET
+              </ion-button>
+            </ng-template>
+          </ion-label>
+          <ion-chip *ngIf="toAssetControl.value?.symbol" slot="end" (click)="isAssetsListUiVisible$.next(true)">
+            <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
+          </ion-chip>
+
+          <!-- <ion-select
+            slot="end"
             [formControl]="toAssetControl"
             (ionChange)="onToAssetChange()"
           >
-            <ion-select-option
-              *ngFor="let asset of assets"
-              [value]="asset"
-              >{{ asset.symbol }}</ion-select-option
-            >
-          </ion-select>
+            <ion-select-option *ngFor="let asset of assets" [value]="asset">
+              <ion-thumbnail slot="start">
+                <ion-img [src]="asset.logoURI"></ion-img>
+              </ion-thumbnail>
+              <ion-label>
+                <h3>
+                  {{ asset.symbol }}
+                </h3>
+              </ion-label>
+            </ion-select-option>
+          </ion-select> -->
         </ion-item>
-        <ion-item size="6">
+      </ion-col>
+      <ion-col size="6" class="ion-text-end">
+        <ion-item disabled lines="none" class="disabledInput ion-text-end">
+          <ion-spinner *ngIf="toAmountControl.value === null" slot="end"></ion-spinner>
           <ion-input
-            type="number"
-            [formControl]="toAmountControl"
-          ></ion-input>
+            slot="end" 
+            type="number" 
+            min="0" 
+            [hidden]="toAmountControl.value === null"
+            [formControl]="toAmountControl"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
+
+    <ion-row *ngIf="estimatedGas$|async as estimatedGas" class="ion-margin-top detailsFees">
       <ion-col size="12">
-        <ion-button 
-          expand="block" 
-          color="primary" 
-          (click)="reviewSwap()">
-          Review Swap
-        </ion-button>
+        <ion-item>
+          <ion-label>
+            Slippage
+          </ion-label>
+          <ion-note slot="end">
+            0.5%
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Hexa fee
+          </ion-label>
+          <ion-note slot="end">
+            0%
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Gas fee estimation
+          </ion-label>
+          <ion-note slot="end">
+            {{estimatedGas}}
+          </ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <a href="https://0x.org" target="_blank" rel="noopener" class="">
+          <ion-icon 
+            [ngStyle]="{'height':'1rem', 'width': '5rem'}" 
+            slot="start" 
+            class=" ion-margin-vertical"
+            src="./assets/wallet/icons/0x-powered.svg"></ion-icon>
+        </a>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+
+  </ion-grid>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button 
+      expand="block" 
+      color="primary" 
+      [disabled]="((estimatedGas$|async) === 0) || (isLoaderVisible$|async) === true"
+      (click)="reviewSwap()"
+    >
+      <ion-spinner *ngIf="(isLoaderVisible$|async) === true; else displayText" ></ion-spinner>
+      <ng-template #displayText>
+        Swap
+      </ng-template>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-modal [isOpen]="isAssetsListUiVisible$.value">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar style="--background: transparent;">
+        <ion-title>
+          Select asset
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isAssetsListUiVisible$.next(false)">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>       
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-no-padding">
+      <ion-list *ngIf="assets$.value as assets;else loadingTmp" lines="none" class="ion-margin-bottom"  >
+        <ion-list-header class="ion-margin-bottom assets-list-header">
+          <ion-searchbar></ion-searchbar>
+        </ion-list-header>
+        <ion-item 
+            *ngFor="let asset of assets" 
+            (click)="toAssetControl.patchValue(asset);isAssetsListUiVisible$.next(false);onToAssetChange();">
+          <ion-thumbnail slot="start">
+            <ion-img style="padding:0.5rem;" [src]="asset?.logo || asset?.logoURI"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{ asset.symbol }}</h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ng-template #loadingTmp>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-spinner></ion-spinner>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

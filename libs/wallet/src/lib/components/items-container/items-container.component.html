@@ -38,7 +38,7 @@
         [ngStyle]="{ display: 'flex' }">
         <ion-label>
           <ion-text>
-            <b>${{ item.value }}</b><br/>
+            <b>{{ item.value | currency }}</b><br/>
           </ion-text>
           <ion-text color="medium">
             <small>{{ item.balance }} {{item.symbol|uppercase}}</small>

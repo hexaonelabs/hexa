@@ -60,11 +60,16 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     this.isWaiting$.next(true);
     // await this._connectWithOnboard();
     const {account, provider} = await this._connectWithMagic(accountToConnect);
-    console.log('[INFO] Connected with Magic', {account, provider});
+    console.log('[INFO] {Web3AuthService} connect() - Connected: ', {account, provider});
     const ethersProvider = new ethers.providers.Web3Provider(
       provider as any,
       'any'
-    );
+    )
+    // connect with metamask
+    const ethAccounts = await ethersProvider.send("eth_requestAccounts", []);
+    if (ethAccounts[0] !== account) {
+      throw new Error(`[ERROR] {Web3AuthService} connect() - Account and ethers account are not the same.`);
+    }
     // verify signature
     const isOwner = await this.signAndVerify(ethersProvider.getSigner(), account);
     if (!isOwner) {
@@ -196,15 +201,42 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   }
 
   private _magicWeb3() {
-    const customNodeOptions = {
-      rpcUrl: MAINNET_RPC_URL, // your ethereum, polygon, or optimism mainnet/testnet rpc URL
-      chainId: 1 // corresponding chainId for your rpc url
-    }
+    const customNodeOptions = this._getRPCNodeOptions();
+    console.log(`[INFO] {Web3AuthService} _magicWeb3() - Create MagicWeb3 instance with node params: `, customNodeOptions);
     const magic = new Magic(this._authApiKey, {
       network: customNodeOptions, // 'mainnet', // or your own custom node url in the format of { rpcUrl: string chainId: number }
       extensions: [new WebAuthnExtension()],
     });
     return magic;
+  }
+
+  private _getRPCNodeOptions() {
+    const RPC_NODE_OPTIONS = [
+      {
+        rpcUrl: MAINNET_RPC_URL, // your ethereum, polygon, or optimism mainnet/testnet rpc URL
+        chainId: 1 // corresponding chainId for your rpc url
+      },
+      {
+        rpcUrl: 'https://eth-goerli.public.blastapi.io', // your ethereum, polygon, or optimism mainnet/testnet rpc URL
+        chainId: 5 // corresponding chainId for your rpc url
+      },
+      {
+        rpcUrl: 'https://polygon-rpc.com', // or https://matic-mumbai.chainstacklabs.com for testnet
+        chainId: 137 // or 80001 for polygon testnet
+      },
+      {
+        rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
+        chainId: 80001
+      }
+    ];
+    const defaultChainId = 1;
+    const {chainId = defaultChainId} = (window as any)?.ethereum||{};
+    const chainIdAsDecimal = Number(BigInt(chainId).toString());
+    const nodeOps =  RPC_NODE_OPTIONS.find(n => n.chainId === chainIdAsDecimal);
+    if (!nodeOps) {
+      throw new Error('RPC Node config fail. Incorect params, ');
+    }
+    return nodeOps;
   }
 
   /**

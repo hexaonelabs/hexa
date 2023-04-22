@@ -1,11 +1,12 @@
 import { Component, Inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { ILoadingService } from "@hexa/interfaces";
+import { ILoadingService, TokenInterface } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
-import { AlertController, ModalController, PopoverController } from "@ionic/angular";
+import { AlertController, ModalController, PopoverController, ToastController } from "@ionic/angular";
+import { TransactionReceipt } from "alchemy-sdk";
+import { Transaction } from "ethers";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { SwapAssetsModalComponent } from "../../components/swap-assets-modal/swap-assets-modal.component";
-import { TokenInterface } from "../../interfaces/token.interface";
 import { WalletService } from "../../services/wallet.service";
 
 @Component({
@@ -24,6 +25,7 @@ export class WalletPageComponent  {
     private readonly _alertCtrl: AlertController,
     private readonly _popoverCtrl: PopoverController,
     private readonly _modalCtrl: ModalController,
+    private readonly _toastCtrl: ToastController,
     private readonly _walletService: WalletService,
     private readonly _route: ActivatedRoute,
     @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
@@ -83,14 +85,32 @@ export class WalletPageComponent  {
         this.isReceiveAssetsModalOpen$.next(true);
         break;
       }
-      // case type === 'swap-asset': {
-      //   const {item:asset = null} = payload;
-      //   const { data, role } = await this._promptSwapAsset(asset);
-      //   console.log('swap-asset', asset, data);
-      //   if (role !== 'ok') return;
-      //   // TODO: implement swap with service
-      //   break;
-      // }
+      case type === 'swap-asset': {
+        const {item:asset = null} = payload;
+        const {data, role} = await this._promptSwapAsset(asset);
+        if (role !== 'ok') {
+          return;
+        }
+        const { transactionHash, status } = data as TransactionReceipt;
+        console.log('XXXXX', transactionHash, status );
+        
+        const ionToast = await this._toastCtrl.create({
+          message: `Swap with succes. View on blockscan`,
+          buttons: [
+            { icon: 'open-outline', handler: () => {
+              // TODO: open on blockscan
+              throw new Error('Feature Not implemented yet');
+            }}
+          ],
+          duration: 10000,
+          color: 'success',
+          position: 'bottom'
+        });
+        await ionToast.present();
+        // TODO: reload evm assets list
+        // this._walletService.getTokensBalances();
+        break;
+      }
       default:{
         const ionAlert = await this._alertCtrl.create({
           header: 'Not implemented',
@@ -114,6 +134,7 @@ export class WalletPageComponent  {
     });
     await ionModal.present();
     const {data, role} = await ionModal.onDidDismiss();
+    this._loaderService.setStatus(false);
     return {data, role};      
   }
 

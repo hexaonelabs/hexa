@@ -11,7 +11,9 @@ export const environment = {
   auth: {
     apikey: process.env['NG_APP_AUTH_APIKEY']
   },
-  wallet_service_apikey: process.env['NG_APP_WALLET_SERVICE_APIKEY'],
+  wallet: {
+    '0xapiKey': process.env['NG_APP_0xAPIKEY'],
+  },
   availableChainsId: {
     // ETH
     '1': 'ethereum', // mainnet

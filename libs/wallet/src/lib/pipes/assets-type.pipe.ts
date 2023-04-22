@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { TokenInterface } from "../interfaces/token.interface";
+import { TokenInterface } from "@hexa/interfaces";
 
 @Pipe({
   name: "assetsType"

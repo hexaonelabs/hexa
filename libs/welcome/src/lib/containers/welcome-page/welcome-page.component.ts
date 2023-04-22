@@ -13,7 +13,11 @@ import { IConfig } from '../../interfaces/config.interface';
 import { IBackgroundConfig } from '../../interfaces/background-config.interface';
 
 const ROOT_DB_COLLECTION = 'd-welcome';
-const DEFAULT_WIDGETS_CONFIG: IConfig = {};
+const DEFAULT_WIDGETS_CONFIG: IConfig = {
+  background: {
+    url: undefined
+  }
+};
 const WIDGETS_MESSAGE = {
   background: `You can provide a URL address of the image you want to use as a background.`,
 };

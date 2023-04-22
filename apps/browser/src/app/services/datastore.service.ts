@@ -103,10 +103,10 @@ export class DatastoreService implements IDatastoreService<DIDDataStore> {
         pin: true
       }
     );
-    await doc.update(data);
-    const _id = doc.id.toString();
-    const content = doc.content;
-    return {_id, ...content};
+    doc.update(data);
+    // const _id = doc.id.toString();
+    // const content = doc.content;
+    return {_id: (data as any)?._id||'temp', ...data};
   }
   
   // async updateUserProfil() {
