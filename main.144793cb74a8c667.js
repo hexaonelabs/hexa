@@ -194,7 +194,7 @@ const appRoutes = [{
       loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(8592), __webpack_require__.e(304)]).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/drive */ 80304)).then(m => m.DriveModule)
     }, {
       path: 'wallet',
-      loadChildren: () => __webpack_require__.e(/*! import() */ 3945).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/wallet */ 3945)).then(m => m.WalletModule)
+      loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(8592), __webpack_require__.e(3945)]).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/wallet */ 3945)).then(m => m.WalletModule)
     }, {
       path: 'notes',
       loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e(8592), __webpack_require__.e(3161)]).then(__webpack_require__.bind(__webpack_require__, /*! @hexa/notes */ 3161)).then(m => m.NotesModule)
@@ -4247,4 +4247,4 @@ module.exports = webpackAsyncContext;
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.c66b2f6d9b9f274b.js.map
+//# sourceMappingURL=main.144793cb74a8c667.js.map
