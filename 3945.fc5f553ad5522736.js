@@ -1896,86 +1896,115 @@ AvatarDirective.ɵdir = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__[
 
 /***/ }),
 
-/***/ 3551:
-/*!********************************************************!*\
-  !*** ./libs/wallet/src/lib/factories/local.factory.ts ***!
-  \********************************************************/
+/***/ 17141:
+/*!*******************************************************!*\
+  !*** ./libs/wallet/src/lib/factories/ankr.factory.ts ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "localWalletApiFactory": () => (/* binding */ localWalletApiFactory)
+/* harmony export */   "ankrFactory": () => (/* binding */ ankrFactory)
 /* harmony export */ });
 /* harmony import */ var _Users_dev_fazio_Nicolas_Fazio_repos_hexa_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 
-const localWalletApiFactory = () => {
+/**
+ * Method to iinteract with Ankr service API
+ * See docs: https://api-docs.ankr.com/reference/introduction
+ * @param apiKey
+ * @returns
+ */
+const ankrFactory = apiKey => {
+  // Name of the blockchain or list of blockchain names.
+  // Single: eth.
+  // Multiple: [eth, bsc, fantom, avalanche, polygon, arbitrum, syscoin, optimism, eth_goerli, polygon_mumbai, avalanche_fuji].
+  // All chains: empty value.
+  const CHAIN_AVAILABLES = [{
+    id: 1,
+    value: 'eth',
+    name: 'Ethereum'
+  }, {
+    id: 56,
+    value: 'bsc',
+    name: 'Binance smart chain'
+  }, {
+    id: 250,
+    value: 'fantom',
+    name: 'Fantom'
+  }, {
+    id: 43114,
+    value: 'avalanche',
+    name: 'Avalanche'
+  }, {
+    id: 137,
+    value: 'polygon',
+    name: 'Polygon'
+  }, {
+    id: 42162,
+    value: 'arbitrum',
+    name: 'Arbitrum'
+  }, {
+    id: 10,
+    value: 'optimism',
+    name: 'Optimism'
+  }, {
+    id: 5,
+    value: 'eth_goerli',
+    name: 'Goerli'
+  }, {
+    id: 80001,
+    value: 'polygon_mumbai',
+    name: 'mumbai'
+  }, {
+    id: 43113,
+    value: 'avalanche_fuji',
+    name: 'Fuji'
+  }];
   return {
     getTokensBalances: function () {
       var _ref = (0,_Users_dev_fazio_Nicolas_Fazio_repos_hexa_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (chainIds, address) {
+        const chainsList = chainIds.length <= 0 ? CHAIN_AVAILABLES : CHAIN_AVAILABLES.filter(availableChain => chainIds.find(c => c === availableChain.id));
+        const blockchain = chainsList.map(c => c.value);
+        const url = 'https://rpc.ankr.com/multichain/?ankr_getAccountBalance';
+        const options = {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'ankr_getAccountBalance',
+            params: {
+              blockchain,
+              walletAddress: address
+            },
+            id: 1
+          })
+        };
+        const res = yield fetch(url, options);
+        const balances = (yield res.json())?.result?.assets;
+        const formatedBalances = balances?.map(t => {
+          return {
+            address: t.tokenType === 'NATIVE' ? t.tokenSymbol : t.contractAddress,
+            name: t.tokenName,
+            symbol: t.tokenSymbol,
+            logo: t.thumbnail,
+            type: t.tokenType,
+            decimals: t.tokenDecimals,
+            chainId: CHAIN_AVAILABLES.find(c => c.value === t.blockchain)?.id,
+            ownerAddress: address,
+            balance: parseFloat((Number(t.balanceRawInteger) / 10 ** t.tokenDecimals).toFixed(4)),
+            value: Number(t.balanceUsd),
+            rate: Number(t.tokenPrice)
+          };
+        });
+        console.log('[INFO] {ankrFactory} getTokensBalances(): ', {
+          balances
+        });
         return {
-          balances: [{
-            address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-            name: 'Dai Stablecoin',
-            symbol: 'DAI',
-            logo: 'https://assets.coingecko.com/coins/images/9956/large/dai-multi-collateral-mcd.png?1574218774',
-            type: 'ERC20',
-            nft_data: null,
-            decimals: 18,
-            balance: 10,
-            rate: 1,
-            rate24h: 1,
-            value: 10,
-            chainId: 1,
-            ownerAddress: address
-          }
-          // {
-          //   address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
-          //   name: 'Wrapped BTC',
-          //   symbol: 'WBTC',
-          //   logo: 'https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744',
-          //   type: 'ERC20',
-          //   nft_data: null,
-          //   decimals: 8,
-          //   balance: 10,
-          //   rate: 0,
-          //   rate24h: 0,
-          //   value: 0,
-          //   chainId: 1,
-          //   ownerAddress: address,
-          // },
-          // {
-          //   address: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-          //   name: 'Basic Attention Token',
-          //   symbol: 'BAT',
-          //   logo: 'https://assets.coingecko.com/coins/images/677/large/basic-attention-token.png?1547034426',
-          //   type: 'ERC20',
-          //   nft_data: null,
-          //   decimals: 18,
-          //   balance: 10,
-          //   rate: 0,
-          //   rate24h: 0,
-          //   value: 0,
-          //   chainId: 1,
-          //   ownerAddress: address,
-          // },
-          // {
-          //   address: '0x514910771af9ca656af840dff83e8264ecf986ca',
-          //   name: 'Chainlink',
-          //   symbol: 'LINK',
-          //   logo: 'https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png?1547034700',
-          //   type: 'ERC20',
-          //   nft_data: null,
-          //   decimals: 18,
-          //   balance: 10,
-          //   rate: 0,
-          //   rate24h: 0,
-          //   value: 0,
-          //   chainId: 1,
-          //   ownerAddress: address,
-          // },
-          ]
-          // .filter((t) => t.chainId === parseInt(chainId)),
+          balances: formatedBalances
         };
       });
       return function getTokensBalances(_x, _x2) {
@@ -2672,7 +2701,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pipes_qrcode_pipe__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pipes/qrcode.pipe */ 71071);
 /* harmony import */ var _services_swap_service_strategy__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./services/swap-service.strategy */ 5230);
 /* harmony import */ var _hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @hexa/token-injection */ 8396);
-/* harmony import */ var _factories_local_factory__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./factories/local.factory */ 3551);
+/* harmony import */ var _factories_ankr_factory__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./factories/ankr.factory */ 17141);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 22560);
 
 
@@ -2705,7 +2734,7 @@ WalletModule.ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_14__["�
   providers: [{
     provide: (0,_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.getInjectionToken)(_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.TOKENS_NAME.APP_WALLET_UTILS),
     useFactory: isProd => {
-      return (0,_factories_local_factory__WEBPACK_IMPORTED_MODULE_13__.localWalletApiFactory)();
+      return (0,_factories_ankr_factory__WEBPACK_IMPORTED_MODULE_13__.ankrFactory)();
       // return (environment?.version?.includes('local')||false)
       //   ? localWalletApiFactory()
       //   // : alchemyFactory('q8jTnGRDHP4g2uP6mkkfLU7RMB7aFRuC')
@@ -11002,4 +11031,4 @@ module.exports = function getSideChannel() {
 /***/ })
 
 }]);
-//# sourceMappingURL=3945.562a821affe45868.js.map
+//# sourceMappingURL=3945.fc5f553ad5522736.js.map
