@@ -84,11 +84,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function LoginPageComponent_ion_button_15_Template(rf, ctx) {
+function LoginPageComponent_ion_button_17_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ion_button_15_Template_ion_button_click_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ion_button_17_Template_ion_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r7);
       const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r6.disconnect());
@@ -97,11 +97,11 @@ function LoginPageComponent_ion_button_15_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
   }
 }
-function LoginPageComponent_ng_template_17_Template(rf, ctx) {
+function LoginPageComponent_ng_template_19_Template(rf, ctx) {
   if (rf & 1) {
     const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ng_template_17_Template_ion_button_click_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ng_template_19_Template_ion_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r9);
       const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r8.connectWallet());
@@ -118,11 +118,11 @@ function LoginPageComponent_ng_template_17_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](3, 4, ctx_r2.isLoaderVisible$) === true ? "Loading..." : "Connect");
   }
 }
-function LoginPageComponent_ion_button_108_Template(rf, ctx) {
+function LoginPageComponent_ion_button_116_Template(rf, ctx) {
   if (rf & 1) {
     const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ion_button_108_Template_ion_button_click_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ion_button_116_Template_ion_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11);
       const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r10.disconnect());
@@ -131,11 +131,11 @@ function LoginPageComponent_ion_button_108_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
   }
 }
-function LoginPageComponent_ng_template_110_Template(rf, ctx) {
+function LoginPageComponent_ng_template_118_Template(rf, ctx) {
   if (rf & 1) {
     const _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ng_template_110_Template_ion_button_click_0_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-button", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function LoginPageComponent_ng_template_118_Template_ion_button_click_0_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r13);
       const ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r12.connectWallet());
@@ -189,9 +189,9 @@ LoginPageComponent.ɵfac = function LoginPageComponent_Factory(t) {
 LoginPageComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
   type: LoginPageComponent,
   selectors: [["hexa-login-page"]],
-  decls: 125,
+  decls: 133,
   vars: 8,
-  consts: [[1, "ion-no-padding"], ["lines", "none", 1, "logo-header"], ["slot", "start", "src", "./assets/images/logo.svg", "size", "large"], ["lines", "none", 1, "link-header"], ["rel", "noopener", "target", "_blank", "href", "https://github.com/hexaonelabs/hexa"], ["color", "light", "slot", "start", "name", "logo-github"], [1, "header-landing"], ["rel", "noopener", "target", "_blank", "href", "https://ipfs.io"], ["name", "open-outline", "size", "small"], ["size", "large", 3, "click", 4, "ngIf", "ngIfElse"], ["auth", ""], [1, "ion-text-start"], ["size-xs", "12", "size-md", "12", "size-lg", "4", 1, "ion-padding-horizontal", "ion-padding-bottom"], [1, "sticky", "ion-padding-top", "ion-padding-horizontal", "ion-padding-bottom"], ["color", "primary ion-text-uppercase"], ["size-xs", "12", "size-md", "12", "size-lg", "8"], [1, "call-list", "ion-no-padding", "ion-padding-top"], [1, "ion-padding-horizontal"], ["size-xs", "12", "size-sm", "12", "size-md", "6"], [1, "ion-text-start", "features"], [1, "call-action"], ["size-xs", "12", "size-md", "8", "size-lg", "8"], ["size-xs", "12", "size-md", "4", "size-lg", "4", 1, "ion-padding-vertical"], ["auth2", ""], [1, "footer"], ["href", "https://github.com/hexaonelabs", "target", "_blank", "rel", "noopener"], ["href", "https://ipfs.io", "target", "_blank", "rel", "noopener"], ["src", "./assets/images/logo-ipfs.svg"], ["href", "http://filecoin.io", "target", "_blank", "rel", "noopener"], ["src", "./assets/images/logo-filecoin.svg"], ["size", "large", 3, "click"], ["size", "large", 3, "disabled", "click"]],
+  consts: [[1, "ion-no-padding"], ["lines", "none", 1, "logo-header"], ["slot", "start", "src", "./assets/images/logo.svg", "size", "large"], ["lines", "none", 1, "link-header"], ["rel", "noopener", "target", "_blank", "href", "https://github.com/hexaonelabs/hexa"], ["color", "light", "slot", "start", "name", "logo-github"], [1, "header-landing"], ["color", "primary"], ["rel", "noopener", "target", "_blank", "href", "https://ipfs.io"], ["name", "open-outline", "size", "small"], ["size", "large", 3, "click", 4, "ngIf", "ngIfElse"], ["auth", ""], [1, "ion-text-start"], ["size-xs", "12", "size-md", "12", "size-lg", "4", 1, "ion-padding-horizontal", "ion-padding-bottom"], [1, "sticky", "ion-padding-top", "ion-padding-horizontal", "ion-padding-bottom"], ["color", "medium", 1, "ion-text-uppercase"], ["size-xs", "12", "size-md", "12", "size-lg", "8"], [1, "call-list", "ion-no-padding", "ion-padding-top"], [1, "ion-padding-horizontal"], ["size-xs", "12", "size-sm", "12", "size-md", "6"], [1, "ion-text-start", "features"], [1, "call-action"], ["size-xs", "12", "size-md", "8", "size-lg", "8"], ["size-xs", "12", "size-md", "4", "size-lg", "4", 1, "ion-padding-vertical"], ["auth2", ""], [1, "footer"], ["href", "https://hexaonelabs.com", "target", "_blank", "rel", "noopener"], ["href", "https://ipfs.io", "target", "_blank", "rel", "noopener"], ["src", "./assets/images/logo-ipfs.svg"], ["href", "http://filecoin.io", "target", "_blank", "rel", "noopener"], ["src", "./assets/images/logo-filecoin.svg"], ["size", "large", 3, "click"], ["size", "large", 3, "disabled", "click"]],
   template: function LoginPageComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "ion-content", 0)(1, "ion-item", 1);
@@ -203,129 +203,137 @@ LoginPageComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "ion-icon", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 6)(9, "h1");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, " Use the full potential of internet ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, " Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "a", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](14, "ion-icon", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, " Use the full potential ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "ion-text", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, "of internet");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](15, LoginPageComponent_ion_button_15_Template, 2, 0, "ion-button", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](16, "async");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](17, LoginPageComponent_ng_template_17_Template, 4, 6, "ng-template", null, 10, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "section", 11)(20, "ion-grid", 0)(21, "ion-row", 0)(22, "ion-col", 12)(23, "div", 13)(24, "ion-text", 14)(25, "span");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](26, " 100% Decentralized & Open-source ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, " Censorship-resistant, tamper-proof and privacy compliant solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS) ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "a", 8);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](16, "ion-icon", 9);
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "h2");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](28, " Trust what you control ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](17, LoginPageComponent_ion_button_17_Template, 2, 0, "ion-button", 10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](18, "async");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](19, LoginPageComponent_ng_template_19_Template, 4, 6, "ng-template", null, 11, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](30, " Store data on IPFS using free cross-platform application client. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "section", 12)(22, "ion-grid", 0)(23, "ion-row", 0)(24, "ion-col", 13)(25, "div", 14)(26, "ion-text", 15)(27, "span");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](28, " 100% Decentralized & Open-source ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "h2");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](30, " Trust what you ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "ion-text", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](32, "control");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](34, " Store data on IPFS using free cross-platform application client. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "ion-col", 15)(32, "ion-grid", 16)(33, "ion-row", 17)(34, "ion-col", 18)(35, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](36, " Zero-knowledge architecture ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "ion-col", 16)(36, "ion-grid", 17)(37, "ion-row", 18)(38, "ion-col", 19)(39, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](40, " Zero-knowledge architecture ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](38, " Hexa is built on zero-knowledge architecture, meaning that we know nothing about what you do in app. Not only is this more secure, but it also gives you complete censorship-resistant and privacy compliant solution. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](42, " Hexa is built on zero-knowledge architecture, meaning that we know nothing about what you do in app. Not only is this more secure, but it also gives you complete censorship-resistant and privacy compliant solution. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "ion-col", 18)(40, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](41, " Access data securely ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "ion-col", 19)(44, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](45, " Access data securely ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](43, " Store data securely on IPFS and access them from anywhere. Hexa is a fully decentralized, tamper-proof platform and hosted on IPFS, meaning that you can access your data from any device, anywhere in the world. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](47, " Store data securely on IPFS and access them from anywhere. Hexa is a fully decentralized, tamper-proof platform and hosted on IPFS, meaning that you can access your data from any device, anywhere in the world. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](44, "ion-col", 18)(45, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](46, " Secure sharing ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "ion-col", 19)(49, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](50, " Secure sharing ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](48, " Share a copy of your data to anyone using dedicated upload page. Hexa allow you to share with others ERC20 address a encrypted copy of data with custom access controls and permission settings. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](52, " Share a copy of your data to anyone using dedicated upload page. Hexa allow you to share with others ERC20 address a encrypted copy of data with custom access controls and permission settings. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "ion-col", 18)(50, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](51, "Free and Open-source");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "ion-col", 19)(54, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](55, "Free and Open-source");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](53, " Hexa is free and open-source, meaning that you can audit the code and be sure that your data is safe. You can also download the source code and run it on your own server or contribute to the project and help us make Hexa even better. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](57, " Hexa is free and open-source, meaning that you can audit the code and be sure that your data is safe. You can also download the source code and run it on your own server or contribute to the project and help us make Hexa even better. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()()()()()()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](54, "section", 19)(55, "ion-grid", 0)(56, "ion-row", 0)(57, "ion-col", 12)(58, "div", 13)(59, "ion-text", 14)(60, "span");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](61, " All in one platform ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](58, "section", 20)(59, "ion-grid", 0)(60, "ion-row", 0)(61, "ion-col", 13)(62, "div", 14)(63, "ion-text", 15)(64, "span");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](65, " All in one platform ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "h2");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](63, " Choose your features ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](64, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](65, " Customise your experience with Hexa and choose which features you want to use. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](66, "h2");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](67, " Choose your ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "ion-text", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](69, "features");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](71, " Customise your experience with Hexa and choose which features you want to use. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](66, "ion-col", 15)(67, "ion-grid", 16)(68, "ion-row", 17)(69, "ion-col", 18)(70, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](71, "Dashboard");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "ion-col", 16)(73, "ion-grid", 17)(74, "ion-row", 18)(75, "ion-col", 19)(76, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](77, "Dashboard");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](73, " Get clean and simple page with custom background image and many widgets that you can use to display your data as you want. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](78, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](79, " Get clean and simple page with custom background image and many widgets that you can use to display your data as you want. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "ion-col", 18)(75, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](76, "Drive");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](80, "ion-col", 19)(81, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](82, "Drive");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](78, " Store and manage files securely on IPFS, access them from anywhere, share them with others with custom access controls and permission settings. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](83, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](84, " Store and manage files securely on IPFS, access them from anywhere, share them with others with custom access controls and permission settings. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](79, "ion-col", 18)(80, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](81, "Wallet");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](85, "ion-col", 19)(86, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](87, "Wallet");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](82, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](83, " Hexa is EVM chain support so you can use Hexa wallet to manage your crypto assets and NFTs. Send and receive payments, swape tokens, stake and more. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](88, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](89, " Hexa is EVM chain support so you can use Hexa wallet to manage your crypto assets and NFTs. Send and receive payments, swape tokens, stake and more. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](84, "ion-col", 18)(85, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](86, "Calendar");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](90, "ion-col", 19)(91, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](92, "Calendar");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](87, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](88, " Keep track of your events, set reminders, schedule meetings and more with a encrypted solution, censorship-resistant, privacy compliant that work on any device. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](93, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](94, " Keep track of your events, set reminders, schedule meetings and more with a encrypted solution, censorship-resistant, privacy compliant that work on any device. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](89, "ion-col", 18)(90, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](91, "Note");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "ion-col", 19)(96, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](97, "Note");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](93, " Write down your thoughts and ideas, keep track of your tasks and more without any third-party tracking. Your notes are encrypted with access controls condition and stored on IPFS, so you can securely access them from anywhere. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](98, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](99, " Write down your thoughts and ideas, keep track of your tasks and more without any third-party tracking. Your notes are encrypted with access controls condition and stored on IPFS, so you can securely access them from anywhere. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](94, "ion-col", 18)(95, "h3");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](96, "and more...");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](100, "ion-col", 19)(101, "h3");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](102, "and more...");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](97, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](98, " Hexa provide many other features like messaging system with full encryption, dedicated Web Page hosted to IPFS to enforce censorship-resistant, tamper-proof and privacy compliant of your data. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](103, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](104, " Hexa provide many other features like messaging system with full encryption, dedicated Web Page hosted to IPFS to enforce censorship-resistant, tamper-proof and privacy compliant of your data. ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()()()()()()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](99, "div", 20)(100, "ion-grid", 0)(101, "ion-row")(102, "ion-col", 21)(103, "h2");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](104, " Ready to be a part of the future? ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](105, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](106, " Get started now and enjoy the benefits of decentralized web. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](105, "div", 21)(106, "ion-grid", 0)(107, "ion-row")(108, "ion-col", 22)(109, "h2");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](110, " Ready to be a part of ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](111, "ion-text", 7);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](112, "the future?");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](107, "ion-col", 22);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](108, LoginPageComponent_ion_button_108_Template, 2, 0, "ion-button", 9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](109, "async");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](110, LoginPageComponent_ng_template_110_Template, 4, 6, "ng-template", null, 23, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](113, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](114, " Get started now and enjoy the benefits of decentralized web. ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](115, "ion-col", 23);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](116, LoginPageComponent_ion_button_116_Template, 2, 0, "ion-button", 10);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](117, "async");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](118, LoginPageComponent_ng_template_118_Template, 4, 6, "ng-template", null, 24, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()()();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](112, "div", 24)(113, "p");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](114, " Build by ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](115, "a", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](116, "HEXA ONE Labs");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](120, "div", 25)(121, "p");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](122, " Build by ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](123, "a", 26);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](124, "HEXA ONE Labs");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](117, ". Powered by ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](118, "a", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](119, "ion-icon", 27);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](120, " IPFS ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](125, ". Powered by ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](126, "a", 27);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](127, "ion-icon", 28);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](128, " IPFS ");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](121, " and ");
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](122, "a", 28);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](123, "ion-icon", 29);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](124, " Filecoin");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](129, " and ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](130, "a", 29);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](131, "ion-icon", 30);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](132, " Filecoin");
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()()();
     }
     if (rf & 2) {
-      const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](18);
-      const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](111);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](15);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](16, 4, ctx.account$))("ngIfElse", _r1);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](93);
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](109, 6, ctx.account$))("ngIfElse", _r4);
+      const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](20);
+      const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](119);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](17);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](18, 4, ctx.account$))("ngIfElse", _r1);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](99);
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](117, 6, ctx.account$))("ngIfElse", _r4);
     }
   },
   dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonButton, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonCol, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonContent, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonGrid, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonIcon, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonItem, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonLabel, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonRow, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonText, _angular_common__WEBPACK_IMPORTED_MODULE_4__.AsyncPipe],
@@ -358,4 +366,4 @@ const authRoutes = [{
 /***/ })
 
 }]);
-//# sourceMappingURL=2745.f6e47c072e2814b0.js.map
+//# sourceMappingURL=2745.e17cb8cf5898f00f.js.map

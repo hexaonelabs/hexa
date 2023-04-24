@@ -2415,27 +2415,28 @@ class OxServcie {
       const address = signer.getAddress();
       const ERC20TokenContract = new ethers__WEBPACK_IMPORTED_MODULE_5__.Contract(fromTokenAddress, _constants_erc20abi_constant__WEBPACK_IMPORTED_MODULE_3__.erc20abi, signer);
       console.log('>>>>', ERC20TokenContract);
-      // Set up allowance on the 0x contract if needed.
-      const bn = ERC20TokenContract.allowance(address, fromTokenAddress).call();
-      const currentAllowance = ethers__WEBPACK_IMPORTED_MODULE_4__.BigNumber.from(bn);
-      if (currentAllowance.lt(txQuote.sellAmount)) {
-        console.log('>> approvation>>>> ');
-        const approveTx = yield ERC20TokenContract.approve(fromTokenAddress, txQuote.sellAmount, {
-          gasPrice: yield provider.getGasPrice()
-        });
-        try {
-          yield approveTx.wait();
-          console.log(`Transaction mined succesfully: ${approveTx.hash}`);
-        } catch (error) {
-          console.log(`Transaction failed with error: ${error}`);
-        }
-      }
+      // // Set up allowance on the 0x contract if needed.
+      // const currentAllowance: BigNumber = await  (ERC20TokenContract as any).allowance(fromTokenAddress, address).catch((e: Error) => e.message);//.call();
+      // console.log('bn: ', currentAllowance, );
+      // if (currentAllowance.lt(txQuote.sellAmount)) {
+      //   console.log('>> approvation>>>> ');
+      //   const approveTx = await (ERC20TokenContract as any).approve(fromTokenAddress, txQuote.sellAmount, {gasPrice: await provider.getGasPrice()});
+      //   try {
+      //       await approveTx.wait();
+      //       console.log(`Transaction mined succesfully: ${approveTx.hash}`)
+      //   }
+      //   catch (error) {
+      //       console.log(`Transaction failed with error: ${error}`)
+      //   }
+      // }
       // TODO: add token amount allowence
-      // // Grant the allowance target an allowance to spend our tokens.
-      // const preTx: ethers.providers.TransactionResponse = await (ERC20TokenContract as any).approve(txQuote.allowanceTarget, maxApproval);
-      // // wait for the transaction to be mined
-      // const aprevedTX = await preTx.wait();
-      // // console.log('>>>>', tx, aprevedTX);
+      // Grant the allowance target an allowance to spend our tokens.
+      const approveTx = yield ERC20TokenContract.approve(txQuote.allowanceTarget, txQuote.sellAmount, {
+        gasLimit: txQuote.estimatedGas
+      });
+      // wait for the transaction to be mined
+      yield approveTx.wait();
+      // console.log('>>>>', tx, aprevedTX);
       // Perform the swap
       const tx = yield provider.getSigner().sendTransaction({
         from: address,
@@ -2451,12 +2452,11 @@ class OxServcie {
   getHeadersRequest() {
     const headers = new Headers();
     headers.append('0x-api-key', this._apiKey);
-    return headers;
-    // return {
-    //   '0x-api-key': this._apiKey
-    // }
+    //return headers;
+    return {
+      // '0x-api-key': this._apiKey
+    };
   }
-
   _getApiUrl(ops) {
     const apiUrl = this._chains.find(c => c.chainId === ops?.chainId)?.url || undefined;
     if (!apiUrl) {
@@ -2849,12 +2849,8 @@ WalletModule.Éµinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_16__["É
   providers: [{
     provide: (0,_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.getInjectionToken)(_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.TOKENS_NAME.APP_WALLET_UTILS),
     useFactory: isProd => {
-      return !isProd ? (0,_factories_local_factory__WEBPACK_IMPORTED_MODULE_13__.localWalletApiFactory)()
-      // : alchemyFactory('q8jTnGRDHP4g2uP6mkkfLU7RMB7aFRuC')
-      : (0,_factories_ankr_factory__WEBPACK_IMPORTED_MODULE_14__.ankrFactory)();
-      //  : covalentFactory('cqt_rQBTdRtJhRPbhb6cpkmYM7bJkdm6')
+      return !isProd ? (0,_factories_local_factory__WEBPACK_IMPORTED_MODULE_13__.localWalletApiFactory)() : (0,_factories_ankr_factory__WEBPACK_IMPORTED_MODULE_14__.ankrFactory)();
     },
-
     deps: [(0,_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.getInjectionToken)(_hexa_token_injection__WEBPACK_IMPORTED_MODULE_12__.TOKENS_NAME.APP_IS_PROD)]
   }, _services_wallet_service__WEBPACK_IMPORTED_MODULE_6__.WalletService, _services_swap_service_strategy__WEBPACK_IMPORTED_MODULE_11__.SwapeServiceStrategy],
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_17__.CommonModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_18__.IonicModule, _angular_router__WEBPACK_IMPORTED_MODULE_19__.RouterModule.forChild(_lib_routes__WEBPACK_IMPORTED_MODULE_0__.walletRoutes), _angular_forms__WEBPACK_IMPORTED_MODULE_20__.ReactiveFormsModule, _hexa_ui__WEBPACK_IMPORTED_MODULE_15__.UiModule]
@@ -11144,4 +11140,4 @@ module.exports = function getSideChannel() {
 /***/ })
 
 }]);
-//# sourceMappingURL=3945.5754bfc02b7d3552.js.map
+//# sourceMappingURL=3945.29441d73b8b6e581.js.map
