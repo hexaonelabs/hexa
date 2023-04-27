@@ -13,6 +13,9 @@
   "private": true,
   "dependencies": {
     "@3id/connect": "^0.4.1",
+    "@aave/contract-helpers": "^1.16.0",
+    "@aave/core-v3": "^1.17.2",
+    "@aave/math-utils": "^1.16.0",
     "@angular/animations": "~15.0.0",
     "@angular/common": "~15.0.0",
     "@angular/compiler": "~15.0.0",
@@ -22,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~15.0.0",
     "@angular/router": "~15.0.0",
     "@angular/service-worker": "~15.0.0",
+    "@bgd-labs/aave-address-book": "^1.22.0",
     "@capacitor/app": "^4.1.1",
     "@capacitor/core": "^4.7.1",
     "@capacitor/haptics": "^4.1.0",
@@ -81,6 +85,7 @@
     "share-api-polyfill": "^1.1.1",
     "tslib": "^2.3.0",
     "uuid": "^9.0.0",
+    "web3": "^1.9.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
 import { stringify } from 'qs'
 import { MAINNET, TESTNETS } from '../constants/chains.constant';
@@ -77,31 +76,36 @@ export class OxServcie implements ISwapservice {
       signer
     );
     console.log('>>>>', ERC20TokenContract);
-    // Set up allowance on the 0x contract if needed.
-    const bn = (ERC20TokenContract as any).allowance(address, fromTokenAddress).call();
-    const currentAllowance = BigNumber.from(bn);
-    if (currentAllowance.lt(txQuote.sellAmount)) {
-      console.log('>> approvation>>>> ');
+    // // Set up allowance on the 0x contract if needed.
+    // const currentAllowance: BigNumber = await  (ERC20TokenContract as any).allowance(fromTokenAddress, address).catch((e: Error) => e.message);//.call();
+    // console.log('bn: ', currentAllowance, );
+    
+    // if (currentAllowance.lt(txQuote.sellAmount)) {
+    //   console.log('>> approvation>>>> ');
       
-      const approveTx = await (ERC20TokenContract as any).approve(fromTokenAddress, txQuote.sellAmount, {gasPrice: await provider.getGasPrice()});
-      try {
-          await approveTx.wait();
-          console.log(`Transaction mined succesfully: ${approveTx.hash}`)
-      }
-      catch (error) {
-          console.log(`Transaction failed with error: ${error}`)
-      }
-    }
+    //   const approveTx = await (ERC20TokenContract as any).approve(fromTokenAddress, txQuote.sellAmount, {gasPrice: await provider.getGasPrice()});
+    //   try {
+    //       await approveTx.wait();
+    //       console.log(`Transaction mined succesfully: ${approveTx.hash}`)
+    //   }
+    //   catch (error) {
+    //       console.log(`Transaction failed with error: ${error}`)
+    //   }
+    // }
 
 
 
 
     // TODO: add token amount allowence
-    // // Grant the allowance target an allowance to spend our tokens.
-    // const preTx: ethers.providers.TransactionResponse = await (ERC20TokenContract as any).approve(txQuote.allowanceTarget, maxApproval);
-    // // wait for the transaction to be mined
-    // const aprevedTX = await preTx.wait();
-    // // console.log('>>>>', tx, aprevedTX);
+    // Grant the allowance target an allowance to spend our tokens.
+    const approveTx: ethers.providers.TransactionResponse = await (ERC20TokenContract as any).approve(
+      txQuote.allowanceTarget, 
+      txQuote.sellAmount, 
+      {gasLimit: txQuote.estimatedGas}
+    );
+    // wait for the transaction to be mined
+    await approveTx.wait();
+    // console.log('>>>>', tx, aprevedTX);
     
     // Perform the swap
     const tx = await provider.getSigner().sendTransaction({
@@ -118,10 +122,10 @@ export class OxServcie implements ISwapservice {
   private getHeadersRequest() {
     const headers = new Headers();
     headers.append('0x-api-key', this._apiKey);
-    return headers;
-    // return {
-    //   '0x-api-key': this._apiKey
-    // }
+    //return headers;
+    return {
+      // '0x-api-key': this._apiKey
+    }
   }
 
   private _getApiUrl(ops?: Pick<IGetQuoteOptions, 'chainId'>) {

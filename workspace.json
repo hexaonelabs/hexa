@@ -8,6 +8,7 @@
     "drive": "libs/drive",
     "interfaces": "libs/interfaces",
     "notes": "libs/notes",
+    "poc": "apps/poc",
     "token-injection": "libs/token-injection",
     "ui": "libs/ui",
     "wallet": "libs/wallet",

@@ -45,9 +45,7 @@ import { UiModule } from '@hexa/ui';
       useFactory: (isProd: boolean) => {
         return (!isProd)
           ? localWalletApiFactory()
-          // : alchemyFactory('q8jTnGRDHP4g2uP6mkkfLU7RMB7aFRuC')
           : ankrFactory()
-         //  : covalentFactory('cqt_rQBTdRtJhRPbhb6cpkmYM7bJkdm6')
       },
       deps: [
         getInjectionToken(TOKENS_NAME.APP_IS_PROD)
