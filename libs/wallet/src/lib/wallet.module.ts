@@ -19,12 +19,16 @@ import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { localWalletApiFactory } from './factories/local.factory';
 import { ankrFactory } from './factories/ankr.factory';
 import { UiModule } from '@hexa/ui';
+import { LidoService } from './services/lido.service';
+import { AAVEService } from './services/aave.service';
+import { StrategyComponent } from './components/strategy/strategy.component';
 
 @NgModule({
   declarations: [
     WalletPageComponent,
     ItemsContainerComponent,
     SwapAssetsModalComponent,
+    StrategyComponent,
     AvatarDirective,
     NetWorthPipe,
     SliceAddressPipe,
@@ -44,7 +48,7 @@ import { UiModule } from '@hexa/ui';
       provide: getInjectionToken(TOKENS_NAME.APP_WALLET_UTILS),
       useFactory: (isProd: boolean) => {
         return (!isProd)
-          ? localWalletApiFactory()
+          ? ankrFactory()
           : ankrFactory()
       },
       deps: [
@@ -53,7 +57,8 @@ import { UiModule } from '@hexa/ui';
     },
     WalletService,
     SwapeServiceStrategy,
-
+    LidoService,
+    AAVEService,
   ]
 })
 export class WalletModule {}

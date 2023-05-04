@@ -7,9 +7,17 @@ import { AAVEComponent } from './aave.component';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
+import { StrategyComponent } from './strategy.component';
+import { LidoService } from './lido.service';
+import { AAVEService } from './aave.service';
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent, AAVEComponent],
+  declarations: [
+    AppComponent, 
+    NxWelcomeComponent, 
+    AAVEComponent,
+    StrategyComponent,
+  ],
   imports: [
     BrowserModule,
     CommonModule,
@@ -19,7 +27,10 @@ import { NxWelcomeComponent } from './nx-welcome.component';
       mode: 'ios',
     }),
   ],
-  providers: [],
+  providers: [
+    LidoService,
+    AAVEService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

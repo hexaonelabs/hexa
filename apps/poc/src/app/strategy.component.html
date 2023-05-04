@@ -1,0 +1,198 @@
+<ion-content class="ion-no-padding">
+  <ion-grid *ngIf="step$.value >= 0" >
+
+    <!-- Steps Proccess Component -->
+    <ion-row class="ion-text-center ion-padding-horizontal ion-padding-top ion-padding-bottom stepsProccess ion-margin-bottom">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6" offset-md="3" size-xl="6" offset-xl="3">
+            <ion-row>
+              <ion-col (click)="step$.next(0)" size="4" [ngClass]="{'checked': step$.value >= 0}">
+                <span [ngClass]="{
+                  'stepNumber': true, 
+                  'active': step$.value === 0}">1</span>
+              </ion-col>
+              <ion-col (click)="step$.next(1)" size="4" [ngClass]="{'checked': step$.value >= 1}">
+                <span [ngClass]="{
+                  'stepNumber': true, 
+                  'active': step$.value === 1}">2</span>
+              </ion-col>
+              <ion-col (click)="step$.next(2)" size="4" [ngClass]="{'checked': step$.value >= 2}">
+                <span [ngClass]="{
+                  'stepNumber': true, 
+                  'active': step$.value === 2}">3</span>
+              </ion-col>
+              <!-- <ion-col (click)="step$.next(3)" size="3" [ngClass]="{'checked': step$.value >= 3}">
+                <span [ngClass]="{
+                  'stepNumber': true, 
+                  'active': step$.value === 3}">4</span>
+              </ion-col> -->
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+
+    <ng-container [ngSwitch]="true">
+
+      <ion-row class="ion-text-center ion-padding" *ngSwitchCase="step$.value === 0">
+        <ion-col size="12" size-md="10" offset-md="1" size-xl="8" offset-xl="2" class="ion-padding-start ion-padding-end">
+          <ion-text>
+            <h2>Swap ETH to stETH</h2>
+            <p>
+              By swapping ETH to stETH you will incrase your ETH holdings by 5% APY revard from staking ETH on Lido.
+            </p>
+          </ion-text>
+        </ion-col>
+        <ion-col size-xs="12" size-md="6" class="ion-padding-horizontal ion-text-start">
+          <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <ion-img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label slot="start" class="ion-hide-md-down">
+              <h2>ETH</h2>
+              <p>Balance: {{ethAssetBalance$|async}}</p>
+            </ion-label>
+            <ion-input
+              class="ion-text-end"
+              slot="end"
+              type="number"
+              debounce="500"
+              placeholder="0"
+              enterkeyhint="done"
+              inputmode="numeric"
+              min="0"
+              [max]="ethAssetBalance$|async"
+              [formControl]="ethAmountControl"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-md="6" class="ion-padding-horizontal ion-text-end">
+          <ion-item lines="none" style="opacity:1" 
+          disabled="true">
+            <ion-thumbnail slot="start">
+              <ion-img src="https://assets.coingecko.com/coins/images/13442/large/steth_logo.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label slot="start" class="ion-hide-md-down">
+              <h2>stETH</h2>
+              <p>
+                1 ETH = 1 stETH
+              </p>
+            </ion-label>
+            <ion-input
+              class="ion-text-end"
+              slot="end"
+              type="number"
+              debounce="500"
+              placeholder="0"
+              enterkeyhint="done"
+              inputmode="numeric"
+              min="0"
+              [value]="ethAmountControl.value"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button [disabled]="(ethAmountControl.value||0) <= 0" (click)="actions('swap', {
+            event: $event, value: ethAmountControl.value
+          })">
+            Swap
+          </ion-button>
+        </ion-col>
+      </ion-row>  
+
+      <ion-row class="ion-text-center ion-padding" *ngSwitchCase="step$.value === 1">
+        <ion-col size="12" size-md="10" offset-md="1" size-xl="8" offset-xl="2" class="ion-padding-start ion-padding-end">
+          <ion-text>
+            <h2>Supply stETH as collateral</h2>
+            <p>
+              By supplying stETH as collateral on AAVE you will be able to borrow up to 75% of your stETH value in ETH.
+            </p>
+          </ion-text>
+        </ion-col>
+        <ion-col size="12" class="ion-padding-horizontal ion-text-end">
+          <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <ion-img src="https://assets.coingecko.com/coins/images/13442/large/steth_logo.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label slot="start" class="ion-hide-md-down">
+              <h2>stETH</h2>
+              <p>Balance: {{stethAssetBalance$|async}}</p>
+            </ion-label>
+            <ion-input
+              #supplyAmountInput
+              class="ion-text-end"
+              slot="end"
+              type="number"
+              debounce="500"
+              placeholder="0"
+              enterkeyhint="done"
+              inputmode="numeric"
+              min="0"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button (click)="step$.next(2)">
+            Supply
+          </ion-button>
+        </ion-col>
+      </ion-row> 
+
+      <ion-row class="ion-text-center ion-padding" *ngSwitchCase="step$.value === 2">
+        <ion-col size="12" size-md="10" offset-md="1" size-xl="8" offset-xl="2" class="ion-padding-start ion-padding-end">
+          <ion-text>
+            <h2>Borrow ETH</h2>
+            <p>
+              By borrowing ETH on AAVE you will be able to increase your ETH holdings and use it for laverage stacking on Lido.
+            </p>
+          </ion-text>
+        </ion-col>
+        <ion-col size="12" class="ion-padding-horizontal ion-text-end">
+          <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <ion-img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label slot="start" class="ion-hide-md-down">
+              <h2>ETH</h2>
+              <p>Max amount: </p>
+            </ion-label>
+            <ion-input
+              class="ion-text-end"
+              slot="end"
+              type="number"
+              debounce="500"
+              placeholder="0"
+              enterkeyhint="done"
+              inputmode="numeric"
+              min="0"
+            ></ion-input>
+          </ion-item>
+        </ion-col>        
+        <ion-col size="12">
+          <ion-button (click)="actions('borrow')">
+            Borrow
+          </ion-button>
+        </ion-col>
+      </ion-row> 
+
+      <ion-row class="ion-text-center ion-padding" *ngSwitchCase="step$.value === 3">
+        <ion-col size="12" size-md="10" offset-md="1" size-xl="8" offset-xl="2" class="ion-padding-start ion-padding-end">
+          <ion-text>
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <h2>Success</h2>
+            <p>
+              Now you can use your borrowed ETH to repeat the process from step 1 and incrase your stakng reward APY up to 5% till you reach 75% TVL on AAVE.
+            </p>
+          </ion-text>
+        </ion-col>        
+        <ion-col size="12">
+          <ion-button (click)="step$.next(0)">
+            again
+          </ion-button>
+        </ion-col>
+      </ion-row> 
+
+    </ng-container>
+  </ion-grid>
+</ion-content>
