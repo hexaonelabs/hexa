@@ -15,6 +15,13 @@ h1, h2, h3, h4 {
 ion-button {
   --border-radius: 16px;
 }
+ion-button.button-default {
+  --border-radius: 12px!important;
+}
+ion-button.button-small {
+  --border-radius: 8px!important;
+}
+
 ion-header {
   ion-button {
     min-height: 56px;
@@ -183,6 +190,21 @@ ion-popover.popoverColorPicker::part(content) {
   // max-height: 420px;
   // overflow-y: scroll;
 }
+
+div.listWrapperWithBorder {
+  border-radius: 1.1rem;
+  overflow: hidden;
+  
+  > ion-list {
+    background: transparent;
+    ion-item {
+      --background: transparent;
+    }
+  }
+  background-color: transparent;
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.15);
+}
+
 
 
 // Calendar

@@ -1,0 +1,27 @@
+
+<div class="listWrapperWithBorder">
+  <ion-list *ngIf="(userSummary$|async) as userSummary" class="ion-no-padding">
+    <ion-item *ngFor="let pool of userSummary?.userReservesData" (click)="actions('check', pool)">
+      <ion-label class="ion-padding-start">
+        <ion-text>
+          {{pool?.reserve?.symbol}} <small>{{(pool?.reserve?.supplyAPY)|number}}% APY</small>
+        </ion-text>
+        <br/>
+        <ion-text color="medium">
+          <small>
+            Supply balance: {{pool?.scaledATokenBalance||0}} <br/>
+            Borrow balance: {{pool?.scaledVariableDebt||0}} <br/>
+          </small>
+        </ion-text>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="solid" color="primary" (click)="actions('supply', pool)">
+          supply
+        </ion-button>
+        <ion-button fill="solid" color="primary" (click)="actions('borrow', pool)">
+          borrow
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</div>

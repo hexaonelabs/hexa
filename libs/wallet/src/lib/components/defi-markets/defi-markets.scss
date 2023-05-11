@@ -1,0 +1,10 @@
+:host {
+  ion-item {
+    --background: var(--ion-item-background);
+    --padding-start: 0;
+
+    &:hover {
+      --background: rgba(var(--ion-color-primary-rgb), 0.10);
+    }
+  }
+}

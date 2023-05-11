@@ -4,7 +4,7 @@
       <ion-grid>
         <ion-row
           *ngIf="account$ | async as account"
-          class="ion-align-items-center ion-padding-start"
+          class="ion-align-items-center"
         >
           <ion-col size="auto">
             <h1>Wallet</h1>
@@ -15,7 +15,11 @@
               <ion-label>
                 {{ account | sliceAddress }}
               </ion-label> -->
-              <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
+              <ion-icon
+                size="small"
+                name="chevron-down"
+                class="ion-no-margin"
+              ></ion-icon>
             </ion-chip>
             <ion-popover
               id="wallet-account-popover"
@@ -73,7 +77,12 @@
                           mode="md"
                           slot="start"
                           [checked]="wallet.isDisabled === true ? false : true"
-                          (click)="actions('toggle-account', { account: wallet.address, event: $event })"
+                          (click)="
+                            actions('toggle-account', {
+                              account: wallet.address,
+                              event: $event
+                            })
+                          "
                         ></ion-checkbox>
                         <!-- <ion-avatar
                           slot="start"
@@ -152,7 +161,14 @@
                 <h1>${{ tokensBalances | netWorth }}</h1>
               </ion-text>
             </ion-col>
-            <ion-col size-xs="6" size-sm="6" size-md="6" size-lg="3" size-xl="2" class="ion-text-end">
+            <ion-col
+              size-xs="6"
+              size-sm="6"
+              size-md="6"
+              size-lg="3"
+              size-xl="2"
+              class="ion-text-end"
+            >
               <ion-segment [value]="selectedSegment" mode="ios">
                 <ion-segment-button
                   value="tokens"
@@ -169,6 +185,12 @@
                 <!-- <ion-segment-button value="transaction" (click)="selectedSegment = 'transaction'">
                   <ion-label>Transactions</ion-label>
                 </ion-segment-button> -->
+                <ion-segment-button
+                  value="defi"
+                  (click)="selectedSegment = 'defi'"
+                >
+                  <ion-label>DeFi</ion-label>
+                </ion-segment-button>
               </ion-segment>
             </ion-col>
           </ion-row>
@@ -176,7 +198,10 @@
       </ion-col>
       <!-- Tokens -->
       <ng-container *ngIf="selectedSegment === 'tokens'">
-        <ion-col size="12" *ngIf="(tokensBalances )?.length||0 > 0; else noItems">
+        <ion-col
+          size="12"
+          *ngIf="tokensBalances?.length || 0 > 0; else noItems"
+        >
           <ion-grid class="ion-no-padding ion-padding-bottom">
             <ion-row class="ion-align-items-start ion-margin-top">
               <ion-col size="4">
@@ -192,7 +217,7 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          <div>
+          <div class="listWrapperWithBorder">
             <hexa-items-container
               [items]="tokensBalances | assetsType : 'token'"
               (actionsEvent)="actions($event.type, $event.payload)"
@@ -204,12 +229,11 @@
             <ion-grid class="ion-no-padding ion-text-center noItems">
               <ion-row class="item ion-align-items-center ion-padding-center">
                 <ion-col class="ion-text-center ion-margin-vertical">
-                  <ion-label>
-                      There is no token in your wallet
-                  </ion-label>
+                  <ion-label> There is no token in your wallet </ion-label>
                   <ion-text color="medium">
                     <p>
-                      You can buy token from any exchange and send to your wallet address to see it here.
+                      You can buy token from any exchange and send to your
+                      wallet address to see it here.
                     </p>
                   </ion-text>
                 </ion-col>
@@ -220,9 +244,15 @@
       </ng-container>
       <!-- NFTs -->
       <ng-container *ngIf="selectedSegment === 'nfts'">
-        <ng-container *ngIf="(tokensBalances | assetsType : 'nft')?.length||0 > 0; else noNFTs">
+        <ng-container
+          *ngIf="
+            (tokensBalances | assetsType : 'nft')?.length || 0 > 0;
+            else noNFTs
+          "
+        >
           <ng-container
-            *ngFor="let nftgroupe of tokensBalances | assetsType : 'nft'">
+            *ngFor="let nftgroupe of tokensBalances | assetsType : 'nft'"
+          >
             <ion-col
               size-xs="12"
               size-sm="6"
@@ -256,12 +286,35 @@
             <ion-grid class="ion-no-padding ion-text-center noItems">
               <ion-row class="item ion-align-items-center ion-padding-center">
                 <ion-col class="ion-text-center ion-margin-vertical">
+                  <ion-label> There is no NFTs in your wallet </ion-label>
+                  <ion-text color="medium">
+                    <p>
+                      You can buy NFTs from any marketplace and they will appear
+                      here.
+                    </p>
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ng-template>
+      </ng-container>
+      <!-- DeFi -->
+      <ng-container *ngIf="selectedSegment === 'defi'">
+        <ion-col size="12">
+          <hexa-defi-markets></hexa-defi-markets>
+        </ion-col>
+        <ng-template #noDeFi>
+          <ion-col size="12">
+            <ion-grid class="ion-no-padding ion-text-center noItems">
+              <ion-row class="item ion-align-items-center ion-padding-center">
+                <ion-col class="ion-text-center ion-margin-vertical">
                   <ion-label>
-                      There is no NFTs in your wallet
+                    There is no DeFi protocols in your wallet
                   </ion-label>
                   <ion-text color="medium">
                     <p>
-                      You can buy NFTs from any marketplace and they will appear here.
+                      You can intteract with DeFi protocols and they will appear here.
                     </p>
                   </ion-text>
                 </ion-col>
@@ -305,13 +358,15 @@
       </ion-row>
     </ng-template>
     <!-- Receive Assets Modal -->
-    <ion-modal mode="ios" [isOpen]="isReceiveAssetsModalOpen$.value" (ionModalDidDismiss)="isReceiveAssetsModalOpen$.next(false)">
+    <ion-modal
+      mode="ios"
+      [isOpen]="isReceiveAssetsModalOpen$.value"
+      (ionModalDidDismiss)="isReceiveAssetsModalOpen$.next(false)"
+    >
       <ng-template>
         <ion-header class="ion-no-border">
           <ion-toolbar>
-            <ion-title>
-              Receive Assets
-            </ion-title>
+            <ion-title> Receive Assets </ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="isReceiveAssetsModalOpen$.next(false)">
                 <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -319,13 +374,19 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding ion-text-center" *ngIf="account$|async as account">
+        <ion-content
+          class="ion-padding ion-text-center"
+          *ngIf="account$ | async as account"
+        >
           <div>
-            <ion-img style="max-width: 80%;margin: auto;" [src]="account| qrcode | async "></ion-img>
+            <ion-img
+              style="max-width: 80%; margin: auto"
+              [src]="account | qrcode | async"
+            ></ion-img>
           </div>
           <ion-text color="primary">
             <h4>
-              {{account}}
+              {{ account }}
             </h4>
           </ion-text>
         </ion-content>

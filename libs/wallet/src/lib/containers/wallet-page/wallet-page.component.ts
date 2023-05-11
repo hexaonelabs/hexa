@@ -15,7 +15,7 @@ import { WalletService } from "../../services/wallet.service";
   styleUrls: ["./wallet-page.component.scss"]
 })
 export class WalletPageComponent  {
-  public selectedSegment: 'tokens'|'nfts'|'transactions'|string = 'tokens';
+  public selectedSegment: 'tokens'|'nfts'|'transactions'|'defi'|string = 'tokens';
   public readonly account$ = this._walletService.account$;
   public readonly wallets$ = this._walletService.wallets$;
   public readonly tokensBalances$ = this._walletService.tokensBalances$;
@@ -46,8 +46,12 @@ export class WalletPageComponent  {
         this.selectedSegment = 'transactions';
         break;
       }
+      case s === 'd': {
+        this.selectedSegment = 'defi';
+        break;
+      }
       default: 
-        this.selectedSegment = 'nfts';
+        this.selectedSegment = 'tokens';
     }
     
   }

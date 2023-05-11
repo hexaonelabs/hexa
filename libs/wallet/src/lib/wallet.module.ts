@@ -22,12 +22,14 @@ import { UiModule } from '@hexa/ui';
 import { LidoService } from './services/lido.service';
 import { AAVEService } from './services/aave.service';
 import { StrategyComponent } from './components/strategy/strategy.component';
+import { DefiMarketsComponent } from './components/defi-markets/defi-markets';
 
 @NgModule({
   declarations: [
     WalletPageComponent,
     ItemsContainerComponent,
     SwapAssetsModalComponent,
+    DefiMarketsComponent,
     StrategyComponent,
     AvatarDirective,
     NetWorthPipe,

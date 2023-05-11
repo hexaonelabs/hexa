@@ -16,7 +16,7 @@
       </ion-avatar>
       <ion-label class="ion-padding-start">
         <ion-text>
-          <b>{{item.symbol|uppercase}}</b>
+          {{item.symbol|uppercase}}
         </ion-text>
         <ion-text color="medium">
           <small>{{item.name}}</small>
@@ -38,7 +38,7 @@
         [ngStyle]="{ display: 'flex' }">
         <ion-label>
           <ion-text>
-            <b>{{ item.value | currency }}</b><br/>
+            {{ item.value | currency }}
           </ion-text>
           <ion-text color="medium">
             <small>{{ item.balance }} {{item.symbol|uppercase}}</small>

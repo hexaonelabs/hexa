@@ -7,19 +7,6 @@
   ion-content {
     > ion-grid {
       > ion-row {
-        > ion-col div {
-          border-radius: 1.1rem;
-          overflow: hidden;
-          
-          > ion-list {
-            background: transparent;
-            ion-item {
-              --background: transparent;
-            }
-          }
-          background-color: transparent;
-          border: 1px solid rgba(var(--ion-color-primary-rgb), 0.15);
-        }
 
         ion-card {
           border-radius: 24px;

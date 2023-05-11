@@ -80,6 +80,7 @@ export class WalletService implements IWalletServcie {
       };
     })
   ));
+  public readonly ethereumProvider$ = this._authService.ethereumProvider$;
 
   constructor(
     private readonly _swapService: SwapeServiceStrategy,

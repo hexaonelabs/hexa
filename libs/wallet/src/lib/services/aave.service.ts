@@ -21,6 +21,7 @@ import * as MARKETS from '@bgd-labs/aave-address-book';
 import { BehaviorSubject } from 'rxjs';
 import {
   FormatReserveUSDResponse,
+  FormatUserSummaryResponse,
   formatReserves,
   formatReservesAndIncentives,
   formatUserSummary,
@@ -50,7 +51,7 @@ export class AAVEService {
 
   public readonly markets$: BehaviorSubject<MARKETTYPE> =
     new BehaviorSubject<MARKETTYPE>(null as any);
-  public readonly userSummary$ = new BehaviorSubject(null as any);
+  public readonly userSummary$: BehaviorSubject<FormatUserSummaryResponse<ReserveDataHumanized & FormatReserveUSDResponse>> = new BehaviorSubject(null as any);
   public readonly formattedPoolReserves$: BehaviorSubject<
     (ReserveDataHumanized & FormatReserveUSDResponse)[]
   > = new BehaviorSubject(null as any);
