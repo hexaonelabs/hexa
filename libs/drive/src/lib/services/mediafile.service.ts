@@ -432,7 +432,11 @@ export class MediaFileService {
   private async _setupPinningStrategy() {
     const userData = this._authService.profile$.value;
     console.log('[INFO] Setup pinning strategy...', userData);
-    
+    if (userData?.ipfsConfig?.serviceName) {
+      // define pinning service using user config
+      this._ipfsPinningService.setStrategy(userData?.ipfsConfig?.serviceName);
+      return;
+    }
     // check existing config for pining servcie
     const config = await this._promptStrategy.askSetupService(userData?.ipfsConfig?.serviceName);
     if (!config) {

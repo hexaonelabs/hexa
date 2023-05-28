@@ -5,23 +5,22 @@ import { AlertController } from "@ionic/angular";
 @Injectable()
 export class PromptStrategyService implements IPromptStrategyService  {
   
-  async askSetupService(serviceName?: string): Promise<{token: string, serviceName: string}|undefined> {
-    const valueExist =  Boolean(serviceName);
-    console.log('valueExist', valueExist, serviceName);
-    
-    const isNotDefaultService =  valueExist && serviceName && !serviceName.includes('default');
-    if (isNotDefaultService) {
-      return;
-    }
+  async askSetupService(ops?: {token: string, serviceName: string}): Promise<{token: string, serviceName: string}|undefined> {
+    const { token, serviceName } = ops || {}; 
     const userWantSetup = await this._promptInfos().then(r => r === 'ok');
     if (!userWantSetup) {
       return;
     }
-    const {role, data: {values: selectedService} = {}} = await this._promptSelectService();
+    const {role, data: {values: selectedService} = {}} = await this._promptSelectService({
+      serviceName,
+    });
     if (!selectedService || role !== 'ok') {
       return;
     }
-    const {data: {values: apiConfig}, role: promptAPIKeys} = await this._promptAPIKeys(selectedService);
+    const {data: {values: apiConfig}, role: promptAPIKeys} = await this._promptAPIKeys({
+      serviceName: selectedService,
+      token: selectedService === serviceName ? token : undefined,
+    });
     if (promptAPIKeys !== 'ok') {
       return;
     }
@@ -44,7 +43,8 @@ export class PromptStrategyService implements IPromptStrategyService  {
     return role;
   }
 
-  private async _promptSelectService() {
+  private async _promptSelectService(ops?: {serviceName?: 'pinata' | 'web3.storage' | string}) {
+    const checked = ops?.serviceName || 'pinata';
     const ctrl = new AlertController();
     const alertUI = await ctrl.create({
       header: `Select pinning service`,
@@ -55,13 +55,14 @@ export class PromptStrategyService implements IPromptStrategyService  {
           type: 'radio',
           label: 'Pinata',
           value: 'pinata',
-          checked: true,
+          checked: checked === 'pinata',
         },
         {
           name: 'web3.storage',
           type: 'radio',
           label: 'Web3.Storage',
           value: 'web3.storage',
+          checked: checked === 'web3.storage',
         },
       ],
       mode: 'ios',
@@ -74,7 +75,8 @@ export class PromptStrategyService implements IPromptStrategyService  {
     return await alertUI.onDidDismiss();
   }
 
-  private async _promptAPIKeys(serviceName: 'pinata' | 'web3.storage') {
+  private async _promptAPIKeys(ops?: {serviceName: 'pinata' | 'web3.storage', token?: string}) {
+    const {serviceName, token: value = ''} = ops || {};
     const availableService = [
       {name:'pinata', url: 'https://pinata.cloud'}, 
       {name: 'web3.storage', url: 'https://web3.storage/'}
@@ -90,6 +92,7 @@ export class PromptStrategyService implements IPromptStrategyService  {
           name: 'token',
           type: 'text',
           placeholder: 'API Token',
+          value,
         },
       ],
       buttons: [

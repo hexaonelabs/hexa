@@ -15,27 +15,27 @@ const SWAP_STRATEGIES = [
 ];
 
 const CHAIN_IDS = [
-  { id: 1, name: "Ethereum Mainnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png' },
+  { id: 1, name: "Ethereum", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png'},
   // { id: 3, name: "Ropsten Testnet" },
   // { id: 4, name: "Rinkeby Testnet" },
-  { id: 5, name: "Goerli Testnet" },
+  { id: 5, name: "Goerli Testnet", isTestnet: true },
   // { id: 42, name: "Kovan Testnet" },
-  { id: 56, name: "Binance Smart Chain Mainnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/binance-coin-bnb-logo.png' },
+  { id: 56, name: "Binance Smart Chain", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/binance-coin-bnb-logo.png'},
   // { id: 97, name: "Binance Smart Chain Testnet" },
-  { id: 137, name: "Polygon Mainnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/polygon-matic-logo.png' },
-  { id: 80001, name: "Polygon Mumbai Testnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/polygon-matic-logo.png' },
-  { id: 43114, name: "Avalanche Mainnet", logo: "https://www.covalenthq.com/static/images/icons/display-icons/avalanche-avax-logo.png" },
+  { id: 137, name: "Polygon", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/polygon-matic-logo.png' },
+  { id: 80001, name: "Polygon Mumbai Testnet", logo: 'https://www.covalenthq.com/static/images/icons/display-icons/polygon-matic-logo.png', isTestnet: true },
+  { id: 43114, name: "Avalanche", logo: "https://www.covalenthq.com/static/images/icons/display-icons/avalanche-avax-logo.png" },
   // { id: 43113, name: "Avalanche Testnet" },
-  { id: 250, name: "Fantom Opera Mainnet", logo: "https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" },
+  { id: 250, name: "Fantom Opera", logo: "https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" },
   // { id: 4002, name: "Fantom Opera Testnet" },
-  // { id: 128, name: "Heco Mainnet" },
+  // { id: 128, name: "Heco" },
   // { id: 256, name: "Heco Testnet" },
-  // { id: 1666600000, name: "Harmony Mainnet" },
+  // { id: 1666600000, name: "Harmony" },
   // { id: 1666700000, name: "Harmony Test" },
   // { id: 100, name: "xDai Chain" },
-  { id: 42161, name: "Arbitrum Mainnet" },
+  { id: 42161, name: "Arbitrum" },
   // { id: 421611, name: "Arbitrum Testnet" },
-  { id: 10,name: 'Optimism Mainnet', logo: 'https://gateway.optimism.io/static/media/optimism.caeb9392.svg' },
+  { id: 10,name: 'Optimism', logo: 'https://gateway.optimism.io/static/media/optimism.caeb9392.svg' },
   // { id: 69, name: 'Optimism Testnet' }
 ];
 
@@ -71,12 +71,15 @@ export class WalletService implements IWalletServcie {
   public readonly wallets$ = this._wallets$.asObservable();
   private readonly _tokensBalances$ = new BehaviorSubject<TokenInterface[]>( null as any)
   public readonly tokensBalances$: Observable<TokenInterface[]> = this._tokensBalances$.asObservable().pipe(
-    // add logo to all token
+    // add chain logo to all token
     map(tokensBalances => tokensBalances.map(token => {
-      const chain = CHAIN_IDS.find(c => c.id === token?.chainId);
+      const chain = CHAIN_IDS.find(c => c.id === token?.chain.id);
       return <TokenInterface>{
         ...token,
-        logo: chain?.logo
+        chain: {
+          ...token.chain,
+          ...chain
+        }
       };
     })
   ));

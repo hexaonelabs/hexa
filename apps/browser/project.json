@@ -32,6 +32,11 @@
             "output": "assets/drive"
           },
           {
+            "input": "node_modules/cryptocurrency-icons/svg/color",
+            "glob": "**/*",
+            "output": "assets/cryptocurrency-icons"
+          },
+          {
             "input": "libs/wallet/src/assets",
             "glob": "**/*",
             "output": "assets/wallet"

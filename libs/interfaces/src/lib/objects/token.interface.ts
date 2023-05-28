@@ -2,16 +2,19 @@ export interface TokenInterface {
   address: string;
   name: string;
   symbol: string;
-  logo?: string;
-  logoURI?: string;
   type: string;
-  nft_data: any;
   decimals: number;
   balance: number;
   rate: number;
-  rate24h?: number;
   value: number;
-  chainId?: number;
-  chainLogo?: string;
+  rate24h?: number;
+  nft_data?: any;
+  logo?: string;
   ownerAddress?: string;
+  chain: {
+      id: number;
+      name: string;
+      logo?: string;
+      isTestnet?: boolean;
+  }
 }

@@ -11,9 +11,9 @@ export class AssetsTypePipe implements PipeTransform {
     switch (true) {
       case typeName === 'token':
         return value
-          .filter((token) => token.type !== "nft" && token.balance > 0)
+          .filter((token) => token.type !== "nft")
           .filter((token) => token.balance > 0 )
-          .filter(token => !token.name.includes('.'))
+          // .filter(token => !token.name.includes('.'))
           .sort((a, b) => b.value - a.value);
       case typeName === 'nft':
         return value.filter((token) => token.type === "nft" && token.balance > 0);

@@ -5,9 +5,10 @@ import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { AlertController, ModalController, PopoverController, ToastController } from "@ionic/angular";
 import { TransactionReceipt } from "alchemy-sdk";
 import { Transaction } from "ethers";
-import { BehaviorSubject, firstValueFrom } from "rxjs";
+import { BehaviorSubject, combineLatest, firstValueFrom, map } from "rxjs";
 import { SwapAssetsModalComponent } from "../../components/swap-assets-modal/swap-assets-modal.component";
 import { WalletService } from "../../services/wallet.service";
+import { ChainSelectorComponent } from "../../components/chain-selector/chain-selector.component";
 
 @Component({
   selector: "hexa-wallet-page",
@@ -18,7 +19,27 @@ export class WalletPageComponent  {
   public selectedSegment: 'tokens'|'nfts'|'transactions'|'defi'|string = 'tokens';
   public readonly account$ = this._walletService.account$;
   public readonly wallets$ = this._walletService.wallets$;
-  public readonly tokensBalances$ = this._walletService.tokensBalances$;
+  public readonly showTestnet$ = new BehaviorSubject(false);
+  public readonly filterByChain$ = new BehaviorSubject<{id: number, name: string, logo?: string}|undefined>(undefined);
+  public readonly tokensBalances$ = combineLatest([
+    this._walletService.tokensBalances$,
+    this.filterByChain$,
+    this.showTestnet$
+  ]).pipe(
+    map(([ tokensBalances, chain, showTestnet]) => {
+      console.log('tokensBalances', tokensBalances);
+      let tokens = tokensBalances;
+      // remove all testnet if showTestnet is false
+      if (showTestnet === false) {
+        tokens = tokens.filter(t => !t.chain.isTestnet);
+      }
+      // filter by chain
+      if (!chain) {
+        return tokens;
+      }
+      return tokens.filter(t => t.chain.id === chain.id);
+    }
+  ));
   public readonly isReceiveAssetsModalOpen$ = new BehaviorSubject(false);
 
   constructor(
@@ -113,6 +134,40 @@ export class WalletPageComponent  {
         await ionToast.present();
         // TODO: reload evm assets list
         // this._walletService.getTokensBalances();
+        break;
+      }
+      case type === 'filterByChain': {
+        let chain, showTestnet;
+        // open modal with list of chains
+        if (!payload) {
+          const tokensBalances = await firstValueFrom(this._walletService.tokensBalances$);
+          const ionModal = await this._modalCtrl.create({
+            component: ChainSelectorComponent,
+            componentProps: {
+              showTestnet: this.showTestnet$.value,
+              chains: tokensBalances
+                .map(t => t.chain)
+                // exclude duplicate
+                .filter((chain, index, self) => self.findIndex(c => c.id === chain.id) === index)
+                // remove testnet if showTestnet is false
+                .filter(c => this.showTestnet$.value ? true : !c.isTestnet) 
+            },
+          });
+          await ionModal.present();
+          const {data, role} = await ionModal.onDidDismiss();
+          if (role === 'cancel') {
+            return;
+          }
+          chain = data?.chain;
+          showTestnet = data?.showTestnet;
+          if (showTestnet !== undefined) {
+            this.showTestnet$.next(showTestnet);
+          }
+          console.log(data);
+        }
+        // outside brackets that allow to filter by chain and reset filter
+        
+        this.filterByChain$.next(chain);
         break;
       }
       default:{

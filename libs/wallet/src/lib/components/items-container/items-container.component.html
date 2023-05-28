@@ -9,14 +9,14 @@
         size="4"
         [ngStyle]="{ display: 'flex' }">
       <ion-avatar class="thumbnail">
-          <ion-img [src]="item.chainLogo"></ion-img>
+          <ion-img [src]="item.chain.logo" [title]="item.chain.name"></ion-img>
         </ion-avatar>
       <ion-avatar>
         <ion-img [src]="item.logo"></ion-img>
       </ion-avatar>
       <ion-label class="ion-padding-start">
         <ion-text>
-          {{item.symbol|uppercase}}
+          {{item.symbol}}
         </ion-text>
         <ion-text color="medium">
           <small>{{item.name}}</small>
@@ -25,7 +25,7 @@
     </ion-col>
     <ion-col class="ion-hide-md-down">
       <ion-text color="medium">
-        ${{item.rate}}
+        {{item.rate | currency}}
       </ion-text><br/>
       <ion-text [color]="(item.rate|diffPercent: item.rate24h) < 0 ? 'danger' : 'success'">
         <small>

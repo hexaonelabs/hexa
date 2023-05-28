@@ -26,7 +26,7 @@
       </ion-col>
       <ion-col size="6" class="ion-text-start">
         <ion-item lines="none">
-          <ion-thumbnail slot="start" *ngIf="(fromAssetControl.value?.logo||fromAssetControl.value?.logoURI) as logo">
+          <ion-thumbnail slot="start" *ngIf="fromAssetControl.value?.logo as logo">
             <ion-img [src]="logo"></ion-img>
           </ion-thumbnail>
           <ion-label>
@@ -76,7 +76,7 @@
       </ion-col>
       <ion-col size="6" class="ion-text-start">
         <ion-item lines="none">
-          <ion-thumbnail slot="start" *ngIf="(toAssetControl.value?.logo||toAssetControl.value?.logoURI) as logo">
+          <ion-thumbnail slot="start" *ngIf="(toAssetControl.value?.logo) as logo">
             <ion-img [src]="logo"></ion-img>
           </ion-thumbnail>
           <ion-label>
@@ -201,7 +201,7 @@
             *ngFor="let asset of assets" 
             (click)="toAssetControl.patchValue(asset);isAssetsListUiVisible$.next(false);onToAssetChange();">
           <ion-thumbnail slot="start">
-            <ion-img style="padding:0.5rem;" [src]="asset?.logo || asset?.logoURI"></ion-img>
+            <ion-img style="padding:0.5rem;" [src]="asset?.logo"></ion-img>
           </ion-thumbnail>
           <ion-label>
             <h3>{{ asset.symbol }}</h3>

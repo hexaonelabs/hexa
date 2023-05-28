@@ -107,8 +107,8 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
   }
 
   private async _loadTokensList() {
-    const { chainId } = this.fromAssetControl.value || this.fromAsset;
-    const data = COINS.filter((c) => c.chainId === chainId) as TokenInterface[];
+    const { chain: {id = undefined} } = this.fromAssetControl.value || this.fromAsset;
+    const data = COINS.filter((c) => c?.chain.id === id) as TokenInterface[];
     // const isStored = localStorage.getItem('hexa:wallet:tokenlist');
     // let data: TokenInterface[] = [];
     // if (isStored) {
@@ -131,8 +131,8 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     const amount = Number(fromAmount * 10 ** decimals);
     const sellToken = this.fromAssetControl.value?.address;
     const buyToken = this.toAssetControl.value?.address;
-    const fromChainId = this.fromAssetControl.value?.chainId;
-    const toChainId = this.toAssetControl.value?.chainId;
+    const fromChainId = this.fromAssetControl.value?.chain?.id;
+    const toChainId = this.toAssetControl.value?.chain?.id;
     if (fromChainId !== toChainId || !fromChainId || !toChainId) {
       throw new Error(`Cross chain swap currently not implemented.`);
     }
@@ -160,8 +160,8 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     const fromAmount = this.fromAmountControl.value || 0;
     const decimal = this.fromAssetControl.value?.decimals || 16;
     const amount = Number(fromAmount * 10 ** decimal);
-    const fromChainId = this.fromAssetControl.value?.chainId;
-    const toChainId = this.toAssetControl.value?.chainId;
+    const fromChainId = this.fromAssetControl.value?.chain.id;
+    const toChainId = this.toAssetControl.value?.chain.id;
     if (fromChainId !== toChainId || !fromChainId || !toChainId) {
       throw new Error(`Cross chain swap is currently not implemented.`);
     }
@@ -194,7 +194,7 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
   }
 
   private _getChainName() {
-    const { chainId: selectedChainId } =
+    const { chain: {id: selectedChainId} } =
       this.fromAssetControl.value || this.fromAsset;
     const chainName = `${
       [...TESTNETS, ...MAINNET].find((c) => c.chainId === selectedChainId)

@@ -17,7 +17,7 @@ export const localWalletApiFactory = (): IGetTokensBalances => {
             rate: 1,
             rate24h: 1,
             value: 10,
-            chainId: 1,
+            chain: {id: 1, name: 'Ethereum'},
             ownerAddress: address,
           },
           // {

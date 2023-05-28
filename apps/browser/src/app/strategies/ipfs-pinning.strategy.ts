@@ -15,7 +15,7 @@ export class IPFSPinningStrategy extends Strategy<IPiningService> {
     this.AVAILABLE_STRATEGY = libs;
   }
 
-  override setStrategy<T>(name: T|'pinata'|'web3storage'): void {
+  override setStrategy<T>(name: T|'pinata'|'web3.storage'): void {
     const lib = this.AVAILABLE_STRATEGY.get(name as string);
     if (!lib) {
       throw new Error(`Unsupported strategy: [${name}]. Please check the available strategies and try again.`);

@@ -10,17 +10,14 @@
             <h1>Wallet</h1>
           </ion-col>
           <ion-col>
-            <ion-chip id="accounts-list" color="primary">
-              <!-- <ion-avatar avatar [address]="account" [size]="20"></ion-avatar>
-              <ion-label>
-                {{ account | sliceAddress }}
-              </ion-label> -->
+            <!-- <ion-chip id="accounts-list" color="primary">
+          
               <ion-icon
                 size="small"
                 name="chevron-down"
                 class="ion-no-margin"
               ></ion-icon>
-            </ion-chip>
+            </ion-chip> -->
             <ion-popover
               id="wallet-account-popover"
               trigger="accounts-list"
@@ -158,7 +155,7 @@
             <ion-col class="ion-text-start">
               <ion-label color="medium"> Net Worth </ion-label>
               <ion-text>
-                <h1>${{ tokensBalances | netWorth }}</h1>
+                <h1>{{ tokensBalances | netWorth | currency }}</h1>
               </ion-text>
             </ion-col>
             <ion-col
@@ -204,6 +201,20 @@
         >
           <ion-grid class="ion-no-padding ion-padding-bottom">
             <ion-row class="ion-align-items-start ion-margin-top">
+              <ion-col size="12">
+                <ion-chip color="primary" (click)="actions('filterByChain', undefined)">
+                  {{ this.filterByChain$.value ? this.filterByChain$.value?.name : 'All Chains' }}
+                  <ion-icon
+                    size="small"
+                    name="caret-down"
+                  ></ion-icon>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- header legends -->
+          <ion-grid class="ion-no-padding ion-padding-bottom">
+            <ion-row class="ion-align-items-start ion-margin-top">
               <ion-col size="4">
                 <ion-text color="medium"> Token </ion-text>
               </ion-col>
@@ -217,6 +228,7 @@
               </ion-col>
             </ion-row>
           </ion-grid>
+          <!-- items list -->
           <div class="listWrapperWithBorder">
             <hexa-items-container
               [items]="tokensBalances | assetsType : 'token'"

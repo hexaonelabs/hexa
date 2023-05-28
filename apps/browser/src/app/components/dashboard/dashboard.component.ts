@@ -121,7 +121,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // extract user data
     const userData = this._authService.profile$.value;
     // check existing config for pining servcie and reset value if needed
-    const config = await this._promptStrategy.askSetupService();
+    const config = await this._promptStrategy.askSetupService({
+      token: userData?.ipfsConfig?.token,
+      serviceName: userData?.ipfsConfig?.serviceName
+    });
     if (config?.token === '' ) {
       config.serviceName = '';
     }
@@ -129,12 +132,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
     // save user config to user base
-    await this._authService.updateProfilData({
-      ...userData,
-      ipfsConfig: {
-        ...config
-      }
+    try {
+      await this._authService.updateProfilData({
+        ...userData,
+        ipfsConfig: {
+          ...config
+        }
+      });
+    } catch (error) {
+      throw new Error('Failed to save IPFS pinning service configuration');
+    }
+    // display toast confirmation
+    const confirmationMessage = 'IPFS pinning service configured';
+    const ionToast = await this._toastService.create({
+      message: confirmationMessage,
+      color: 'success',
+      duration: 2000,
     });
+    await ionToast.present();
   }
 
   async disconnect() {

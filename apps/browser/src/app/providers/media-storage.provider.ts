@@ -30,7 +30,7 @@ export const MEDIA_STORAGE_PROVIDER: (Provider | EnvironmentProviders)[]= [
       
       const mapStrategy = new Map();
       mapStrategy.set('pinata', pinata);
-      mapStrategy.set('web3storage', web3);
+      mapStrategy.set('web3.storage', web3);
       
       const strategy = new IPFSPinningStrategy(mapStrategy);
       (serviceName) 
