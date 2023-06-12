@@ -1,4 +1,8 @@
-import { IGetTokensBalances, TokenInterface } from '@hexa/interfaces';
+import {
+  IGetAvailableTokens,
+  IGetTokensBalances,
+  TokenInterface,
+} from '@hexa/interfaces';
 
 interface IAnkrTokenReponse {
   blockchain: string;
@@ -15,13 +19,24 @@ interface IAnkrTokenReponse {
   contractAddress?: string;
 }
 
+interface IAnkrCurrencyResponse {
+  blockchain: string;
+  address: string;
+  name: string;
+  decimals: number;
+  symbol: string;
+  thumbnail: string;
+}
+
 /**
  * Method to iinteract with Ankr service API
  * See docs: https://api-docs.ankr.com/reference/introduction
- * @param apiKey 
- * @returns 
+ * @param apiKey
+ * @returns
  */
-export const ankrFactory = (apiKey?: string): IGetTokensBalances => {
+export const ankrFactory = (
+  apiKey?: string
+): IGetTokensBalances & IGetAvailableTokens => {
   // Name of the blockchain or list of blockchain names.
   // Single: eth.
   // Multiple: [eth, bsc, fantom, avalanche, polygon, arbitrum, syscoin, optimism, eth_goerli, polygon_mumbai, avalanche_fuji].
@@ -78,6 +93,38 @@ export const ankrFactory = (apiKey?: string): IGetTokensBalances => {
       name: 'Fuji',
     },
   ];
+  const formatingTokensBalances = (
+    tokens: IAnkrTokenReponse[],
+    ownerAddress: string,
+    chains: {
+      id: number;
+      value: string;
+      name: string;
+    }[]
+  ) => {
+    const balances: TokenInterface[] = tokens?.map((t: IAnkrTokenReponse) => {
+      const logo = (t.thumbnail?.length || 0) ? t.thumbnail : undefined;
+      return <TokenInterface>{
+        address: t.tokenType === 'NATIVE' ? t.tokenSymbol : t.contractAddress,
+        name: t.tokenName,
+        symbol: t.tokenSymbol,
+        type: t.tokenType,
+        decimals: t.tokenDecimals,
+        logo,
+        ownerAddress,
+        balance: parseFloat(
+          (Number(t.balanceRawInteger) / 10 ** t.tokenDecimals).toFixed(4)
+        ),
+        value: Number(t.balanceUsd),
+        rate: Number(t.tokenPrice),
+        chain: {
+          ...chains.find((c) => c.value === t.blockchain),
+        },
+      };
+    });
+    return { balances };
+  };
+
   return {
     /**
      * Doc url: https://www.ankr.com/docs/app-chains/components/advanced-api/token-methods/#ankr_getaccountbalance
@@ -92,8 +139,8 @@ export const ankrFactory = (apiKey?: string): IGetTokensBalances => {
           : CHAIN_AVAILABLES.filter((availableChain) =>
               chainIds.find((c) => c === availableChain.id)
             );
-      const blockchain = chainsList.map((c) => c.value)
-      const url = 'https://rpc.ankr.com/multichain/?ankr_getAccountBalance';
+      const blockchain = chainsList.map((c) => c.value);
+      const url = `https://rpc.ankr.com/multichain/${apiKey}`;
       const options: RequestInit = {
         method: 'POST',
         headers: {
@@ -112,40 +159,48 @@ export const ankrFactory = (apiKey?: string): IGetTokensBalances => {
         }),
       };
       const res = await fetch(url, options);
-      const balances = (await res.json())?.result?.assets;
-      const formatedBalances: TokenInterface[] = balances?.map(
-        (t: IAnkrTokenReponse) => {
-          let logo = (t.thumbnail?.length||0) > 0 
-              ? t.thumbnail
-              : `./assets/cryptocurrency-icons/${t.tokenSymbol.toLowerCase()}.svg`;
-          if (t.tokenSymbol === 'WETH') {
-            logo = `https://assets.coingecko.com/coins/images/2518/large/weth.png`;
-          }
-          if (t.tokenSymbol === 'MATIC') {
-            logo = `https://assets.ankr.com/charts/icon-only/matic.svg`;
-          }
-          return <TokenInterface>{
-            address:
-              t.tokenType === 'NATIVE' ? t.tokenSymbol : t.contractAddress,
-            name: t.tokenName,
-            symbol: t.tokenSymbol,
-            logo,
-            type: t.tokenType,
-            decimals: t.tokenDecimals,
-            ownerAddress: address,
-            balance: parseFloat(
-              (Number(t.balanceRawInteger) / 10 ** t.tokenDecimals).toFixed(4)
-            ),
-            value: Number(t.balanceUsd),
-            rate: Number(t.tokenPrice),
-            chain: {
-              ...CHAIN_AVAILABLES.find((c) => c.value === t.blockchain)
-            }
+      const assets = (await res.json())?.result?.assets;
+      const balances = formatingTokensBalances(assets, address, chainsList);
+      console.log('[INFO] {ankrFactory} getTokensBalances(): ', balances);
+      return balances;
+    },
+
+    getAvailableTokens: async (chainId: number) => {
+      const chain = CHAIN_AVAILABLES.find((c) => c.id === chainId);
+      if (!chain) {
+        throw new Error(`Chain with ID: '${chainId}' not supported yet.`);
+      }
+      const url = `https://rpc.ankr.com/multichain/${apiKey}`;
+      const options: RequestInit = {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'ankr_getCurrencies',
+          params: {
+            blockchain: chain.value,
+          },
+          id: 1,
+        }),
+      };
+      const res = await fetch(url, options);
+      const currencies: IAnkrCurrencyResponse[] =
+        (await res.json())?.result?.currencies || [];
+      const tokens = currencies
+        .filter((t) => t.thumbnail?.length > 0)
+        .filter((t) => t.address?.length > 0)
+        .filter((t) => t.symbol?.length > 0)
+        .map((t) => {
+          return <Partial<TokenInterface>>{
+            ...t,
+            logo: t.thumbnail,
+            chain,
           };
-        }
-      );
-      console.log('[INFO] {ankrFactory} getTokensBalances(): ', { formatedBalances, balances });
-      return { balances: formatedBalances };
+        });
+      return { tokens };
     },
   };
 };

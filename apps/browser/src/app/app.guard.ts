@@ -43,6 +43,8 @@ export class AppGuard implements CanActivate {
     if (!previouslyConnectedWallets) {
       return false;
     }
+    console.log('[INFO] {{AppGuard}} previouslyConnectedWallets: ', previouslyConnectedWallets);
+    
     // Connect the most recently connected wallet (first in the array)
     await this._authService.connectWallet(previouslyConnectedWallets[0]);
     await firstValueFrom(

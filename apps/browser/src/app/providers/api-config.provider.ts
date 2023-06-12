@@ -20,5 +20,9 @@ export const API_CONFIG_PROVIDER: Provider[] = [
   {
     provide: getInjectionToken(TOKENS_NAME.APP_AUTH_APIKEY),
     useValue: environment?.auth?.apikey,
+  },
+  {
+    provide: getInjectionToken(TOKENS_NAME.APP_HEXA_PUBLICADDRES),
+    useValue: environment?.hexaPublicAddress,
   }
 ]

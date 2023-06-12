@@ -1,5 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-chip slot="start" color="primary">
+      {{this.chainName|uppercase}}
+    </ion-chip>
     <!-- <ion-icon slot="start" src="./assets/wallet/icons/0x-zrx-logo.svg"></ion-icon> -->
     <ion-title> Swap Assets</ion-title>
     <ion-buttons slot="end">
@@ -12,13 +15,13 @@
 <ion-content class="ion-padding-horizontal">
   <ion-grid>
 
-    <ion-row class="ion-align-items-center">
+    <!-- <ion-row class="ion-align-items-center">
       <ion-col size="auto" class="ion-text-start">
         <ion-chip color="primary">
           {{this.chainName|uppercase}}
         </ion-chip>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row class="assets_selection_container">
       <ion-col size="12" class="ion-margin-top ion-text-start">
@@ -193,21 +196,31 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-no-padding">
-      <ion-list *ngIf="assets$.value as assets;else loadingTmp" lines="none" class="ion-margin-bottom"  >
-        <ion-list-header class="ion-margin-bottom assets-list-header">
-          <ion-searchbar></ion-searchbar>
-        </ion-list-header>
-        <ion-item 
-            *ngFor="let asset of assets" 
-            (click)="toAssetControl.patchValue(asset);isAssetsListUiVisible$.next(false);onToAssetChange();">
-          <ion-thumbnail slot="start">
-            <ion-img style="padding:0.5rem;" [src]="asset?.logo"></ion-img>
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{ asset.symbol }}</h3>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <div *ngIf="assets$|async as assets;else loadingTmp" >
+        <ion-list lines="none" class="ion-margin-bottom"  >
+          <ion-list-header class="ion-margin-bottom assets-list-header">
+            <ion-searchbar 
+              enterkeyhint="search"
+              inputmode="search"
+              mode="ios"
+              [debounce]="500"
+              (ionChange)="onSearchByName($event)"></ion-searchbar>
+          </ion-list-header>
+          <ion-item 
+              *ngFor="let asset of assets|slice:0:maxAssetsDisplayed$.value" 
+              (click)="toAssetControl.patchValue(asset);isAssetsListUiVisible$.next(false);onToAssetChange();">
+            <ion-thumbnail slot="start">
+              <ion-img style="padding:0.5rem;" [src]="asset?.logo"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ asset?.symbol }}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
 
       <ng-template #loadingTmp>
         <ion-grid>

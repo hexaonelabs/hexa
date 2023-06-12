@@ -14,3 +14,11 @@ export interface IGetTokensBalances {
     balances: TokenInterface[];
   }>;
 }
+
+export interface IGetAvailableTokens {
+  getAvailableTokens(
+    chainId: number
+  ): Promise<{
+    tokens: Partial<TokenInterface>[]
+  }>
+}

@@ -1,10 +1,44 @@
 :host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  ion-list-header {
+    --background: var(--ion-item-background);
+  }
+
   ion-item {
     --background: var(--ion-item-background);
     --padding-start: 0;
 
     &:hover {
-      --background: rgba(var(--ion-color-primary-rgb), 0.10);
+      --background: transparent;
     }
+  }
+
+  ion-accordion {
+    div[slot='content'] {
+      background: var(--ion-item-background);
+      border-bottom: var(--ion-border-color) solid 1px;
+    }
+
+    &:hover {
+      --background: transparent;
+    }
+  }
+
+  ion-avatar {
+    transform: scale(0.5);
+  }
+  ion-avatar.thumbnail.md.hydrated {
+    transform: scale(0.3) translateX(-45px) translateY(-45px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: solid 6px var(--ion-color-light);
+    background: var(--ion-color-light);
+    z-index: 1;
   }
 }

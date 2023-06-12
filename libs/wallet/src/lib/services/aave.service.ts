@@ -13,6 +13,7 @@ import {
   UserWalletBalancesResponse,
   WalletBalanceProviderContext,
   WalletBalanceProvider,
+
 } from '@aave/contract-helpers';
 import { Injectable } from '@angular/core';
 import { ethers, providers } from 'ethers';
@@ -25,6 +26,9 @@ import {
   formatReserves,
   formatReservesAndIncentives,
   formatUserSummary,
+  calculateHealthFactorFromBalances,
+  formatReserveUSD,
+  formatUserSummaryAndIncentives
 } from '@aave/math-utils';
 
 type MARKETTYPE =
@@ -59,13 +63,12 @@ export class AAVEService {
     null as any
   );
   public formatedWalletBallance$: BehaviorSubject<
-    (ReserveDataHumanized & { balance: string; tokenAddress: string })[]
+    (ReserveDataHumanized & FormatReserveUSDResponse & { balance: string; tokenAddress: string })[]
   > = new BehaviorSubject(null as any);
 
   async loadData(provider: providers.Web3Provider) {
-    const signer = provider.getSigner();
-    const currentAccount = await signer.getAddress();
-    const { chainId } = await provider.getNetwork();
+
+    const { chainId = 8001 } = await provider.getNetwork();
     const market = this._getMarkets(chainId);
     this.markets$.next(market);
 
@@ -99,6 +102,8 @@ export class AAVEService {
 
     // Object containing array or users aave positions and active eMode category
     // { userReserves, userEmodeCategoryId }
+    const signer = provider.getSigner();
+    const currentAccount = await signer.getAddress();
     const userReserves =
       await poolDataProviderContract.getUserReservesHumanized({
         lendingPoolAddressProvider: market.POOL_ADDRESSES_PROVIDER,
@@ -121,7 +126,7 @@ export class AAVEService {
           user: currentAccount,
         }
       );
-    // console.log({ userIncentives });
+    console.log('[INFO] {{AAVEService}} userIncentives: ',{ userIncentives });
 
     const reservesArray = reserves.reservesData;
     const baseCurrencyData = reserves.baseCurrencyData;
@@ -168,6 +173,18 @@ export class AAVEService {
     console.log(`[INFO] {{AAVEService}} userSummary: `, { userSummary });
     this.userSummary$.next(userSummary);
 
+    const formatedUserSummaryAndIncentives = formatUserSummaryAndIncentives({
+      currentTimestamp,
+      marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+      marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+      userReserves: userReserves.userReserves,
+      formattedReserves: formattedPoolReserves,
+      reserveIncentives,
+      userIncentives,
+      userEmodeCategoryId: userReserves.userEmodeCategoryId,
+    });
+    console.log('[INFO] {{AAVEService}} formatedUserSummaryAndIncentives: ', {formatedUserSummaryAndIncentives});
+    
     // Get user wallet balances for all tokens in the lending pool
     const walletBallance = new WalletBalanceProvider({
       provider,
@@ -178,6 +195,8 @@ export class AAVEService {
         currentAccount,
         market.POOL_ADDRESSES_PROVIDER
       );
+    console.log('[INFO] {{AAVEService}} userWalletDatas: ', {userWalletDatas});
+    
     // Humanize user wallet array data
     const tokenAddress = userWalletDatas[0];
     const bigNumberValues = userWalletDatas[1];
@@ -188,13 +207,14 @@ export class AAVEService {
             poolReserve.underlyingAsset?.toUpperCase() ===
             address?.toUpperCase()
           );
-        }) || ({} as ReserveDataHumanized);
+        }) || ({} as ReserveDataHumanized & FormatReserveUSDResponse);
       return {
         ...pool,
         tokenAddress: address,
         tokenBalance: bigNumberValues[i],
         // convert  bigNumberValues[i] to human readable format
         balance: ethers.utils.formatUnits(bigNumberValues[i], pool.decimals),
+        
       };
     });
     console.log(

@@ -1,27 +1,144 @@
+<ion-row class="ion-no-padding">
+  <ion-col size-xs="12" size-md="6">
+    <div class="listWrapperWithBorder">
+      <ion-list-header class="ion-padding-vertical">
+        <ion-label>
+          Deposits
+        </ion-label>
+      </ion-list-header>
+      <ng-container *ngIf="(depositSummary$|async) as userDepositSummary;else depositLoader">
+        <ion-accordion-group *ngIf="userDepositSummary.length > 0;else emptyAssets">
+          <ion-accordion [value]="reserve.id" *ngFor="let reserve of userDepositSummary">
+            <ion-item slot="header">
+              <ion-grid>
+                <ion-row class="ion-align-items-center ion-justify-content-between">
+                  <ion-col size="auto">
+                    <!-- <ion-avatar class="thumbnail">
+                      <ion-img [src]="item.chain.logo" [title]="item.chain.name"></ion-img>
+                    </ion-avatar> -->
+                    <ion-avatar>
+                      <ion-img [src]="reserve?.logo"></ion-img>
+                    </ion-avatar>
+                  </ion-col>
+                  <ion-col class="ion-text-start">
+                    <ion-label class="ion-paddng-start">
+                      {{reserve?.symbol}}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col class="ion-text-center">
+                    <ion-label>
+                      {{reserve?.supplyBalance||0}}
+                      <br/>
+                      <ion-text color="medium">
+                        <small>{{reserve?.supplyBalance |multiply: reserve?.priceInUSD | currency}}</small>
+                      </ion-text>
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="3" class="ion-text-end">
+                    <ion-label>
+                      {{(reserve?.supplyAPY)|percent:'1.2-2'}}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          
+            <div class="ion-padding" slot="content">  
+              <ion-button [disabled]="(reserve?.borrowBalance||0) <= 0" fill="solid" color="primary" (click)="actions('repay', reserve)">
+                Withdraw
+              </ion-button>
+              <ion-button fill="solid" color="primary" (click)="actions('borrow', reserve)">
+                deposit
+              </ion-button>   
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+        <ng-template #emptyAssets>
+          <ion-item lines="none" class="ion-text-center">
+            <ion-text class="ion-padding-bottom">
+              No assets deposited. You will see your assets here once you deposit them into incentivised pool.
+            </ion-text>
+          </ion-item>
+        </ng-template>
+      </ng-container>
+      <ng-template #depositLoader>
+        <ion-item class="ion-text-center">
+          <ion-spinner></ion-spinner>
+        </ion-item>
+      </ng-template>
+    </div> 
+    <ion-grid class="ion-margin-top ion-no-padding ion-padding-vertical">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="auto">
+          <ion-button fill="solid" color="primary" (click)="actions('depositAsset')">
+            Deposit asset
+          </ion-button>   
+        </ion-col>
+        <ion-col class="ion-padding-horizontal">
+          <ion-text color="medium">
+            <p>
+              Deposit assets to earn interest or borrow otherrs assets against your collateral. 
+              You can withdraw your assets at any time.
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>   
+  </ion-col>
+  <ion-col size-xs="12" size-md="6">
+    <div class="listWrapperWithBorder">
+      <ion-list-header class="ion-padding-vertical">
+        <ion-label>
+          Borrowings
+        </ion-label>
+      </ion-list-header>
+      <ion-accordion-group *ngIf="(borrowingSummary$|async) as userBorrowingSummary" >
+        <ion-accordion [value]="reserve.id" *ngFor="let reserve of userBorrowingSummary">
+          <ion-item slot="header">
+            <ion-grid>
+              <ion-row class="ion-align-items-center ion-justify-content-between">
+                <ion-col size="auto">
+                  <!-- <ion-avatar class="thumbnail">
+                    <ion-img [src]="item.chain.logo" [title]="item.chain.name"></ion-img>
+                  </ion-avatar> -->
+                  <ion-avatar>
+                    <ion-img [src]="reserve?.logo"></ion-img>
+                  </ion-avatar>
+                </ion-col>
+                <ion-col class="ion-text-start">
+                  <ion-label class="ion-paddng-start">
+                    {{reserve?.symbol}}
+                  </ion-label>
+                </ion-col>
+                <ion-col class="ion-text-center">
+                  <ion-label>
+                    {{reserve?.borrowBalance||0}}
+                    <br/>
+                    <ion-text color="medium">
+                      <small>{{reserve?.borrowBalance |multiply: reserve?.priceInUSD | currency}}</small>
+                    </ion-text>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="3" class="ion-text-end">
+                  <ion-label>
+                    {{(reserve?.variableBorrowAPY)|percent:'1.2-2'}}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        
+          <div class="ion-padding" slot="content">  
+            <ion-button [disabled]="(reserve?.borrowBalance||0) <= 0" fill="solid" color="primary" (click)="actions('repay', reserve)">
+              repay
+            </ion-button>
+            <ion-button fill="solid" color="primary" (click)="actions('borrow', reserve)">
+              borrow
+            </ion-button>   
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
 
-<div class="listWrapperWithBorder">
-  <ion-list *ngIf="(userSummary$|async) as userSummary" class="ion-no-padding">
-    <ion-item *ngFor="let pool of userSummary?.userReservesData" (click)="actions('check', pool)">
-      <ion-label class="ion-padding-start">
-        <ion-text>
-          {{pool?.reserve?.symbol}} <small>{{(pool?.reserve?.supplyAPY)|number}}% APY</small>
-        </ion-text>
-        <br/>
-        <ion-text color="medium">
-          <small>
-            Supply balance: {{pool?.scaledATokenBalance||0}} <br/>
-            Borrow balance: {{pool?.scaledVariableDebt||0}} <br/>
-          </small>
-        </ion-text>
-      </ion-label>
-      <ion-buttons slot="end">
-        <ion-button fill="solid" color="primary" (click)="actions('supply', pool)">
-          supply
-        </ion-button>
-        <ion-button fill="solid" color="primary" (click)="actions('borrow', pool)">
-          borrow
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
-  </ion-list>
-</div>
+    </div>
+  </ion-col>
+</ion-row>

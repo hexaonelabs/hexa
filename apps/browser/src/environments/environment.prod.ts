@@ -1,5 +1,6 @@
 export const environment = {
   version: process.env['NG_APP_VERSION'],
+  hexaPublicAddress: process.env['NG_APP_HEXA_PUBLICADDRES'],
   production: true,
   defaultChain: 'ethereum',
   ipfs: {
@@ -13,6 +14,7 @@ export const environment = {
   },
   wallet: {
     '0xapiKey': process.env['NG_APP_0xAPIKEY'],
+    'ankrApikey': process.env['NG_APP_ANKR_APIKEY'],
   },
   availableChainsId: {
     // ETH

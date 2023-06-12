@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AAVEService } from '../../services/aave.service';
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import { ComputedUserReserve, FormatReserveUSDResponse } from '@aave/math-utils';
 import { WalletService } from '../../services/wallet.service';
 import { AlertController } from '@ionic/angular';
+import { BehaviorSubject, combineLatest, filter, map } from 'rxjs';
 
 @Component({
   selector: 'hexa-defi-markets',
@@ -12,7 +13,54 @@ import { AlertController } from '@ionic/angular';
 })
 export class DefiMarketsComponent implements OnInit {
 
+  @Input() public readonly chain!: {id: number, name: string};
+  public readonly walletbalances = combineLatest([
+    this._aaveService.formatedWalletBallance$,
+    this._walletService.tokensBalances$
+  ]).pipe(
+    map(([reserves, walletBalance]) => reserves?.map(reserve => {
+      const { aTokenAddress } = reserve;
+      const supplyBalance = walletBalance.find(
+        token => token.address?.toLocaleLowerCase() === aTokenAddress?.toLocaleLowerCase()
+      )?.balance||0;
+      const borrowBalance = walletBalance.find(
+        token => token.address?.toLocaleLowerCase() === reserve.variableDebtTokenAddress?.toLocaleLowerCase()
+      )?.balance||0;
+      let logo = './assets/cryptocurrency-icons/' + reserve?.symbol?.toLowerCase() + '.svg';
+      if (reserve.symbol === 'MATIC') {
+        logo = `./assets/wallet/icons/matic.svg`;
+      }
+      if (reserve.symbol === 'WMATIC') {
+        logo = `./assets/wallet/icons/wmatic.svg`;
+      }
+      if (reserve.symbol === 'aPolWMATIC') {
+        logo = `./assets/wallet/icons/awmatic.svg`;
+      }
+      if (reserve.symbol === 'stMATIC') {
+        logo = `./assets/wallet/icons/stmatic.svg`;
+      }
+      if (reserve.symbol === 'wstETH') {
+        logo = `./assets/wallet/icons/wsteth.svg`;
+      }
+      return {
+        ...reserve,
+        borrowBalance,
+        supplyBalance,
+        logo
+      }
+    })));
   public readonly userSummary$ = this._aaveService.userSummary$;
+  public readonly depositSummary$ = this.walletbalances.pipe(
+    map(reserves => reserves
+      ?.filter((reserve) => reserve.supplyBalance > 0)
+      ?.sort((a, b) => b.supplyBalance - a.supplyBalance)),
+  );
+  public readonly borrowingSummary$ = this.walletbalances.pipe(
+    map(reserves => reserves
+      ?.filter((reserve) => reserve.borrowingEnabled)
+      // ?.filter((reserve) => reserve.borrowBalance > 0)
+      ?.sort((a, b) => b.borrowBalance - a.borrowBalance)),
+  );
   public readonly markets$ = this._aaveService.markets$;
 
   constructor(
@@ -29,9 +77,11 @@ export class DefiMarketsComponent implements OnInit {
   }
 
   async actions(type: string, payload?: any) {
+    console.log('type: ', {type, payload});
+    
     switch(true) {
       case type === 'supply': {
-        const {reserve} = payload as ComputedUserReserve<ReserveDataHumanized & FormatReserveUSDResponse>;
+        const reserve = payload as ReserveDataHumanized & FormatReserveUSDResponse;
         // get amount by prompt alert with input field 
         const ionAlert = await this._alertCtrl.create({
           header: 'Supply',
@@ -88,5 +138,6 @@ export class DefiMarketsComponent implements OnInit {
       //   break;
       // }
     }
+
   }
 }

@@ -4,6 +4,10 @@ import { ILoadingService } from '@hexa/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { environment } from '../../../environments/environment';
 import '@khmyznikov/pwa-install';
+import { register } from 'swiper/element/bundle';
+
+// register Swiper elements globaly at the top level component to avoid bundling issues
+register();
 
 @Component({
   selector: 'hexa-root',

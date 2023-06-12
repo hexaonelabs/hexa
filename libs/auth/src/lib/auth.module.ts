@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -13,6 +13,9 @@ import { LoginPageComponent } from './containers/login/login-page.component';
     CommonModule, 
     IonicModule,
     RouterModule.forChild(authRoutes)
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class AuthModule {}

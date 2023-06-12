@@ -151,12 +151,21 @@
     >
       <ion-col size="12">
         <ion-grid class="ion-no-padding">
-          <ion-row class="ion-align-items-end">
-            <ion-col class="ion-text-start">
+          <ion-row class="ion-align-items-end ion-justify-content-between">
+            <ion-col size="12" class="ion-text-start ion-padding-bottom">
               <ion-label color="medium"> Net Worth </ion-label>
               <ion-text>
                 <h1>{{ tokensBalances | netWorth | currency }}</h1>
               </ion-text>
+            </ion-col>
+            <ion-col size="6">
+              <ion-chip color="primary" (click)="actions('filterByChain', undefined)">
+                {{ this.filterByChain$.value ? this.filterByChain$.value?.name : 'All Chains' }}
+                <ion-icon
+                  size="small"
+                  name="caret-down"
+                ></ion-icon>
+              </ion-chip>
             </ion-col>
             <ion-col
               size-xs="6"
@@ -164,7 +173,7 @@
               size-md="6"
               size-lg="3"
               size-xl="2"
-              class="ion-text-end"
+              class="ion-text-end "
             >
               <ion-segment [value]="selectedSegment" mode="ios">
                 <ion-segment-button
@@ -199,19 +208,6 @@
           size="12"
           *ngIf="tokensBalances?.length || 0 > 0; else noItems"
         >
-          <ion-grid class="ion-no-padding ion-padding-bottom">
-            <ion-row class="ion-align-items-start ion-margin-top">
-              <ion-col size="12">
-                <ion-chip color="primary" (click)="actions('filterByChain', undefined)">
-                  {{ this.filterByChain$.value ? this.filterByChain$.value?.name : 'All Chains' }}
-                  <ion-icon
-                    size="small"
-                    name="caret-down"
-                  ></ion-icon>
-                </ion-chip>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
           <!-- header legends -->
           <ion-grid class="ion-no-padding ion-padding-bottom">
             <ion-row class="ion-align-items-start ion-margin-top">
@@ -313,8 +309,8 @@
       </ng-container>
       <!-- DeFi -->
       <ng-container *ngIf="selectedSegment === 'defi'">
-        <ion-col size="12">
-          <hexa-defi-markets></hexa-defi-markets>
+        <ion-col size="12" class="ion-no-padding ion-padding-top">
+          <hexa-defi-markets class="ion-margin-top"></hexa-defi-markets>
         </ion-col>
         <ng-template #noDeFi>
           <ion-col size="12">

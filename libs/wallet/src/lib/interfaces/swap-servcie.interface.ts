@@ -5,6 +5,12 @@ export interface IGetPriceOptions {
   sellToken: string;
   buyToken: string;
   sellAmount: number;
+  buyAmount?: string;
+  slippagePercentage?: number;
+  gasPrice?: string;
+  feeRecipient?: string;
+  buyTokenPercentageFee?: number;
+  affiliateAddress?: string;
   chainId: number;
 }
 
@@ -12,6 +18,12 @@ export interface IGetQuoteOptions {
   buyToken: string;
   sellToken: string;
   sellAmount: string;
+  buyAmount?: string;
+  slippagePercentage?: number;
+  gasPrice?: string;
+  feeRecipient?: string;
+  buyTokenPercentageFee?: number;
+  affiliateAddress?: string;
   chainId: number;
   takerAddress?: string;
 };

@@ -31,8 +31,10 @@ export class WalletPageComponent  {
       let tokens = tokensBalances;
       // remove all testnet if showTestnet is false
       if (showTestnet === false) {
-        tokens = tokens.filter(t => !t.chain.isTestnet);
+        tokens = tokens.filter(t => 'isTestnet' in t.chain ? !t.chain.isTestnet : true);
       }
+      // remove all `variableDebit` tokens
+      tokens = tokens.filter(t => t.symbol.includes('variableDebt') === false);
       // filter by chain
       if (!chain) {
         return tokens;

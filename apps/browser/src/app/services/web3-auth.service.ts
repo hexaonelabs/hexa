@@ -18,11 +18,10 @@ import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver'
 import { DIDDataStore } from '@glazed/did-datastore';
 import { Caip10Link } from '@ceramicnetwork/stream-caip10-link';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
-import { DID } from '@hexa/dids';
+import { hashMessage } from '@ethersproject/hash';
 
 const DB_NAME = 'hexa';
 const MAINNET_RPC_URL = 'https://rpc.ankr.com/eth';
-const MATIC_RPC_URL = 'https://matic-mainnet.chainstacklabs.com';
 
 @Injectable()
 export class Web3AuthService implements IAuthService, IAuthGuardService {
@@ -58,21 +57,47 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
 
   async connect(accountToConnect?: string) {
     this.isWaiting$.next(true);
-    // await this._connectWithOnboard();
-    const {account, provider} = await this._connectWithMagic(accountToConnect);
-    console.log('[INFO] {Web3AuthService} connect() - Connected: ', {account, provider});
+    const provider = await this.magic.wallet.getProvider();
     const ethersProvider = new ethers.providers.Web3Provider(
       provider as any,
       'any'
-    )
-    // connect with metamask
-    const ethAccounts = await ethersProvider.send("eth_requestAccounts", []);
-    if (ethAccounts[0] !== account) {
-      throw new Error(`[ERROR] {Web3AuthService} connect() - Account and ethers account are not the same.`);
+    );
+    let account = accountToConnect;
+    if (!accountToConnect) {
+      const accounts = await this.magic.wallet.connectWithUI();
+      account = accounts[0];
+      // set local storage to remember connected wallets
+      window.localStorage.setItem('connectedWallets', JSON.stringify(accounts));
     }
+    if (!account) {
+      throw new Error('No account found.');
+    }
+    // Listen for events
+    ethersProvider.on('accountsChanged', event => console.log(`[INFO] {Web3AuthService} connect() - accountsChanged: `, event));
+    ethersProvider.on('chainChanged', event => console.log(`[INFO] {Web3AuthService} connect() - chainChanged: `, event));
+    
+    // const {account, provider} = await this._connectWithMagic(accountToConnect);
+    
+    // // connect with metamask
+    // const ethAccounts = await ethersProvider.send('eth_accounts', []);
+    // if (ethAccounts[0] !== account) {
+    //   throw new Error(`[ERROR] {Web3AuthService} connect() - Account and ethers account are not the same.`);
+    // }
+    console.log('[INFO] {Web3AuthService} connect() - Connected: ', { account, ethersProvider});
+    // const signer = ethersProvider.getSigner(account);
+    // console.log(`Signer: `, signer);
+    
     // verify signature
-    const isOwner = await this.signAndVerify(ethersProvider.getSigner(), account);
-    if (!isOwner) {
+    const message = 'hexa authentication with wallet signature.';
+    const {result = undefined} = await provider.send(
+      'personal_sign', [message, account, 'Random text']
+    );
+    console.log('[INFO] {Web3AuthService} connect() - Sign: ', result);
+    const recoveredAddress = ethers.utils.recoverAddress(hashMessage(message), result);
+    console.log('[INFO] {Web3AuthService} connect() - Recovered address: ', recoveredAddress);
+    const isValidSignature = recoveredAddress.toLocaleLowerCase() === account.toLocaleLowerCase();
+    // const isOwner = await this.signAndVerify(signer, account);
+    if (!isValidSignature) {
       this.isWaiting$.next(false);
       await this.disconnect();
       throw new Error('User is not owner of this wallet. Unable to verify signature.');
@@ -112,15 +137,15 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
 
   async disconnect() {
     console.log('[INFO] Disconnecting wallet');
-    await this.magic.wallet.disconnect();
     window.localStorage.removeItem('connectedWallets');
     this.signer$.next(null as any);
     this.account$.next(null as any);
     this.profile$.next(null as any);
     this._did.did$.next(null as any);
-    this.isWaiting$.next(false);
     // this.unsubscribe();
+    await this.magic.wallet.disconnect();
     this._redirectToRoot();
+    this.isWaiting$.next(false);
   }
 
   async getAccountDID(
@@ -140,14 +165,16 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
   async signAndVerify(signer: ethers.providers.JsonRpcSigner, account: string) {
     const message = 'hexa authentication with wallet signature.';
     const signedMessage = await signer.signMessage(message).catch(async (error) => {
+      console.log('[ERROR] {Web3AuthService} signAndVerify() - Error while signing message: ', error);
       await this.disconnect();
       throw error;
     });
     // recover the public address of the signer to verify
-    const recoveredAddress = recoverPersonalSignature({
-      data: message,
-      signature: signedMessage,
-    });
+    // const recoveredAddress = recoverPersonalSignature({
+    //   data: message,
+    //   signature: signedMessage,
+    // });
+    const recoveredAddress = ethers.utils.verifyMessage(message, signedMessage)
     return recoveredAddress.toLocaleLowerCase() === account.toLocaleLowerCase();
   };
 
@@ -155,6 +182,7 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     provider: ethers.providers.ExternalProvider | undefined,
     accountAddress: string
   ) {
+    console.log('[INFO] Connect DID...');
     // connect DID service
     const isDIDConnected = await this._did
       .connectWallet(provider, accountAddress)
@@ -183,22 +211,26 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
     }
   }
 
-  private async _connectWithMagic(accountToConnect?: string) {
-    const provider = this.magic.rpcProvider;  
-    if (accountToConnect) {
-      return {
-        account: accountToConnect, 
-        provider
-      }
-    }
-    const accounts = await this.magic.wallet.connectWithUI();
-    const account = accounts[0];
-    // set local storage
-    window.localStorage.setItem('connectedWallets', JSON.stringify(accounts));
-    return {
-      account, provider
-    }
-  }
+  // private async _connectWithMagic(accountToConnect?: string) {
+  //   const provider = await this.magic.wallet.getProvider();
+  //   if (accountToConnect) {
+  //     return {
+  //       account: accountToConnect, 
+  //       provider
+  //     }
+  //   }
+  //   const accounts = await this.magic.wallet.connectWithUI();
+  //   const account = accounts[0];
+
+  //   const info = await this.magic.wallet.getInfo();
+  //   console.log('[INFO] {Web3AuthService} _connectWithMagic() - Connected with Magic: ', {accounts, provider, info});
+  //   // set local storage
+  //   window.localStorage.setItem('connectedWallets', JSON.stringify(accounts));
+  //   return {
+  //     account, 
+  //     provider
+  //   }
+  // }
 
   private _magicWeb3() {
     const customNodeOptions = this._getRPCNodeOptions();
@@ -217,15 +249,15 @@ export class Web3AuthService implements IAuthService, IAuthGuardService {
         chainId: 1 // corresponding chainId for your rpc url
       },
       {
-        rpcUrl: 'https://eth-goerli.public.blastapi.io', // your ethereum, polygon, or optimism mainnet/testnet rpc URL
+        rpcUrl: 'https://rpc.ankr.com/eth_goerli', // your ethereum, polygon, or optimism mainnet/testnet rpc URL
         chainId: 5 // corresponding chainId for your rpc url
       },
       {
-        rpcUrl: 'https://polygon-rpc.com', // or https://matic-mumbai.chainstacklabs.com for testnet
+        rpcUrl: 'https://rpc.ankr.com/polygon', // or https://matic-mumbai.chainstacklabs.com for testnet
         chainId: 137 // or 80001 for polygon testnet
       },
       {
-        rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
+        rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
         chainId: 80001
       }
     ];

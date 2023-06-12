@@ -29,9 +29,10 @@ export class StrategyComponent implements OnInit {
   );
   public readonly stethAssetBalance$ = of(0);
   public readonly ethAssetBalance$ = this._aaveService.formatedWalletBallance$.pipe(
-    map((tokensBalances) => 
-        tokensBalances?.find((t) => t.symbol === 'ETH' || t.symbol === 'WETH')?.balance || 0
-    )
+    // TODO: fix this
+    // map((tokensBalances) => 
+    //     tokensBalances?.find((t) => t.symbol === 'ETH' || t.symbol === 'WETH')?.balance || 0
+    // )
   );
   // public readonly stethAssetBalance$ = this._walletService.tokensBalances$.pipe(
   //   map((tokensBalances) => 

@@ -1,16 +1,17 @@
 import { inject, Inject, Injectable } from "@angular/core";
 import { DIDDataStore } from '@glazed/did-datastore';
-import { IAuthService, IDatastoreService, IGetTokensBalances, ILoadingService, IWalletServcie, TokenInterface } from "@hexa/interfaces";
+import { IAuthService, IDatastoreService, IGetAvailableTokens, IGetTokensBalances, ILoadingService, IWalletServcie, TokenInterface } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
 import { BehaviorSubject, distinctUntilChanged, filter, map, Observable, tap } from "rxjs";
 import { IGetPriceOptions, IGetQuoteOptions } from "../interfaces/swap-servcie.interface";
 import { OxServcie } from "./0x.service";
 import { SwapeServiceStrategy } from "./swap-service.strategy";
+import { COINS } from "../constants/coins.constant";
 
 const SWAP_STRATEGIES = [
   {
     name: '0x',
-    get: (apiKey: string) => new OxServcie(apiKey)
+    get: (apiKey: string, hexaPublicAddress: string) => new OxServcie(apiKey, hexaPublicAddress)
   }
 ];
 
@@ -44,6 +45,7 @@ const ROOT_DB_COLLECTION = 'd-wallet';
 @Injectable()
 export class WalletService implements IWalletServcie {
   private readonly _config = inject<{[key: string]: string}>(getInjectionToken(TOKENS_NAME.APP_WALLET_SERVICE_APIKEYS));
+  private readonly _hexaPublicAddress = inject<string>(getInjectionToken(TOKENS_NAME.APP_HEXA_PUBLICADDRES));
 
   public readonly account$ = this._authService.account$.pipe(
     filter(Boolean),
@@ -89,7 +91,7 @@ export class WalletService implements IWalletServcie {
     private readonly _swapService: SwapeServiceStrategy,
     @Inject(getInjectionToken(TOKENS_NAME.APP_LOADER_SERVICE)) private readonly _loaderService: ILoadingService,
     @Inject(getInjectionToken(TOKENS_NAME.APP_DATASTORE_SERVICE)) private readonly _datastoreService: IDatastoreService<DIDDataStore>,
-    @Inject(getInjectionToken(TOKENS_NAME.APP_WALLET_UTILS)) private readonly _utilsService: IGetTokensBalances,
+    @Inject(getInjectionToken(TOKENS_NAME.APP_WALLET_UTILS)) private readonly _utilsService: IGetTokensBalances & IGetAvailableTokens,
     @Inject(getInjectionToken(TOKENS_NAME.APP_WEB3AUTH_SERVICE)) private readonly _authService: IAuthService
   ) {
     // define swap default strategy
@@ -167,10 +169,70 @@ export class WalletService implements IWalletServcie {
   }
 
   async  getTokensBalances(chainIds: number[], address: string) {
-    return await this._utilsService.getTokensBalances(
+    const result = await this._utilsService.getTokensBalances(
       chainIds, 
       address
     );
+    return {
+      balances: result.balances.map(b => {
+        let logo =
+          (b.logo?.length || 0) > 0
+            ? b.logo
+            : `./assets/cryptocurrency-icons/${b.symbol.toLowerCase()}.svg`;
+        if (b.symbol === 'WETH') {
+          logo = `https://assets.coingecko.com/coins/images/2518/large/weth.png`;
+        }
+        if (b.symbol === 'MATIC') {
+          logo = `./assets/wallet/icons/matic.svg`;
+        }
+        if (b.symbol === 'WMATIC') {
+          logo = `./assets/wallet/icons/wmatic.svg`;
+        }
+        if (b.symbol === 'aPolWMATIC') {
+          logo = `./assets/wallet/icons/awmatic.svg`;
+        }
+        if (b.symbol === 'stMATIC') {
+          logo = `./assets/wallet/icons/stmatic.svg`;
+        }
+        if (b.symbol === 'wstETH') {
+          logo = `./assets/wallet/icons/wsteth.svg`;
+        }
+        return {
+          ...b,
+          logo,
+        };
+      }),
+    };
+  }
+
+  async getAvailableTokens(chainId: number) {
+    // ceck if is Goerli Testnet
+    if (chainId === 5) {
+      const tokens = COINS
+        .filter(c => c.chain.id === 5)
+        .map(c => {
+          let logo =
+            (c.logo?.length || 0) > 0
+              ? c.logo
+              : `./assets/cryptocurrency-icons/${c.symbol.toLowerCase()}.svg`;
+          if (c.symbol === 'WETH') {
+            logo = `https://assets.coingecko.com/coins/images/2518/large/weth.png`;
+          }
+          if (c.symbol === 'MATIC') {
+            logo = `https://assets.ankr.com/charts/icon-only/matic.svg`;
+          }
+          return <TokenInterface>{
+            ...c,
+            logo,
+            chain: {
+              ...c.chain,
+              isTestnet: true
+            }
+          }
+        });
+      return { tokens }
+    }
+    return await this._utilsService.getAvailableTokens(chainId);
   }
 
   private async _loadEVMTokensBalances(account: string) {
@@ -189,7 +251,7 @@ export class WalletService implements IWalletServcie {
   private _setSwapStrategy(strategyType: string = '0x') {
     const apiKey = this._config?.['0xapiKey'];
     // define swap default strategy
-    const swapStrategy = SWAP_STRATEGIES.find(s => s.name === strategyType)?.get(apiKey);
+    const swapStrategy = SWAP_STRATEGIES.find(s => s.name === strategyType)?.get(apiKey, this._hexaPublicAddress);
     if (!swapStrategy) {
       throw new Error(`Swap strategy not available.`)
     }

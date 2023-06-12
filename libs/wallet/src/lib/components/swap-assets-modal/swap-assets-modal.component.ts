@@ -1,8 +1,9 @@
-import { AfterViewChecked, AfterViewInit, Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonInput, ModalController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonInput, IonSearchbar, ModalController } from '@ionic/angular';
 import {
   BehaviorSubject,
+  Observable,
   combineLatest,
   firstValueFrom,
   last,
@@ -14,7 +15,7 @@ import { ILoadingService, TokenInterface } from '@hexa/interfaces';
 import { getInjectionToken, TOKENS_NAME } from '@hexa/token-injection';
 import { COINS } from '../../constants/coins.constant';
 import { MAINNET, TESTNETS } from '../../constants/chains.constant';
-import { IGetPriceOptions } from '../../interfaces/swap-servcie.interface';
+import { IGetPriceOptions, IGetQuoteOptions } from '../../interfaces/swap-servcie.interface';
 import { WalletService } from '../../services/wallet.service';
 
 @Component({
@@ -23,6 +24,8 @@ import { WalletService } from '../../services/wallet.service';
   styleUrls: ['./swap-assets-modal.component.scss'],
 })
 export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
+  @ViewChild(IonSearchbar, { static: false, read: ElementRef })
+  public readonly searchbarElement!: ElementRef<IonSearchbar>;
   @ViewChild('fromAmountInput', {static: false}) fromAmountInput!: IonInput;
   @Input() public fromAsset!: TokenInterface;
   @Input() public toAsset?: TokenInterface;
@@ -31,7 +34,7 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     null as any
   );
   public readonly fromAmountControl = new FormControl<number>(null as any);
-  public readonly toAssetControl = new FormControl<TokenInterface>(null as any);
+  public readonly toAssetControl = new FormControl<Partial<TokenInterface>>(null as any);
   public readonly toAmountControl = new FormControl<number>(0);
 
   public readonly fromAssetBalance$ = this._walletService.tokensBalances$.pipe(
@@ -45,9 +48,24 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     )
   );
   public readonly estimatedGas$ = new BehaviorSubject<number>(0);
-  public readonly assets$: BehaviorSubject<TokenInterface[]> =
+  public readonly filterByValue$ = new BehaviorSubject<string>(null as any);
+  private readonly _assets$: BehaviorSubject<Partial<TokenInterface>[]> =
     new BehaviorSubject(null as any);
   public readonly isAssetsListUiVisible$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public readonly maxAssetsDisplayed$ = new BehaviorSubject(15);
+  public readonly assets$: Observable<Partial<TokenInterface>[]> = combineLatest([
+    this._assets$.asObservable(),
+    this.filterByValue$.asObservable(),
+  ]).pipe(
+    map(([assets, filterByValue]) => {
+      if (!filterByValue) {
+        return assets;
+      }
+      return assets?.filter((a) =>
+        a.symbol?.toLowerCase()?.includes(filterByValue.toLowerCase())
+      );
+    })
+  );
   public readonly isLoaderVisible$ = this._loaderService.isVisible$;
   public get chainName() {
     return this._getChainName();
@@ -68,6 +86,26 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     setTimeout(() => this.fromAmountInput.setFocus(), 1000);
+  }
+
+  onSearchByName(payload: any) {
+    const {
+      detail: { value = null },
+    } = payload;
+    this.filterByValue$.next(value);
+  }
+
+  onIonInfinite(event: any) {
+    // check if we need to load more assets
+    if (this.maxAssetsDisplayed$.value >= this._assets$.value?.length) {
+      event.target.complete();
+      return;
+    }
+    const t = setTimeout(() => {
+      const maxAssetsDisplayed = this.maxAssetsDisplayed$.value + 15;
+      this.maxAssetsDisplayed$.next(maxAssetsDisplayed);
+      event.target.complete();
+    }, 500);
   }
 
   onFromAssetChange() {
@@ -95,6 +133,8 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     if (!isValid) {
       return;
     }
+    // reset filters
+    this.filterByValue$.next(null as any);
     this._getPrice();
   }
 
@@ -109,6 +149,15 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
   private async _loadTokensList() {
     const { chain: {id = undefined} } = this.fromAssetControl.value || this.fromAsset;
     const data = COINS.filter((c) => c?.chain.id === id) as TokenInterface[];
+    if (!id) {
+      throw new Error(`Chain id is not defined.`);
+    }
+    const tokens = await this._walletService
+      .getAvailableTokens(id)
+      .then(
+        // filter only tokens with exiting `address` value
+        ({tokens}) => tokens?.filter(t => t.address !== undefined)
+      );
     // const isStored = localStorage.getItem('hexa:wallet:tokenlist');
     // let data: TokenInterface[] = [];
     // if (isStored) {
@@ -120,7 +169,7 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     //   // save localstorage
     //   localStorage.setItem('hexa:wallet:tokenlist', JSON.stringify(data));
     // }
-    this.assets$.next(data);
+    this._assets$.next(tokens as any);
   }
 
   private async _getPrice() {
@@ -161,11 +210,11 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     const decimal = this.fromAssetControl.value?.decimals || 16;
     const amount = Number(fromAmount * 10 ** decimal);
     const fromChainId = this.fromAssetControl.value?.chain.id;
-    const toChainId = this.toAssetControl.value?.chain.id;
+    const toChainId = this.toAssetControl.value?.chain?.id;
     if (fromChainId !== toChainId || !fromChainId || !toChainId) {
       throw new Error(`Cross chain swap is currently not implemented.`);
     }
-    const params = {
+    const params: IGetQuoteOptions = {
       sellToken: `${this.fromAssetControl.value?.address}`,
       buyToken: `${this.toAssetControl.value?.address}`,
       sellAmount: `${amount}`,

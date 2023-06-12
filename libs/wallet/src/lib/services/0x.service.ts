@@ -12,9 +12,15 @@ import { ITXQuote } from '../interfaces/tx-quote.interface';
 
 export class OxServcie implements ISwapservice {
   private readonly _chains = [...TESTNETS, ...MAINNET];
+  private readonly _ops: any = {
+    buyTokenPercentageFee: 0.1,
+    affiliateAddress: this._feeRecipient,
+    feeRecipient: this._feeRecipient,
+  }
 
   constructor(
-    private readonly _apiKey: string
+    private readonly _apiKey: string,
+    private readonly _feeRecipient: string,
   ) {}
 
   async getPrice(ops: IGetPriceOptions) {
@@ -23,12 +29,21 @@ export class OxServcie implements ISwapservice {
       console.log(`[ERROR] {OxServcie} getPrice() - Uncorrect request options call: `, ops);
       throw new Error('Uncorrect request options call.');
     }
+    // replace Goerli ETH with WETH
+    if (ops.sellToken === 'GTH' && ops.chainId === 5) {
+      ops.sellToken = 'ETH';
+    }
     // Fetch the swap price.
     const response = await fetch(
-      `${apiUrl}/swap/v1/price?${stringify(ops)}`,
+      `${apiUrl}/swap/v1/price?${stringify({
+        ...ops,
+        ...this._ops
+      })}`,
       {
         method: 'GET',
-        headers: this.getHeadersRequest()
+        headers: this.getHeadersRequest(
+          ops.chainId === 5 || ops.chainId === 80001 
+        )
       }
     );
     const {buyAmount = undefined, estimatedGas = undefined, ...result} = await response.json();
@@ -45,13 +60,22 @@ export class OxServcie implements ISwapservice {
     if (!ops.buyToken || !ops.sellToken || !ops.sellAmount || !apiUrl ) {
       console.log(`[ERROR] {OxServcie} getPrice() - Uncorrect request options call: `, ops);
       throw new Error('Uncorrect request options call.');
+    }    
+    // replace Goerli ETH with WETH
+    if (ops.sellToken === 'GTH' && ops.chainId === 5) {
+      ops.sellToken = 'ETH';
     }
-    const url = `${apiUrl}/swap/v1/quote?${stringify(ops)}`;
+    const url = `${apiUrl}/swap/v1/quote?${stringify({
+      ...ops,
+      ...this._ops
+    })}`;
     const res = await fetch(
       url,
       {
         method: 'GET',
-        headers: this.getHeadersRequest()
+        headers: this.getHeadersRequest(
+          ops.chainId === 5 || ops.chainId === 80001
+        )
       }
     );
     const data: ITXQuote = await res.json();
@@ -60,6 +84,14 @@ export class OxServcie implements ISwapservice {
 
   async swap(provider: ethers.providers.Web3Provider, txQuote: ITXQuote, ) {
     console.log('[INFO] {OxServcie} swap() - Trying swap: ', txQuote);
+    // // connect to correct network
+    // const network = await provider.getNetwork();
+    // if (network.chainId !== txQuote.chainId) {
+    //   await provider.send(
+    //     "wallet_switchEthereumChain",
+    //     [{ chainId: txQuote.chainId }]
+    //   );
+    // }
     // Set Token Allowance
     // Set up approval amount
     const fromTokenAddress = txQuote.sellTokenAddress;
@@ -68,14 +100,12 @@ export class OxServcie implements ISwapservice {
     const signer = provider.getSigner();
     const address = signer.getAddress();
 
-
-    
     const ERC20TokenContract = new ethers.Contract(
       fromTokenAddress,
       erc20abi,
       signer
     );
-    console.log('>>>>', ERC20TokenContract);
+    console.log('>>>>', {ERC20TokenContract, signer});
     // // Set up allowance on the 0x contract if needed.
     // const currentAllowance: BigNumber = await  (ERC20TokenContract as any).allowance(fromTokenAddress, address).catch((e: Error) => e.message);//.call();
     // console.log('bn: ', currentAllowance, );
@@ -108,7 +138,7 @@ export class OxServcie implements ISwapservice {
     // console.log('>>>>', tx, aprevedTX);
     
     // Perform the swap
-    const tx = await provider.getSigner().sendTransaction({
+    const tx = await signer.sendTransaction({
       from: address,
       to: txQuote.to,
       data: txQuote.data,
@@ -119,12 +149,15 @@ export class OxServcie implements ISwapservice {
     return receipt;
   }
 
-  private getHeadersRequest() {
-    const headers = new Headers();
-    headers.append('0x-api-key', this._apiKey);
+  private getHeadersRequest(isTestnet?: boolean): any {
+    // const headers = new Headers();
+    // headers.append('0x-api-key', this._apiKey);
     //return headers;
+    if (isTestnet) {
+      return { }
+    }
     return {
-      // '0x-api-key': this._apiKey
+      '0x-api-key': this._apiKey
     }
   }
 

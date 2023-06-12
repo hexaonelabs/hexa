@@ -30,7 +30,7 @@ const sampleProvider = new ethers.providers.JsonRpcProvider(
 );
 
 // User address to fetch data for, insert address here
-// const currentAccount = '0xd2b2A35039270d8fDcA84E7c15E1461daD9F3Ad7';
+// const currentAccount = '';
 
 // View contract used to fetch all reserves data (including market base currency data), and user reserves
 // Using Aave V3 Eth Mainnet address for demo

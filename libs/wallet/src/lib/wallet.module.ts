@@ -23,6 +23,7 @@ import { LidoService } from './services/lido.service';
 import { AAVEService } from './services/aave.service';
 import { StrategyComponent } from './components/strategy/strategy.component';
 import { DefiMarketsComponent } from './components/defi-markets/defi-markets';
+import { MultiplyPipe } from './pipes/multiply.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DefiMarketsComponent } from './components/defi-markets/defi-markets';
     AssetsTypePipe,
     DiffPercentPipe,
     QRcodePipe,
+    MultiplyPipe,
   ],
   imports: [
     CommonModule, 
@@ -48,13 +50,14 @@ import { DefiMarketsComponent } from './components/defi-markets/defi-markets';
   providers: [
     {
       provide: getInjectionToken(TOKENS_NAME.APP_WALLET_UTILS),
-      useFactory: (isProd: boolean) => {
+      useFactory: (isProd: boolean, {ankrApikey}: {ankrApikey: string}) => {
         return (!isProd)
-          ? ankrFactory()
-          : ankrFactory()
+          ? ankrFactory(ankrApikey)
+          : ankrFactory(ankrApikey)
       },
       deps: [
-        getInjectionToken(TOKENS_NAME.APP_IS_PROD)
+        getInjectionToken(TOKENS_NAME.APP_IS_PROD),
+        getInjectionToken(TOKENS_NAME.APP_WALLET_SERVICE_APIKEYS)
       ]
     },
     WalletService,

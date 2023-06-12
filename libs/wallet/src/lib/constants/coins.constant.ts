@@ -31,6 +31,13 @@ export const COINS = [
   },
   {
     chain: {id: 5},
+    symbol: 'UNI',
+    address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    decimals: 18,
+    logo: ''    
+  },
+  {
+    chain: {id: 5},
     symbol: 'DAI',
     address: '0xE68104D83e647b7c1C15a91a8D8aAD21a51B3B3E',
     decimals: 18,
