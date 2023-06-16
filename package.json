@@ -48,6 +48,7 @@
     "@khmyznikov/pwa-install": "^0.2.0",
     "@lido-sdk/constants": "^2.0.0",
     "@lido-sdk/contracts": "^2.0.6",
+    "@lifi/sdk": "^1.7.2",
     "@magic-ext/webauthn": "^9.1.0",
     "@metamask/eth-sig-util": "^5.0.2",
     "@ngx-env/builder": "^2.2.0",

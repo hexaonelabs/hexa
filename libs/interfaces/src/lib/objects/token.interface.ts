@@ -9,6 +9,7 @@ export interface TokenInterface {
   value: number;
   rate24h?: number;
   nft_data?: any;
+  priceUSD?: number;
   logo?: string;
   ownerAddress?: string;
   chain: {

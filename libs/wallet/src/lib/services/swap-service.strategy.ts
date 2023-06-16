@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { IGetPriceOptions, IGetQuoteOptions, ISwapservice } from "../interfaces/swap-servcie.interface";
 import { Strategy } from '@hexa/interfaces';
 import { ethers } from "ethers";
-import { ITXQuote } from "../interfaces/tx-quote.interface";
+import { ITXRequest } from "../interfaces/tx.interface";
 
 @Injectable()
 export class SwapeServiceStrategy extends Strategy<ISwapservice> implements ISwapservice {
-  public readonly strategyType = '0x';
+  public readonly strategyType = 'swap';
 
-  async getPrice(ops: IGetPriceOptions): Promise<{buyAmount: number; estimatedGas:number;}> {
+  async getPrice(ops: IGetPriceOptions) {
     return this._lib.getPrice(ops)
   }
 
@@ -18,9 +18,9 @@ export class SwapeServiceStrategy extends Strategy<ISwapservice> implements ISwa
 
   async swap(
     provider: ethers.providers.Web3Provider, 
-    txQuote: ITXQuote
+    params: any
   ) {
-    return this._lib.swap(provider,txQuote);
+    return this._lib.swap(provider,params);
   }
 
 }

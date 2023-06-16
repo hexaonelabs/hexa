@@ -2,16 +2,25 @@ import { inject, Inject, Injectable } from "@angular/core";
 import { DIDDataStore } from '@glazed/did-datastore';
 import { IAuthService, IDatastoreService, IGetAvailableTokens, IGetTokensBalances, ILoadingService, IWalletServcie, TokenInterface } from "@hexa/interfaces";
 import { getInjectionToken, TOKENS_NAME } from "@hexa/token-injection";
-import { BehaviorSubject, distinctUntilChanged, filter, map, Observable, tap } from "rxjs";
+import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, map, Observable, tap } from "rxjs";
 import { IGetPriceOptions, IGetQuoteOptions } from "../interfaces/swap-servcie.interface";
-import { OxServcie } from "./0x.service";
+// import { OxServcie } from "./0x.service";
 import { SwapeServiceStrategy } from "./swap-service.strategy";
 import { COINS } from "../constants/coins.constant";
+import { LiFiServcie } from "./lifi.service";
+import { Contract, utils } from "ethers";
+import { AssetTransfersResponse } from "alchemy-sdk";
 
+const ERC20_ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
 const SWAP_STRATEGIES = [
+  // {
+  //   name: '0x',
+  //   get: (apiKey: string, hexaPublicAddress: string) => new OxServcie(apiKey, hexaPublicAddress)
+  // },
+
   {
-    name: '0x',
-    get: (apiKey: string, hexaPublicAddress: string) => new OxServcie(apiKey, hexaPublicAddress)
+    name: 'lifi',
+    get: (apiKey: string, hexaPublicAddress: string) => new LiFiServcie(apiKey, hexaPublicAddress)
   }
 ];
 
@@ -138,7 +147,7 @@ export class WalletService implements IWalletServcie {
   }
 
   async getPriceToSwapAsset(ops:  IGetPriceOptions & { strategyType?: string | undefined; }) {
-    const {strategyType = '0x', ...value} = ops as IGetPriceOptions & {strategyType?: string}; 
+    const {strategyType = 'lifi', ...value} = ops as IGetPriceOptions & {strategyType?: string}; 
     this._setSwapStrategy(strategyType);
     return await this._swapService.getPrice(value);
   }
@@ -151,21 +160,74 @@ export class WalletService implements IWalletServcie {
    */
   async swapAssets(ops: IGetQuoteOptions & {strategyType?: string}) {
     const provider = this._authService.ethereumProvider$.value;
-    const {strategyType = '0x', ...value} = ops; 
+    const {strategyType = 'lifi', ...value} = ops; 
     this._setSwapStrategy(strategyType);
     const quote = await this._swapService.getQuote(value);
-    return await this._swapService.swap(provider, quote);
+    console.log("[INFO] {WalletService} swapAssets() - quote: ", quote);
+    
+    return await this._swapService.swap(provider, {
+      ...quote
+    });
   }
 
-  private async _loadOtherWallets() {
-    const {wallets = []} = await this._datastoreService.getData(
-      ROOT_DB_COLLECTION, 
-      ['wallets'], // key
-      { wallets: [] } // default value to save if not exist (optional)
-    );
-    // update state
-    this._wallets$.next(wallets||[]);
-    return this._wallets$.value;
+  async sendAsset(
+    to: string,
+    send_token_amount: string,
+    contract_address?: string,
+  ) {
+    const signer = this._authService.signer$.value;
+    const ethersProvider = this._authService.ethereumProvider$.value;
+    const currentGasPrice = await ethersProvider.getGasPrice();
+    const gasPrice = utils.hexlify(parseInt(currentGasPrice.toString()));
+ 
+    // general ERC20 token send
+    if (contract_address) {
+      const contract = new Contract(
+        contract_address,
+        ERC20_ABI,
+        signer
+      );
+      const decimals = await contract?.['decimals']().catch((e: any) => {
+        console.log(`[ERROR] contract.decimals() error: ${e.message}`);
+        return null;
+      });
+      console.log('[INFO] contract: ',contract);
+      
+      // How many tokens?
+      const numberOfTokens = utils.parseUnits(send_token_amount,decimals ? Number(decimals) : 18)
+      console.log(`numberOfTokens: ${numberOfTokens}`)
+      // Send tokens
+      const transferResult: AssetTransfersResponse = await contract['transfer'](to, numberOfTokens);
+      console.log('=> transferResult', transferResult);
+      return transferResult as AssetTransfersResponse;
+    } 
+    // ether send
+    else {
+      const from = await firstValueFrom(this.account$);
+      const gas_limit = "0x100000"
+      const tx = {
+        from,
+        to,
+        value: utils.parseEther(send_token_amount),
+        nonce: await ethersProvider.getTransactionCount(
+          from,
+          "latest"
+        ),
+        gasLimit: utils.hexlify(gas_limit), // 100000
+        gasPrice,
+      }
+      console.log(`[INFO] tx: ${JSON.stringify(tx)}`);
+      try {
+        // display loader
+        const transaction = await signer.sendTransaction(tx);
+        const txResult = await transaction.wait();
+        // hide loader
+        console.log(`[INFO] transaction success: ${JSON.stringify(txResult)}`);
+        return txResult;
+      } catch (error: any) {
+        throw new Error(error.message|| `Error sending transaction.`);
+      }
+    }
   }
 
   async  getTokensBalances(chainIds: number[], address: string) {
@@ -235,6 +297,17 @@ export class WalletService implements IWalletServcie {
     return await this._utilsService.getAvailableTokens(chainId);
   }
 
+  private async _loadOtherWallets() {
+    const {wallets = []} = await this._datastoreService.getData(
+      ROOT_DB_COLLECTION, 
+      ['wallets'], // key
+      { wallets: [] } // default value to save if not exist (optional)
+    );
+    // update state
+    this._wallets$.next(wallets||[]);
+    return this._wallets$.value;
+  }
+
   private async _loadEVMTokensBalances(account: string) {
     const chainIds = CHAIN_IDS.map(c => c.id);
     const {balances} = await this.getTokensBalances(
@@ -248,8 +321,8 @@ export class WalletService implements IWalletServcie {
     ]);
   }
 
-  private _setSwapStrategy(strategyType: string = '0x') {
-    const apiKey = this._config?.['0xapiKey'];
+  private _setSwapStrategy(strategyType: string = 'lifi') {
+    const apiKey = this._config?.[strategyType];
     // define swap default strategy
     const swapStrategy = SWAP_STRATEGIES.find(s => s.name === strategyType)?.get(apiKey, this._hexaPublicAddress);
     if (!swapStrategy) {

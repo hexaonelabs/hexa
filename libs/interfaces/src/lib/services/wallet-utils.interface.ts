@@ -1,4 +1,6 @@
+import { AssetTransfersResponse } from "alchemy-sdk";
 import { TokenInterface } from "../interfaces";
+import { TransactionReceipt } from "@ethersproject/abstract-provider";
 
 export interface IGetTokensBalances {
   
@@ -21,4 +23,12 @@ export interface IGetAvailableTokens {
   ): Promise<{
     tokens: Partial<TokenInterface>[]
   }>
+}
+
+export interface ISendAsset {
+  sendAsset(
+    to: string, 
+    send_token_amount: string, 
+    contract_address?: string
+  ): Promise<TransactionReceipt | AssetTransfersResponse>
 }

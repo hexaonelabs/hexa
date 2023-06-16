@@ -46,36 +46,50 @@ export const ankrFactory = (
       id: 1,
       value: 'eth',
       name: 'Ethereum',
+      logo: 'https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png',
+      nativeSymbol: 'ETH'
     },
     {
       id: 56,
       value: 'bsc',
       name: 'Binance smart chain',
+      logo: 'https://www.covalenthq.com/static/images/icons/display-icons/binance-coin-bnb-logo.png',
+      nativeSymbol: 'BNB'
     },
     {
       id: 250,
       value: 'fantom',
       name: 'Fantom',
+      logo: "https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png",
+      nativeSymbol: 'FTM'
     },
     {
       id: 43114,
       value: 'avalanche',
       name: 'Avalanche',
+      logo: "https://www.covalenthq.com/static/images/icons/display-icons/avalanche-avax-logo.png",
+      nativeSymbol: 'AVAX'
     },
     {
       id: 137,
       value: 'polygon',
       name: 'Polygon',
+      logo: 'https://www.covalenthq.com/static/images/icons/display-icons/polygon-matic-logo.png',
+      nativeSymbol: 'MATIC'
     },
     {
-      id: 42162,
+      id: 42161,
       value: 'arbitrum',
       name: 'Arbitrum',
+      logo: 'https://assets.coingecko.com/coins/images/16547/small/photo_2023-03-29_21.47.00.jpeg',
+      nativeSymbol: 'ARB'
     },
     {
       id: 10,
       value: 'optimism',
       name: 'Optimism',
+      logo: 'https://gateway.optimism.io/static/media/optimism.caeb9392.svg',
+      nativeSymbol: 'ETH'
     },
     {
       id: 5,
@@ -197,9 +211,21 @@ export const ankrFactory = (
           return <Partial<TokenInterface>>{
             ...t,
             logo: t.thumbnail,
-            chain,
+            chain: {
+              ...chain
+            },
           };
         });
+      // add native token
+      tokens.push(<Partial<TokenInterface>>{
+        address: '0x0000000000000000000000000000000000000000',
+        name: chain.name,
+        symbol: chain.nativeSymbol,
+        chain,
+        logo: chain.logo,
+        decimals: 18,
+        type: 'NATIVE'
+      })
       return { tokens };
     },
   };

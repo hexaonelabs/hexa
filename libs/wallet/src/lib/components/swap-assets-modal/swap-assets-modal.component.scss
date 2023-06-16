@@ -6,20 +6,41 @@
   ion-toolbar {
     --background: transparent;
   }
-  
+
+  ion-avatar {
+    transform: scale(0.5);
+  }
+  ion-avatar.thumbnail.md.hydrated {
+    transform: scale(0.3) translateX(-45px) translateY(-45px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: solid 6px var(--ion-color-light);
+    background: var(--ion-color-light);
+    z-index: 1;
+  }
+
+  swiper-slide > div {
+    width: 100%;
+  }
+
+
   .assets_selection_container {
-    padding: 0 1rem;
-    background: var(--ion-background-color);
 
     ion-col {
       margin: 0;
       padding: 1rem 0 0rem;
+      
+      ion-label {
+        font-size: inherit;
+      }
     }
 
     ion-item {
   
       --padding-start: 0;
       --min-height: 72px;
+      --background: transparent;
       font-size: 1.6rem;
       
   
@@ -28,9 +49,10 @@
       }
 
       ion-label {
+
         ion-button {
           vertical-align: middle;
-          margin-left: 1rem;
+          // margin-left: 1rem;
         }
   
         h2 {
@@ -45,25 +67,56 @@
 
   }
 
-  .detailsFees {
+  .providerDetail { 
+    div {
+      position: relative;
+      width: auto;
+      display: inline-block;
 
-    padding: 0 1rem;
+      ion-img {
+        max-width: 18px;
+        position: absolute;
+        left: -28px;
+        // top: -2.25px;
+      }
+    } 
+  }
+
+  .detailsFees {
 
     ion-col {
       padding: 0;
 
+      ion-label {
+        font-size: inherit;
+      }
+
       ion-item {
         font-size: 0.8rem;
-  
+        --padding-start: 0;
+        --background: transparent;
+
+
+
         ion-note {
           --color: var(--ion-text-color);
         }
+
+       
       }
     }
     
   }
 
-
+  .assets_selection_container, 
+  .detailsFees {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: var(--ion-item-background)!important;
+    border: 1px solid rgba(var(--ion-color-primary-rgb), 0.15);
+  }
 }
 
 ion-modal {

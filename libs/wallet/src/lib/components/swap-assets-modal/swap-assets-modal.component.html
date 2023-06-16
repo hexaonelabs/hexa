@@ -1,8 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-chip slot="start" color="primary">
+    <!-- <ion-chip slot="start" color="primary">
       {{this.chainName|uppercase}}
-    </ion-chip>
+    </ion-chip> -->
     <!-- <ion-icon slot="start" src="./assets/wallet/icons/0x-zrx-logo.svg"></ion-icon> -->
     <ion-title> Swap Assets</ion-title>
     <ion-buttons slot="end">
@@ -23,18 +23,23 @@
       </ion-col>
     </ion-row> -->
 
-    <ion-row class="assets_selection_container">
+    <ion-row class="assets_selection_container ion-justify-content-between">
       <ion-col size="12" class="ion-margin-top ion-text-start">
         <ion-label position="stacked">Pay with</ion-label>
       </ion-col>
-      <ion-col size="6" class="ion-text-start">
+      <ion-col size="auto" class="ion-text-start">
         <ion-item lines="none">
-          <ion-thumbnail slot="start" *ngIf="fromAssetControl.value?.logo as logo">
-            <ion-img [src]="logo"></ion-img>
-          </ion-thumbnail>
+          <div slot="start">
+            <ion-avatar mode="md" class="thumbnail" *ngIf="(fromAssetControl.value?.chain?.logo) as chainLogo">
+              <ion-img [src]="chainLogo" [title]="fromAssetControl.value?.chain?.name"></ion-img>
+            </ion-avatar>
+            <ion-avatar mode="md" *ngIf="fromAssetControl.value?.logo as logo">
+              <ion-img [src]="logo"></ion-img>
+            </ion-avatar>
+          </div>
           <ion-label>
             <h2>{{fromAssetControl.value?.symbol}}</h2>
-            <p>Balance: {{fromAssetBalance$|async}}</p>
+            <p>Balance: {{fromAssetBalance$|async|number: '1.0-6'}}</p>
           </ion-label>
           <!-- <ion-select
             slot="end"
@@ -55,7 +60,8 @@
         </ion-item>
       </ion-col>
       <ion-col size="6" class="ion-text-end">
-        <ion-item lines="none">
+        <ion-item 
+          lines="none">
           <ion-input
             #fromAmountInput
             class="ion-text-end"
@@ -65,7 +71,12 @@
             placeholder="0"
             enterkeyhint="done"
             inputmode="numeric"
+            [min]="0"
             [max]="fromAssetBalance$|async"
+            [ngStyle]="{
+              '--padding-end': '0rem',
+              'margin-right': 0
+            }"
             [formControl]="fromAmountControl"
             (ionChange)="onFromAmountChange()"
           ></ion-input>
@@ -73,25 +84,35 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="assets_selection_container">
+    <ion-row class="assets_selection_container ion-justify-content-between">
       <ion-col size="12" class="ion-margin-top ion-text-start">
         <ion-label position="stacked">Receive</ion-label>
       </ion-col>
-      <ion-col size="6" class="ion-text-start">
+      <ion-col size="auto" class="ion-text-start">
         <ion-item lines="none">
-          <ion-thumbnail slot="start" *ngIf="(toAssetControl.value?.logo) as logo">
-            <ion-img [src]="logo"></ion-img>
-          </ion-thumbnail>
+          <div slot="start" *ngIf="(toAssetControl.value?.chain?.logo) as chainLogo">
+            <ion-avatar mode="md" class="thumbnail">
+              <ion-img [src]="chainLogo" [title]="toAssetControl.value?.chain?.name"></ion-img>
+            </ion-avatar>
+            <ion-avatar mode="md" *ngIf="toAssetControl.value?.logo as logo">
+              <ion-img [src]="logo"></ion-img>
+            </ion-avatar>
+          </div>
           <ion-label>
-            <h2 *ngIf="toAssetControl.value?.symbol as symbol; else placeholderToken">{{symbol}}</h2>
+            <h2 *ngIf="toAssetControl.value?.symbol as symbol; else placeholderToken">
+              {{symbol}}
+            </h2>
+            <p *ngIf="toAssetControl.value?.priceUSD as priceUSD;">
+              1 {{toAssetControl.value?.symbol}} = {{priceUSD|number: '1.0-6'}} US$
+            </p>
             <ng-template #placeholderToken>
               <ion-button size="small" (click)="isAssetsListUiVisible$.next(true)">
                 SELECT ASSET
               </ion-button>
             </ng-template>
           </ion-label>
-          <ion-chip *ngIf="toAssetControl.value?.symbol" slot="end" (click)="isAssetsListUiVisible$.next(true)">
-            <ion-icon size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
+          <ion-chip *ngIf="toAssetControl.value?.symbol" slot="end" color="primary" (click)="isAssetsListUiVisible$.next(true)">
+            <ion-icon color="primary" size="small" name="chevron-down" class="ion-no-margin"></ion-icon>
           </ion-chip>
 
           <!-- <ion-select
@@ -112,47 +133,86 @@
           </ion-select> -->
         </ion-item>
       </ion-col>
-      <ion-col size="6" class="ion-text-end">
+      <ion-col size="auto" class="ion-text-end">
         <ion-item disabled lines="none" class="disabledInput ion-text-end">
           <ion-spinner *ngIf="toAmountControl.value === null" slot="end"></ion-spinner>
-          <ion-input
+          <!-- <ion-input
             slot="end" 
             type="number" 
             min="0" 
             [hidden]="toAmountControl.value === null"
-            [formControl]="toAmountControl"></ion-input>
+            [formControl]="toAmountControl"></ion-input> -->
+          <ion-label class="ion-no-margin" slot="end" [hidden]="toAmountControl.value === null">
+            <h2>{{toAmountControl.value|number: '1.0-6'}}</h2>
+            <p>{{selectedSwapeStrategy$.value?.toAmountUSD||0}} $US</p>
+          </ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="estimatedGas$|async as estimatedGas" class="ion-margin-top detailsFees">
-      <ion-col size="12">
-        <ion-item>
-          <ion-label>
-            Slippage
-          </ion-label>
-          <ion-note slot="end">
-            0.5%
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Hexa fee
-          </ion-label>
-          <ion-note slot="end">
-            0%
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Gas fee estimation
-          </ion-label>
-          <ion-note slot="end">
-            {{estimatedGas}}
-          </ion-note>
-        </ion-item>
+    <ion-row *ngIf="swapeStrategies$.value as strategies" class="ion-margin-top detailsFees">
+      <ion-col size="6" class="ion-margin-vertical ion-text-start">
+        <ion-label position="stacked">Swap strategy</ion-label>
       </ion-col>
-      <ion-col size="12" class="ion-text-center">
+      <ion-col size="6" class="ion-margin-vertical ion-text-end providerDetail">
+        <div class="ion-padding-end">
+          <ion-img [src]="selectedSwapeStrategy$.value?.steps[0]?.toolDetails?.logoURI"></ion-img>
+          <ion-note color="dark">
+            {{selectedSwapeStrategy$.value?.steps[0]?.toolDetails?.name}}
+          </ion-note>
+        </div>
+      </ion-col>
+      <ion-col size="12">
+        <swiper-container #swiperElement [options]="{ allowTouchMove: false, loop: false }">
+          <swiper-slide *ngFor="let strategy of strategies">
+            <div>
+              <ion-item lines="none">
+                <ion-label>
+                  Slippage
+                </ion-label>
+                <ion-note slot="end">
+                  {{strategy?.steps[0]?.action?.slippage|percent:'1.1-2'}}
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>
+                  Gas fee estimation
+                </ion-label>
+                <ion-note slot="end">
+                  {{strategy.estimatedGasUSD}} $US
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>
+                  Additional bridges, DEX and services fees
+                </ion-label>
+                <ion-note slot="end">
+                  {{strategy.feeCostsUSD}} $US
+                </ion-note>
+              </ion-item>
+            </div>
+          </swiper-slide>
+
+        </swiper-container>
+        <div *ngIf="strategies.length > 1" class="ion-text-center ion-padding">
+          <!-- prev next Button -->
+          <ion-chip 
+            color="primary" 
+            size="small" 
+            [disabled]="strategySlideIndex$.value === 0"
+            (click)="onSlideTo('prev')">
+            <ion-icon class="ion-no-margin" name="chevron-back-outline"></ion-icon>
+          </ion-chip>
+          <ion-chip 
+            color="primary" 
+            size="small" 
+            [disabled]="strategySlideIndex$.value === strategies.length - 1"
+            (click)="onSlideTo('next')">
+            <ion-icon class="ion-no-margin" name="chevron-forward-outline"></ion-icon>
+          </ion-chip>
+        </div>
+      </ion-col>
+      <!-- <ion-col size="12" class="ion-text-center">
         <a href="https://0x.org" target="_blank" rel="noopener" class="">
           <ion-icon 
             [ngStyle]="{'height':'1rem', 'width': '5rem'}" 
@@ -160,7 +220,7 @@
             class=" ion-margin-vertical"
             src="./assets/wallet/icons/0x-powered.svg"></ion-icon>
         </a>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
 
   </ion-grid>
@@ -186,7 +246,7 @@
     <ion-header class="ion-no-border">
       <ion-toolbar style="--background: transparent;">
         <ion-title>
-          Select asset
+          Select network and asset
         </ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="isAssetsListUiVisible$.next(false)">
@@ -194,20 +254,43 @@
           </ion-button>
         </ion-buttons>       
       </ion-toolbar>
+      <ion-toolbar style="--background: transparent;">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+            <ion-col *ngFor="let chain of availableChains">
+              <ion-button 
+                [color]="tokenListSelectedChainId$.value === chain?.chainId ? 'primary' : 'medium'" 
+                [fill]="tokenListSelectedChainId$.value === chain?.chainId ? 'outline' : 'clear'" 
+                (click)="onTokenListSelectedChainChange(chain.chainId)"
+              >
+                <!-- {{chain.name}} -->
+                <ion-img [src]="chain.logo" style="height: 1.5rem; width: 1.5rem;"></ion-img>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+      <ion-toolbar style="--background: transparent;">
+        <ion-searchbar 
+          enterkeyhint="search"
+          inputmode="search"
+          mode="ios"
+          [debounce]="500"
+          placeholder="Search asset by name"
+          (ionChange)="onSearchByName($event)"></ion-searchbar>
+      </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-no-padding">
+    <ion-content class="ion-no-padding ion-padding-vertical">
       <div *ngIf="assets$|async as assets;else loadingTmp" >
+        <ion-text *ngIf="(assets|slice:0:maxAssetsDisplayed$.value)?.length === 0" class="ion-text-center">
+          <p>
+            No asset found.
+          </p>
+        </ion-text>
         <ion-list lines="none" class="ion-margin-bottom"  >
-          <ion-list-header class="ion-margin-bottom assets-list-header">
-            <ion-searchbar 
-              enterkeyhint="search"
-              inputmode="search"
-              mode="ios"
-              [debounce]="500"
-              (ionChange)="onSearchByName($event)"></ion-searchbar>
-          </ion-list-header>
           <ion-item 
               *ngFor="let asset of assets|slice:0:maxAssetsDisplayed$.value" 
+              style="--background: transparent;"
               (click)="toAssetControl.patchValue(asset);isAssetsListUiVisible$.next(false);onToAssetChange();">
             <ion-thumbnail slot="start">
               <ion-img style="padding:0.5rem;" [src]="asset?.logo"></ion-img>
@@ -225,7 +308,7 @@
       <ng-template #loadingTmp>
         <ion-grid>
           <ion-row>
-            <ion-col size="12">
+            <ion-col size="12" class="ion-text-center">
               <ion-spinner></ion-spinner>
             </ion-col>
           </ion-row>

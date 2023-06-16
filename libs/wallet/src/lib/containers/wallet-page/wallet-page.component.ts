@@ -9,6 +9,9 @@ import { BehaviorSubject, combineLatest, firstValueFrom, map } from "rxjs";
 import { SwapAssetsModalComponent } from "../../components/swap-assets-modal/swap-assets-modal.component";
 import { WalletService } from "../../services/wallet.service";
 import { ChainSelectorComponent } from "../../components/chain-selector/chain-selector.component";
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
   selector: "hexa-wallet-page",
@@ -170,6 +173,49 @@ export class WalletPageComponent  {
         // outside brackets that allow to filter by chain and reset filter
         
         this.filterByChain$.next(chain);
+        break;
+      }
+      case type == 'send-asset': {
+        const {item: asset = null} = payload;
+        // prompt to get destination address
+        const ionAlertTo = await this._alertCtrl.create({
+          header: 'Send asset',
+          subHeader: 'Enter destination address',
+          message: 'Enter wallet public address or ENS name',
+          inputs: [
+            { name: 'address', type: 'text', placeholder: '0x...' }
+          ],
+          buttons: [
+            { text: 'Cancel', role: 'cancel', cssClass: 'danger' },
+            { text: 'Send', role: 'ok', cssClass: 'primary' }
+          ],
+        });
+        await ionAlertTo.present();
+        const {data: {values: {address: to = null}} = {}, role: roleTo} = await ionAlertTo.onDidDismiss();
+        // prompt to get amount
+        const ionAlertAmount = await this._alertCtrl.create({
+          header: 'Send asset',
+          subHeader: 'Enter amount',
+          message: 'Enter amount to send',
+          inputs: [
+            { name: 'amount', type: 'number', placeholder: '0.0' }
+          ],
+          buttons: [
+            { text: 'Cancel', role: 'cancel', cssClass: 'danger' },
+            { text: 'Send', role: 'ok', cssClass: 'primary' }
+          ],
+        });
+        await ionAlertAmount.present();
+        const {data: {values: {amount: send_token_amount = null}} = {}, role: roleAmount} = await ionAlertAmount.onDidDismiss();
+        if (roleTo !== 'ok' || roleAmount !== 'ok') {
+          return;
+        }
+        // send asset
+        const result = await this._walletService.sendAsset(
+          to,
+          send_token_amount,
+          asset.type === 'NATIVE' ? undefined : asset.address
+        );
         break;
       }
       default:{
