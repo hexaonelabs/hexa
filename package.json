@@ -1,6 +1,6 @@
 {
   "name": "hexa",
-  "version": "0.0.19",
+  "version": "0.0.20-beta",
   "description": "Censorship-resistant, tamper-proof and privacy compliant cloud solution, open-source, fully decentralized and built on top of InterPlanetary File System (IPFS)",
   "license": "MIT",
   "scripts": {
