@@ -284,8 +284,8 @@ export class SwapAssetsModalComponent implements OnInit, AfterViewInit {
     const amount = Number(fromAmount * 10 ** decimal);
     const fromChainId = this.fromAssetControl.value?.chain.id;
     const toChainId = this.toAssetControl.value?.chain?.id;
-    if (fromChainId !== toChainId || !fromChainId || !toChainId) {
-      throw new Error(`Cross chain swap is currently not implemented.`);
+    if (!fromChainId) {
+      throw new Error(`Chain id is not defined.`);
     }
     // const params: IGetQuoteOptions = {
     //   // sellToken: `${this.fromAssetControl.value?.address}`,

@@ -10,6 +10,7 @@ import { SwapAssetsModalComponent } from "../../components/swap-assets-modal/swa
 import { WalletService } from "../../services/wallet.service";
 import { ChainSelectorComponent } from "../../components/chain-selector/chain-selector.component";
 import { register } from 'swiper/element/bundle';
+import { SendAssetComponent } from "../../components/send-asset/send-asset.component";
 
 register();
 
@@ -122,8 +123,9 @@ export class WalletPageComponent  {
           return;
         }
         const { transactionHash, status } = data as TransactionReceipt;
-        console.log('XXXXX', transactionHash, status );
-        
+        console.log('XXXXX', transactionHash, status, data );
+        // reload evm assets list
+        this._walletService.refreshEVMTokenBalances();
         const ionToast = await this._toastCtrl.create({
           message: `Swap with succes. View on blockscan`,
           buttons: [
@@ -137,8 +139,7 @@ export class WalletPageComponent  {
           position: 'bottom'
         });
         await ionToast.present();
-        // TODO: reload evm assets list
-        // this._walletService.getTokensBalances();
+
         break;
       }
       case type === 'filterByChain': {
@@ -148,6 +149,7 @@ export class WalletPageComponent  {
           const tokensBalances = await firstValueFrom(this._walletService.tokensBalances$);
           const ionModal = await this._modalCtrl.create({
             component: ChainSelectorComponent,
+            cssClass: [],
             componentProps: {
               showTestnet: this.showTestnet$.value,
               chains: tokensBalances
@@ -177,45 +179,8 @@ export class WalletPageComponent  {
       }
       case type == 'send-asset': {
         const {item: asset = null} = payload;
-        // prompt to get destination address
-        const ionAlertTo = await this._alertCtrl.create({
-          header: 'Send asset',
-          subHeader: 'Enter destination address',
-          message: 'Enter wallet public address or ENS name',
-          inputs: [
-            { name: 'address', type: 'text', placeholder: '0x...' }
-          ],
-          buttons: [
-            { text: 'Cancel', role: 'cancel', cssClass: 'danger' },
-            { text: 'Send', role: 'ok', cssClass: 'primary' }
-          ],
-        });
-        await ionAlertTo.present();
-        const {data: {values: {address: to = null}} = {}, role: roleTo} = await ionAlertTo.onDidDismiss();
-        // prompt to get amount
-        const ionAlertAmount = await this._alertCtrl.create({
-          header: 'Send asset',
-          subHeader: 'Enter amount',
-          message: 'Enter amount to send',
-          inputs: [
-            { name: 'amount', type: 'number', placeholder: '0.0' }
-          ],
-          buttons: [
-            { text: 'Cancel', role: 'cancel', cssClass: 'danger' },
-            { text: 'Send', role: 'ok', cssClass: 'primary' }
-          ],
-        });
-        await ionAlertAmount.present();
-        const {data: {values: {amount: send_token_amount = null}} = {}, role: roleAmount} = await ionAlertAmount.onDidDismiss();
-        if (roleTo !== 'ok' || roleAmount !== 'ok') {
-          return;
-        }
-        // send asset
-        const result = await this._walletService.sendAsset(
-          to,
-          send_token_amount,
-          asset.type === 'NATIVE' ? undefined : asset.address
-        );
+        if (!asset) return;
+        await this._promptSendAsset(asset);
         break;
       }
       default:{
@@ -228,7 +193,39 @@ export class WalletPageComponent  {
         break;
       }
     }
-    
+  }
+
+  private async _promptSendAsset(asset: TokenInterface) {
+    // open modal 
+    const ionModal = await this._modalCtrl.create({
+      component: SendAssetComponent,
+      componentProps: {
+        asset
+      },
+      cssClass: ['modalAlert']
+    });
+    await ionModal.present();
+    const {data, role} = await ionModal.onDidDismiss();
+    if (role !== 'send') {
+      return;
+    }
+    const {to, amount: send_token_amount} = data;
+    // display loader
+    this._loaderService.setStatus(true);
+    // send asset
+    try {
+      await this._walletService.sendAsset(
+        to,
+        `${send_token_amount}`,
+        asset.type === 'NATIVE' ? undefined : asset.address
+      );
+    } catch (error:any) {
+      throw new Error(
+        error.message||'Transaction failed. Please try again. If the problem persists, please contact support.'
+      );
+    }
+    // hide loader
+    this._loaderService.setStatus(false);
   }
 
   private async _promptSwapAsset(fromAsset: TokenInterface, toAsset?: TokenInterface) {

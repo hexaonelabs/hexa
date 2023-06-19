@@ -1,0 +1,53 @@
+<ion-grid [formGroup]="form">
+
+  <ion-row>
+    <ion-col size="12" class="ion-text-center">
+      <ion-text color="dark">
+        <h3 class="ion-padding-bottom ion-padding-horizontal">
+          Send {{ asset.symbol }} to another wallet
+        </h3>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12">
+      <ion-item lines="none">
+        <ion-label position="stacked">To</ion-label>
+        <ion-input
+          type="text"
+          formControlName="to"
+          placeholder="Enter EVM address..." 
+        ></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12">
+      <ion-item lines="none">
+        <ion-label position="stacked">Amount</ion-label>
+        <ion-input
+          type="number"
+          formControlName="amount"
+          placeholder="Enter amount..." 
+        ></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <!-- send block buton -->
+    <ion-col size="12" class="ion-padding-top">
+      <ion-button
+        expand="block"
+        color="primary"
+        [disabled]="!form.valid"
+        (click)="send()"
+      >
+        Send
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>

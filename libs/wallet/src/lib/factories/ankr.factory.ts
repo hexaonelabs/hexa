@@ -119,7 +119,9 @@ export const ankrFactory = (
     const balances: TokenInterface[] = tokens?.map((t: IAnkrTokenReponse) => {
       const logo = (t.thumbnail?.length || 0) ? t.thumbnail : undefined;
       return <TokenInterface>{
-        address: t.tokenType === 'NATIVE' ? t.tokenSymbol : t.contractAddress,
+        address: t.tokenType === 'NATIVE' 
+          ? '0x0000000000000000000000000000000000000000' 
+          : t.contractAddress,
         name: t.tokenName,
         symbol: t.tokenSymbol,
         type: t.tokenType,

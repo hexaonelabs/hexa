@@ -167,7 +167,7 @@
                 ></ion-icon>
               </ion-chip>
             </ion-col>
-            <ion-col
+            <!-- <ion-col
               size-xs="6"
               size-sm="6"
               size-md="6"
@@ -188,9 +188,6 @@
                 >
                   <ion-label>NFTs</ion-label>
                 </ion-segment-button>
-                <!-- <ion-segment-button value="transaction" (click)="selectedSegment = 'transaction'">
-                  <ion-label>Transactions</ion-label>
-                </ion-segment-button> -->
                 <ion-segment-button
                   value="defi"
                   (click)="selectedSegment = 'defi'"
@@ -198,7 +195,7 @@
                   <ion-label>DeFi</ion-label>
                 </ion-segment-button>
               </ion-segment>
-            </ion-col>
+            </ion-col> -->
           </ion-row>
         </ion-grid>
       </ion-col>
@@ -211,14 +208,14 @@
           <!-- header legends -->
           <ion-grid class="ion-no-padding ion-padding-bottom">
             <ion-row class="ion-align-items-start ion-margin-top">
-              <ion-col size="4">
+              <ion-col size="4" class="ion-padding-start">
                 <ion-text color="medium"> Token </ion-text>
               </ion-col>
               <ion-col class="">
                 <ion-text color="medium"> Price </ion-text>
               </ion-col>
               <ion-col
-                class="ion-text-right ion-align-items-center ion-justify-content-end"
+                class="ion-text-right ion-align-items-center ion-justify-content-end ion-padding-end"
               >
                 <ion-text color="medium"> Balance </ion-text>
               </ion-col>

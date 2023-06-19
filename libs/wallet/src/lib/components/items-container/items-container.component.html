@@ -1,5 +1,5 @@
-<ion-grid class="ion-no-padding">
-  <ion-row 
+  <!--<ion-grid class="ion-no-padding">
+ <ion-row 
       *ngFor="
         let item of (items||[]) | slice: 0:maxItemToDisplay$.value;trackBy: trackByFn;let i = index;
       "
@@ -27,11 +27,6 @@
       <ion-text color="medium">
         {{item.rate | currency}}
       </ion-text><br/>
-      <ion-text [color]="(item.rate|diffPercent: item.rate24h) < 0 ? 'danger' : 'success'">
-        <small>
-          <span *ngIf="(item.rate|diffPercent: item.rate24h) >= 0">+</span>{{item.rate|diffPercent: item.rate24h}}%
-        </small>
-      </ion-text>
     </ion-col>    
     <ion-col 
         class="ion-text-right ion-align-items-center ion-justify-content-end"
@@ -103,5 +98,174 @@
         </ng-template>
       </ion-popover>
     </ion-col>
-  </ion-row>
-</ion-grid>
+  </ion-row> </ion-grid>-->
+
+  <ion-accordion-group>
+    <ion-accordion 
+      *ngFor="let group of (items||[])| groupByChain | slice: 0:maxItemToDisplay$.value;trackBy: trackByFn;let i = index;" 
+      [value]="group.symbol">
+      <ion-item slot="header" >
+        <ion-grid class="ion-no-padding">
+          <ion-row class="item ion-align-items-center">
+            <ion-col
+                class="ion-align-items-center ion-text-wrap ion-no-padding"
+                size="4"
+                [ngStyle]="{ display: 'flex' }">
+              <ion-avatar>
+                <ion-img [src]="group.logoURI"></ion-img>
+              </ion-avatar>
+              <ion-label class="ion-padding-start">
+                <ion-text>
+                  {{group.symbol}}
+                </ion-text>
+                <ion-text color="medium">
+                  <small>{{group.name}}</small>
+                </ion-text>
+              </ion-label>
+            </ion-col> 
+            <ion-col class="ion-hide-md-down ion-padding-start">
+              <ion-text color="medium">
+                {{group.priceUSD | currency}}
+              </ion-text><br/>
+            </ion-col> 
+            <ion-col 
+              class="ion-text-right ion-align-items-center ion-justify-content-end  ion-padding-end"
+              [ngStyle]="{ display: 'flex' }">
+              <ion-label>
+                <ion-text>
+                  {{ group.totalValue | currency }}
+                </ion-text>
+                <ion-text color="medium">
+                  <small>{{ group.totalBalance }} {{group.symbol|uppercase}}</small>
+                </ion-text>
+            </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-grid class="ion-no-padding" slot="content">
+        <ion-row class="item">
+          <ion-col class="ion-padding-horizontal ion-padding-top">
+            <ion-label color="medium" class="ion-margin-top">
+              <small>
+                Networks
+              </small>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row 
+            *ngFor="
+              let item of (group.details||[]);
+            "
+            class="item ion-align-items-center">
+          <ion-col
+              class="ion-align-items-center ion-text-wrap"
+              size="4"
+              [ngStyle]="{ display: 'flex' }">
+            <ion-avatar 
+              [ngStyle]="{ 
+                transform: 'scale(0.3)',
+                background: 'var(--ion-color-light)',
+                border: 'solid 6px var(--ion-color-light)'
+              }">
+              <ion-img [src]="item.chain.logo" [title]="item.chain.name"></ion-img>
+            </ion-avatar>
+            <!-- <ion-avatar>
+              <ion-img [src]="item.logo"></ion-img>
+            </ion-avatar> -->
+            <ion-label class="ion-padding-start" color="medium">
+              <!-- <ion-text>
+                {{item.symbol}}
+              </ion-text> -->
+              <ion-text>
+                <small>{{item.chain.name}}</small>
+              </ion-text>
+            </ion-label>
+          </ion-col>
+
+          <ion-col class="ion-hide-md-down">
+            <!-- <ion-text color="medium">
+              {{item.rate | currency}}
+            </ion-text><br/> -->
+          </ion-col> 
+
+          <ion-col 
+            class="ion-text-right ion-align-items-center ion-justify-content-end"
+            [ngStyle]="{ display: 'flex' }">
+
+            <ion-label class="ion-padding-end">
+              <ion-text>
+                {{ item.value | currency }}
+              </ion-text>
+              <ion-text color="medium">
+                <small>{{ item.balance }} {{item.symbol|uppercase}}</small>
+              </ion-text>
+            </ion-label>
+
+            <ion-fab-button
+              size="small"
+              translucent="true"
+              mode="ios"
+              id="options-btn-{{i}}">
+              <ion-icon
+                color="medium"
+                size="small"
+                color="primary"
+                name="ellipsis-vertical"
+              ></ion-icon>
+            </ion-fab-button>
+
+            <ion-popover 
+              [dismissOnSelect]="true"
+              trigger="options-btn-{{i}}" 
+              triggerAction="click">
+              <ng-template>
+                <ion-content class="ion-no-padding">
+                  <ion-list lines="none" class="ion-margin-bottom">
+                    <ion-list-header class="ion-margin-bottom">
+                      <ion-label>Options</ion-label>
+                    </ion-list-header>
+                    <ion-item button (click)="actions('swap-asset', { item })">
+                      <ion-label class="ion-text-wrap">
+                        <h3>Swap</h3>
+                        <p>
+                          Swap {{item.symbol|uppercase}} for another asset
+                        </p>
+                      </ion-label>
+                    </ion-item>
+                    <ion-item button (click)="actions('send-asset', { item })">
+                      <ion-label class="ion-text-wrap">
+                        <h3>Send</h3>
+                        <p>
+                          Transfer {{item.symbol|uppercase}} to another wallet
+                        </p>
+                      </ion-label>
+                    </ion-item>
+                    <ion-item button (click)="actions('receive-asset', { item })">
+                      <ion-label class="ion-text-wrap">
+                        <h3>Receive</h3>
+                        <p>
+                          Get a {{item.symbol|uppercase}} address to receive funds
+                        </p>
+                      </ion-label>
+                    </ion-item>
+                    <ion-item disabled detail (click)="actions('stack-asset', { item })">
+                      <ion-label class="ion-text-wrap">
+                        <h3>Stack</h3>
+                        <p>
+                          Earn interest on your {{item.symbol|uppercase}} by stacking
+                        </p>
+                      </ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-accordion>
+  </ion-accordion-group>
+

@@ -175,6 +175,13 @@ export class WalletService implements IWalletServcie {
     send_token_amount: string,
     contract_address?: string,
   ) {
+    // params validation 
+    if (!to) {
+      throw new Error(`Missing 'to' address.`);
+    }
+    if (!send_token_amount) {
+      throw new Error(`Missing 'send_token_amount' value.`);
+    }
     const signer = this._authService.signer$.value;
     const ethersProvider = this._authService.ethereumProvider$.value;
     const currentGasPrice = await ethersProvider.getGasPrice();
@@ -197,9 +204,15 @@ export class WalletService implements IWalletServcie {
       const numberOfTokens = utils.parseUnits(send_token_amount,decimals ? Number(decimals) : 18)
       console.log(`numberOfTokens: ${numberOfTokens}`)
       // Send tokens
-      const transferResult: AssetTransfersResponse = await contract['transfer'](to, numberOfTokens);
-      console.log('=> transferResult', transferResult);
-      return transferResult as AssetTransfersResponse;
+      try {
+        const approveResult = await contract['approve'](to, numberOfTokens);
+        console.log('=> approveResult', approveResult);
+        const transferResult: AssetTransfersResponse = await contract['transfer'](to, numberOfTokens);
+        console.log('=> transferResult', transferResult);
+        return transferResult as AssetTransfersResponse;
+      } catch (error: any) {
+        throw new Error(error.message|| `Error sending transaction.`);
+      }
     } 
     // ether send
     else {
@@ -218,10 +231,8 @@ export class WalletService implements IWalletServcie {
       }
       console.log(`[INFO] tx: ${JSON.stringify(tx)}`);
       try {
-        // display loader
         const transaction = await signer.sendTransaction(tx);
         const txResult = await transaction.wait();
-        // hide loader
         console.log(`[INFO] transaction success: ${JSON.stringify(txResult)}`);
         return txResult;
       } catch (error: any) {
@@ -295,6 +306,20 @@ export class WalletService implements IWalletServcie {
       return { tokens }
     }
     return await this._utilsService.getAvailableTokens(chainId);
+  }
+
+  async refreshEVMTokenBalances() {
+    this._loaderService.setStatus(true);
+    this._tokensBalances$.next([]);
+    const wallets = this._wallets$.value;
+    await Promise.all(
+      wallets
+      .filter((w)=> !w.isDisabled)
+      .map(
+        (w) => this._loadEVMTokensBalances(w.address)
+      )
+    );
+    this._loaderService.setStatus(false);
   }
 
   private async _loadOtherWallets() {

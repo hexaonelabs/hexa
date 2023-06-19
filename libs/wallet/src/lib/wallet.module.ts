@@ -24,6 +24,8 @@ import { AAVEService } from './services/aave.service';
 import { StrategyComponent } from './components/strategy/strategy.component';
 import { DefiMarketsComponent } from './components/defi-markets/defi-markets';
 import { MultiplyPipe } from './pipes/multiply.pipe';
+import { GroupByChainPipe } from './pipes/groupe-bychain.pipe';
+import { SendAssetComponent } from './components/send-asset/send-asset.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { MultiplyPipe } from './pipes/multiply.pipe';
     SwapAssetsModalComponent,
     DefiMarketsComponent,
     StrategyComponent,
+    SendAssetComponent,
     AvatarDirective,
     NetWorthPipe,
     SliceAddressPipe,
@@ -39,6 +42,7 @@ import { MultiplyPipe } from './pipes/multiply.pipe';
     DiffPercentPipe,
     QRcodePipe,
     MultiplyPipe,
+    GroupByChainPipe
   ],
   imports: [
     CommonModule, 
