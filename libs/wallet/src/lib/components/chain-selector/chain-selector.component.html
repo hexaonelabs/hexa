@@ -1,44 +1,41 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title> Select a chain </ion-title>
-    <!-- close modal btn -->
-    <ion-buttons slot="end">
+<ion-grid>
+  <ion-row class="ion-justify-content-between ion-align-items-center">
+    <ion-col size="auto">
+      <ion-title> Select a chain </ion-title>
+    </ion-col>
+    <ion-col size="auto">
       <ion-button (click)="modalCtrl.dismiss(undefined, 'cancel')">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="auto">
-        <ion-button fill="outline" (click)="actions('selectChain', undefined)">
-          All chains
-        </ion-button>
-      </ion-col>
-      <ion-col size="auto" *ngFor="let chain of chains">
-        <ion-button fill="outline" class="withThumb" (click)="actions('selectChain', chain)">
-          <ion-thumbnail slot="start" class="ion-padding">
-            <ion-img [src]="chain.logo"></ion-img>
-          </ion-thumbnail>
-          {{ chain.name }}
-        </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label>
-            <h2>Show testnet</h2>
-          </ion-label>
-          <ion-toggle
-            slot="end"
-            [checked]="showTestnet"
-            (click)="actions('toggleTestnet', !showTestnet)"
-          ></ion-toggle>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="auto">
+      <ion-button fill="outline" (click)="actions('selectChain', undefined)">
+        All chains
+      </ion-button>
+    </ion-col>
+    <ion-col size="auto" *ngFor="let chain of chains">
+      <ion-button fill="outline" class="withThumb" (click)="actions('selectChain', chain)">
+        <ion-thumbnail slot="start" class="ion-padding">
+          <ion-img [src]="chain.logo"></ion-img>
+        </ion-thumbnail>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>
+          <h2>Show testnet</h2>
+        </ion-label>
+        <ion-toggle
+          slot="end"
+          size="small"
+          [checked]="showTestnet"
+          (click)="actions('toggleTestnet', !showTestnet)"
+        ></ion-toggle>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>

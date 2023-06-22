@@ -149,7 +149,7 @@ export class WalletPageComponent  {
           const tokensBalances = await firstValueFrom(this._walletService.tokensBalances$);
           const ionModal = await this._modalCtrl.create({
             component: ChainSelectorComponent,
-            cssClass: [],
+            cssClass: ['modalAlert'],
             componentProps: {
               showTestnet: this.showTestnet$.value,
               chains: tokensBalances
