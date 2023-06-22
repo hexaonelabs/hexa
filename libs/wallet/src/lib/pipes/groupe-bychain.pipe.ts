@@ -18,7 +18,7 @@ export class GroupByChainPipe implements PipeTransform {
     details: TokenInterface[];
   }[] {
     const groupedByChain = value.reduce((acc, token) => {
-      const existingToken = acc.find((t) => t.symbol === token.symbol);
+      const existingToken = acc.find((t) => t.symbol.toLocaleUpperCase() === token.symbol.toLocaleUpperCase());
       if (existingToken) {
         existingToken.details.push(token);
         existingToken.chains.push({logoURI: token.logo, chainId: token.chain.id});
